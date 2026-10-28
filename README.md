@@ -48,3 +48,11 @@ GIFs stay at or under 15 seconds and 640 pixels wide. Outputs go to `media/out` 
 ```bash
 python3 -m unittest discover -s tests -v
 ```
+
+## Considerations
+
+- Claude works with the config in this repo. Cursor is set up the same way, through `.cursor/mcp.json`.
+- ChatGPT does not. RunwayML and Canva are the alternatives for poster videos.
+- VS Code has `.vscode/mcp.json`. GitHub Codespaces with Codex is still untried.
+- Social posting goes through Buffer.
+- New pixel-art shorts start from [`pixel_video_prompt.md`](pixel_video_prompt.md).
