@@ -1,0 +1,78 @@
+{
+  "title": "TITLE",
+  "output": "output/short-name.mp4",
+  "handle": "@STUDIORK3DPS",
+  "voice": "en-US-AndrewMultilingualNeural",
+  "rate": "+20%",
+  "target_duration": 25.5,
+  "gap": 0.2,
+  "left": {"name": "LEFT NAME", "short": "LEFT", "material": "wood"},
+  "right": {"name": "RIGHT NAME", "short": "RIGHT", "material": "metal"},
+  "beats": [
+    {
+      "id": "hook",
+      "scene": "hook",
+      "window": 4.0,
+      "lead": 0.25,
+      "line": "Left name versus right name. Who wins?",
+      "cues": {"left": "left", "vs": "versus", "right": "right", "wins": "wins"}
+    },
+    {
+      "id": "look",
+      "scene": "look",
+      "round": 1,
+      "topic": "LOOKS",
+      "window": 4.0,
+      "line": "Looks. Left is warm and matte, right is shiny and cool.",
+      "cues": {"topic": "looks", "left": "left", "left_a": "warm", "left_b": "matte", "right": "right", "right_a": "shiny", "right_b": "cool"},
+      "labels": {"left_a": "WARM", "left_b": "MATTE", "right_a": "SHINY", "right_b": "COOL"}
+    },
+    {
+      "id": "printing",
+      "scene": "printing",
+      "round": 2,
+      "topic": "PRINTING",
+      "window": 6.0,
+      "line": "Printing. Left can clog. Right wears nozzles, so go hardened.",
+      "cues": {"topic": "printing", "left": "left", "clog": "clog", "right": "right", "wear": "wears", "fix": "hardened"},
+      "labels": {"clog": "CLOG!", "wear": "WEARS", "fix": "HARDENED"}
+    },
+    {
+      "id": "finishing",
+      "scene": "finishing",
+      "round": 3,
+      "topic": "FINISHING",
+      "window": 5.0,
+      "line": "Finishing. Left sands and stains. Right polishes to a shine.",
+      "cues": {"topic": "finishing", "sand": "sands", "stain": "stains", "polish": "polishes", "shine": "shine"},
+      "labels": {"sand": "SANDS", "stain": "STAINS", "polish": "POLISHES", "shine": "SHINE"}
+    },
+    {
+      "id": "weight",
+      "scene": "weight",
+      "round": 4,
+      "topic": "WEIGHT",
+      "window": 4.0,
+      "line": "Weight. Right is heavy, left is light. Left decor, right trophies.",
+      "cues": {"topic": "weight", "drop": "right", "heavy": "heavy", "light": "light", "left_use": "decor", "right_use": "trophies"},
+      "labels": {"heavy": "HEAVY", "light": "LIGHT", "left_use": "DECOR", "right_use": "TROPHIES"}
+    },
+    {
+      "id": "verdict",
+      "scene": "verdict",
+      "window": 3.0,
+      "lead": 0.15,
+      "tail": 1.0,
+      "line": "It depends: warmth, left. Weight and shine, right. Follow for more filament battles!",
+      "cues": {
+        "it": "it", "depends": "depends", "left_q": "warmth", "left": "left",
+        "right_q": "weight", "right_q2": "shine", "right": "right",
+        "follow": "follow", "filament": "filament", "battles": "battles"
+      },
+      "labels": {
+        "verdict1": "IT", "verdict2": "DEPENDS", "left_q": "WARMTH?", "right_q": "WEIGHT &",
+        "right_q2": "SHINE?", "follow1": "FOLLOW FOR MORE", "follow2": "FILAMENT BATTLES"
+      }
+    }
+  ]
+}

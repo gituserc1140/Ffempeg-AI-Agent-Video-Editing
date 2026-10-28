@@ -1,4 +1,6 @@
+import json
 import unittest
+from pathlib import Path
 
 import numpy as np
 from PIL import Image
@@ -8,7 +10,7 @@ from shorts import palette as P
 from shorts.font import GLYPHS, text_points, text_width
 from shorts.pixel import Canvas, box_violations, build_background, pose_of_frame, safe_place, to_output
 from shorts.qc import _tokens
-from shorts.timeline import Word
+from shorts.timeline import Word, norm
 
 
 class PixelTests(unittest.TestCase):
@@ -62,6 +64,19 @@ class CaptionTests(unittest.TestCase):
     def test_tokens_alias_badges_and_numbers(self) -> None:
         self.assertEqual(_tokens("WEIGHT & SHINE?"), ["weight", "and", "shine"])
         self.assertEqual(_tokens("metal-fill PLA"), ["metal", "fill", "pla"])
+
+
+class TopicTests(unittest.TestCase):
+    def test_every_cue_word_is_in_its_line(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        for path in (root / "shorts" / "topics").glob("*.json"):
+            for beat in json.loads(path.read_text())["beats"]:
+                spoken = [norm(tok) for tok in beat["line"].split()]
+                for spec in beat.get("cues", {}).values():
+                    word, _, nth = spec.partition("#")
+                    count = spoken.count(norm(word))
+                    need = int(nth) if nth else 1
+                    self.assertGreaterEqual(count, need, f"{path.name} {beat['id']} cue {spec!r}")
 
 
 class AudioTests(unittest.TestCase):

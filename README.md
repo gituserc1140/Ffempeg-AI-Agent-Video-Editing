@@ -55,4 +55,4 @@ python3 -m unittest discover -s tests -v
 - ChatGPT does not. RunwayML and Canva are the alternatives for poster videos.
 - VS Code has `.vscode/mcp.json`. GitHub Codespaces with Codex is still untried.
 - Social posting goes through Buffer.
-- New pixel-art shorts start from [`pixel_video_prompt.md`](pixel_video_prompt.md).
+- New pixel-art shorts start from [`pixel_video_prompt.md`](pixel_video_prompt.md) and [`shorts/topics/template.json`](shorts/topics/template.json).

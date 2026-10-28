@@ -31,7 +31,7 @@ Requirements: Python 3, `pip install -r requirements.txt` (Pillow, numpy, edge-t
 
 ## Changing the topic or text
 
-Copy `topics/wood_vs_metal_pla.json` and edit the copy:
+The reusable brief is [`pixel_video_prompt.md`](../pixel_video_prompt.md). Copy `topics/template.json` to a new file and fill it in. `topics/wood_vs_metal_pla.json` is the finished example. Do not render `template.json` as it is: the lines are placeholders, and the cue words have to match the script exactly.
 
 - `voice`, `rate`, `handle`, `left` / `right` names, and `output`.
 - Each beat's `line` is what is spoken. Its `cues` map event names to spoken words: `"metal"`, or `"metal#2"` for the second time it is said. Its `labels` set the on-screen words.
