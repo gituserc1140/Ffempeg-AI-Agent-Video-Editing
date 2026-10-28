@@ -162,7 +162,11 @@ def main() -> int:
     print("[4/5] QC")
     sheet = out_dir / f"{out_mp4.stem}-contact.png"
     tiles = qc.contact_sheet(out_mp4, sheet, duration)
-    probe = qc.ffprobe(out_mp4)
+    probe = qc.ffprobe(
+        out_mp4,
+        min_duration=float(cfg.get("min_duration", 24)),
+        max_duration=float(cfg.get("max_duration", 27)),
+    )
     final_loud = audio.ebur128(["-i", str(out_mp4)])
     text_problems = qc.text_issues(records)
     vo_problems, vo_table = qc.voice_issues(tl, records)
