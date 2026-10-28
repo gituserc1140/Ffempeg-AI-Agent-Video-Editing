@@ -42,6 +42,26 @@ class PixelTests(unittest.TestCase):
         self.assertTrue((block == block[0]).all())
         self.assertLessEqual(len(Image.fromarray(out).getcolors(1 << 16)), 16)
 
+    def test_tpu_theme_recolours_slots_and_restores(self) -> None:
+        original = [tuple(rgb) for rgb in P.COLORS]
+        try:
+            P.apply_theme("tpu-abs")
+            self.assertEqual(tuple(P.COLORS[P.WOOD1]), (214, 82, 14))
+            self.assertEqual(tuple(P.COLORS[P.STEEL1]), (18, 64, 168))
+            self.assertEqual(tuple(P.COLORS[P.STEEL0]), (46, 50, 62))
+            self.assertEqual(len(P.COLORS), 16)
+            rubber = np.asarray(build_background(theme="tpu-abs"))
+            planks = np.asarray(build_background(theme="wood-metal"))
+            self.assertEqual(int((rubber[:, :40] == P.STEEL1).sum()), 0)
+            self.assertGreater(int((rubber[:, 70:] == P.GREEN).sum()), 200)
+            self.assertGreater(int((planks[:, :40] == P.WOOD1).sum()), int((rubber[:, :40] == P.WOOD1).sum()))
+            with self.assertRaises(ValueError):
+                P.apply_theme("nope")
+        finally:
+            P.apply_theme("wood-metal")
+        self.assertEqual([tuple(rgb) for rgb in P.COLORS], original)
+        self.assertEqual(P.THEME, "wood-metal")
+
     def test_poses_hold_two_or_three_frames(self) -> None:
         holds, last, run = [], 0, 0
         for f in range(60):

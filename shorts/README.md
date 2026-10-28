@@ -37,6 +37,8 @@ The reusable brief is [`pixel_video_prompt.md`](../pixel_video_prompt.md). Copy 
 - Each beat's `line` is what is spoken. Its `cues` map event names to spoken words: `"metal"`, or `"metal#2"` for the second time it is said. Its `labels` set the on-screen words.
 - `window` is the beat's preferred length. Spare time is spread toward it when the speech runs short.
 
+Optional `theme` picks the 16-colour stage. Leave it out for the wood and steel look. `tpu-abs` is the orange rubber and blue plastic stage used by `topics/tpu_vs_abs.json`. The nozzle greys stay metal in both.
+
 Then run `python3 render.py --config path/to/topic.json`.
 
 The six scene types draw this matchup's props (spools, nozzles, blocks, see-saw). A different A-vs-B comparison can reuse them with new text. A topic that needs different props needs a new scene function in `scenes.py` and a `SCENES` entry.

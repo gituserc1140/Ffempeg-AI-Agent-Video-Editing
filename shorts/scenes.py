@@ -110,7 +110,7 @@ def hook(cv: Canvas, t: float, b: Beat) -> None:
     tw, tv, tm, twin = (b.cue(k) for k in ("left", "vs", "right", "wins"))
     left, right = b.cfg["left_name"], b.cfg["right_name"]
     left_mat, right_mat = b.cfg.get("left_mat", "wood"), b.cfg.get("right_mat", "metal")
-    title_color = {"wood": P.AMBER, "tpu": P.YELLOW, "metal": P.SHINE, "abs": P.WHITE}
+    title_color = {"wood": P.AMBER, "tpu": P.AMBER, "metal": P.SHINE, "abs": P.WHITE}
 
     if t >= tw - 0.01:
         cv.box(6, 25, 101, 61, fill=P.NAVY, outline=P.NAVY2)

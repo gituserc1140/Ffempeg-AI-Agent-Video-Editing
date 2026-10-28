@@ -168,8 +168,10 @@ def box_violations(box: tuple[int, int, int, int]) -> list[str]:
     return issues
 
 
-def build_background(seed: int = 7) -> Image.Image:
-    """Static split background: wood planks left, riveted steel right."""
+def build_background(seed: int = 7, theme: str = "wood-metal") -> Image.Image:
+    """Static split background. wood-metal is planks and rivets. tpu-abs is rubber and molded plastic."""
+    if theme == "tpu-abs":
+        return _rubber_background(seed)
     rng = np.random.default_rng(seed)
     a = np.zeros((H, W), np.uint8)
     seam = np.array([split_x(y) for y in range(H)])
@@ -216,6 +218,38 @@ def build_background(seed: int = 7) -> Image.Image:
     for kx, ky in ((14, 84), (38, 150), (10, 34), (34, 120)):
         d.ellipse([kx - 3, ky - 5, kx + 3, ky + 5], fill=P.WOOD1, outline=P.WOOD0)
         d.ellipse([kx - 1, ky - 2, kx + 1, ky + 2], fill=P.WOOD0)
+    return img
+
+
+def _rubber_background(seed: int = 7) -> Image.Image:
+    """Orange rubber ridges on the left, blue molded panels on the right."""
+    rng = np.random.default_rng(seed)
+    a = np.zeros((H, W), np.uint8)
+    seam = np.array([split_x(y) for y in range(H)])
+    cols = np.arange(W)[None, :]
+    left = cols < seam[:, None]
+    a[left] = P.WOOD1
+    a[~left] = P.STEEL1
+    for y in range(H):
+        if y % 5 == 0:
+            a[y, : max(0, seam[y] - 1)] = P.WOOD0
+        elif y % 5 == 1:
+            a[y, : max(0, seam[y] - 1)] = P.WOOD2
+    for _ in range(36):
+        y = int(rng.integers(2, H - 2))
+        x = int(rng.integers(2, max(3, seam[y] - 4)))
+        a[y - 1 : y + 2, x - 1 : x + 2] = P.WOOD0
+        a[y, x] = P.AMBER
+    for x in range(0, W, 16):
+        for y in range(H):
+            if x > seam[y] + 3:
+                a[y, x] = P.GREEN
+                if x + 1 < W:
+                    a[y, x + 1] = P.STAIN
+    for y in range(H):
+        a[y, seam[y] - 1 : seam[y] + 2] = P.NAVY
+    img = Image.fromarray(a, mode="P")
+    img.putpalette(P.FLAT)
     return img
 
 
@@ -321,5 +355,9 @@ def shine_streak(cv: Canvas, t: float, period: float = 3.0, sweep: float = 0.6) 
             x = xs + off
             if split_x(y) + 2 <= x < W:
                 bucket.append((x, y))
-    cv.pts(pts_b, P.STEEL2)
-    cv.pts(pts_a, P.SHINE)
+    if P.THEME == "tpu-abs":
+        cv.pts(pts_b, P.STAIN)
+        cv.pts(pts_a, P.WHITE)
+    else:
+        cv.pts(pts_b, P.STEEL2)
+        cv.pts(pts_a, P.SHINE)

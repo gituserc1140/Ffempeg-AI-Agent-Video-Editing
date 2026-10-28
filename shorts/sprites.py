@@ -351,7 +351,7 @@ def plastic_block(cv: Canvas, cx: int, cy: int, rough: float, shine: float) -> N
         sx = int(rng.integers(x0 + 1, x1))
         sy = int(rng.integers(y0 + 1, y1))
         if rng.random() < rough:
-            cv.px(sx, sy, P.STEEL1)
+            cv.px(sx, sy, m["dark"])
     if shine > 0.4:
         cv.line([(x0 + 1, y0 + 1), (x1 - 1, y0 + 1)], P.WHITE)
     if shine >= 1:

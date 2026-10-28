@@ -16,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
-from shorts import audio, captions, qc, scenes, timeline
+from shorts import audio, captions, palette, qc, scenes, timeline
 from shorts.pixel import (
     FPS,
     OUT_H,
@@ -103,7 +103,9 @@ def main() -> int:
     work = args.build / out_mp4.stem
     work.mkdir(parents=True, exist_ok=True)
 
-    print(f"[1/5] voiceover: {cfg['voice']} {cfg['rate']}")
+    theme = cfg.get("theme", "wood-metal")
+    palette.apply_theme(theme)
+    print(f"[1/5] voiceover: {cfg['voice']} {cfg['rate']}  palette {theme}")
     tl = timeline.build(cfg, args.build / "tts")
     n_frames = int(round(tl.duration * FPS))
     duration = n_frames / FPS
@@ -121,7 +123,7 @@ def main() -> int:
     print(f"      {loud['integrated_lufs']:.1f} LUFS, true peak {loud['true_peak_dbfs']:.1f} dBFS")
 
     print(f"[3/5] frames: {n_frames} at {FPS} fps, {OUT_W}x{OUT_H}")
-    bg = build_background()
+    bg = build_background(theme=theme)
     enc = subprocess.Popen(
         [
             "ffmpeg", "-y", "-v", "error",

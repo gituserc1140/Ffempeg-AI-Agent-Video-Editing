@@ -6,6 +6,7 @@
   "rate": "+20%",
   "target_duration": 25.5,
   "gap": 0.2,
+  "theme": "tpu-abs",
   "left": {"name": "TPU", "short": "TPU", "material": "tpu"},
   "right": {"name": "ABS", "short": "ABS", "material": "abs"},
   "beats": [

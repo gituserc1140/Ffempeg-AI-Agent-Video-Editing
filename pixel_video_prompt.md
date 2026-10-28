@@ -28,7 +28,7 @@ Edit only when the pictures or colours change:
 
 - `shorts/scenes.py` has one draw function and one event function per beat, registered in `SCENES`. The built-in beats are `hook`, `look`, `printing`, `finishing`, `weight`, `verdict`.
 - `shorts/sprites.py` holds the props those beats draw.
-- `shorts/palette.py` holds the 16 colours. `pixel.build_background()` in `shorts/pixel.py` paints the wood and steel split. There is no `background.py`.
+- `shorts/palette.py` holds the 16 colours. Set `theme` in the topic file: `wood-metal` (default) paints planks and rivets, `tpu-abs` paints orange rubber and blue plastic. There is no `background.py`.
 - Voice synthesis lives in `shorts/timeline.py`. There is no `tts.py` and no offline ffmpeg voice. If edge-tts fails, say so and stop.
 - Frame encoding lives in `render.py`. There is no `frames.py`.
 
