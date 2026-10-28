@@ -1,0 +1,78 @@
+{
+  "title": "Wood PLA vs Metal PLA: Which One Wins?",
+  "output": "output/wood-vs-metal-pla.mp4",
+  "handle": "@PIXELPRINTLAB",
+  "voice": "en-US-AndrewMultilingualNeural",
+  "rate": "+20%",
+  "target_duration": 25.5,
+  "gap": 0.2,
+  "left": {"name": "WOOD PLA", "short": "WOOD", "material": "wood"},
+  "right": {"name": "METAL PLA", "short": "METAL", "material": "metal"},
+  "beats": [
+    {
+      "id": "hook",
+      "scene": "hook",
+      "window": 4.0,
+      "lead": 0.25,
+      "line": "Wood PLA versus metal-fill PLA. Who wins?",
+      "cues": {"left": "wood", "vs": "versus", "right": "metal-fill", "wins": "wins"}
+    },
+    {
+      "id": "look",
+      "scene": "look",
+      "round": 1,
+      "topic": "LOOKS",
+      "window": 4.0,
+      "line": "Looks. Wood is warm and matte, metal is shiny and cool.",
+      "cues": {"topic": "looks", "left": "wood", "left_a": "warm", "left_b": "matte", "right": "metal", "right_a": "shiny", "right_b": "cool"},
+      "labels": {"left_a": "WARM", "left_b": "MATTE", "right_a": "SHINY", "right_b": "COOL"}
+    },
+    {
+      "id": "printing",
+      "scene": "printing",
+      "round": 2,
+      "topic": "PRINTING",
+      "window": 6.0,
+      "line": "Printing. Wood can clog. Metal wears nozzles, so go hardened.",
+      "cues": {"topic": "printing", "left": "wood", "clog": "clog", "right": "metal", "wear": "wears", "fix": "hardened"},
+      "labels": {"clog": "CLOG!", "wear": "WEARS", "fix": "HARDENED"}
+    },
+    {
+      "id": "finishing",
+      "scene": "finishing",
+      "round": 3,
+      "topic": "FINISHING",
+      "window": 5.0,
+      "line": "Finishing. Wood sands and stains. Metal polishes to a shine.",
+      "cues": {"topic": "finishing", "sand": "sands", "stain": "stains", "polish": "polishes", "shine": "shine"},
+      "labels": {"sand": "SANDS", "stain": "STAINS", "polish": "POLISHES", "shine": "SHINE"}
+    },
+    {
+      "id": "weight",
+      "scene": "weight",
+      "round": 4,
+      "topic": "WEIGHT",
+      "window": 4.0,
+      "line": "Weight. Metal's heavy, wood's light. Wood decor, metal trophies.",
+      "cues": {"topic": "weight", "drop": "metal", "heavy": "heavy", "light": "light", "left_use": "decor", "right_use": "trophies"},
+      "labels": {"heavy": "HEAVY", "light": "LIGHT", "left_use": "DECOR", "right_use": "TROPHIES"}
+    },
+    {
+      "id": "verdict",
+      "scene": "verdict",
+      "window": 3.0,
+      "lead": 0.15,
+      "tail": 1.0,
+      "line": "It depends: warmth, wood. Weight and shine, metal. Follow for more filament battles!",
+      "cues": {
+        "it": "it", "depends": "depends", "left_q": "warmth", "left": "wood",
+        "right_q": "weight", "right_q2": "shine", "right": "metal",
+        "follow": "follow", "filament": "filament", "battles": "battles"
+      },
+      "labels": {
+        "verdict1": "IT", "verdict2": "DEPENDS", "left_q": "WARMTH?", "right_q": "WEIGHT &",
+        "right_q2": "SHINE?", "follow1": "FOLLOW FOR MORE", "follow2": "FILAMENT BATTLES"
+      }
+    }
+  ]
+}
