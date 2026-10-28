@@ -1,19 +1,19 @@
 {
   "video": "output/halloween-pumpkin.mp4",
   "contact_sheet": "output/halloween-pumpkin-contact.png",
-  "contact_sheet_tiles": 34,
-  "duration_s": 25.5,
+  "contact_sheet_tiles": 27,
+  "duration_s": 20.0,
   "ffprobe_checks": {
     "resolution 1080x1920": true,
     "30 fps": true,
     "h264 yuv420p": true,
     "aac 48 kHz stereo": true,
-    "duration 24-27 s": true
+    "duration 18-27 s": true
   },
   "loudness": {
     "integrated_lufs": -14.1,
-    "true_peak_dbfs": -1.1,
-    "lra_lu": 3.9
+    "true_peak_dbfs": -1.3,
+    "lra_lu": 2.1
   },
   "loudness_ok": true,
   "word_count": 37,
@@ -21,7 +21,7 @@
     {
       "id": "hook",
       "start": 0.0,
-      "end": 4.09,
+      "end": 3.09,
       "voice": [
         0.25,
         1.97
@@ -30,51 +30,51 @@
     },
     {
       "id": "layers",
-      "start": 4.09,
-      "end": 8.69,
+      "start": 3.09,
+      "end": 6.6,
       "voice": [
-        4.34,
-        6.4
+        3.34,
+        5.4
       ],
       "line": "Layers. Orange walls stack up on the bed."
     },
     {
       "id": "face",
-      "start": 8.69,
-      "end": 12.77,
+      "start": 6.6,
+      "end": 9.76,
       "voice": [
-        8.94,
-        10.8
+        6.85,
+        8.71
       ],
       "line": "Face. Eyes and a grin print in."
     },
     {
       "id": "stem",
-      "start": 12.77,
-      "end": 16.87,
+      "start": 9.76,
+      "end": 12.81,
       "voice": [
-        13.02,
-        14.67
+        10.01,
+        11.65
       ],
       "line": "Stem. A green top pops on."
     },
     {
       "id": "glow",
-      "start": 16.87,
-      "end": 20.95,
+      "start": 12.81,
+      "end": 16.0,
       "voice": [
-        17.12,
-        19.04
+        13.06,
+        14.98
       ],
       "line": "Light. The pumpkin glows inside."
     },
     {
       "id": "end",
-      "start": 20.95,
-      "end": 25.5,
+      "start": 16.0,
+      "end": 20.0,
       "voice": [
-        21.1,
-        23.26
+        16.15,
+        18.3
       ],
       "line": "Done. Follow for more spooky prints!"
     }
@@ -107,163 +107,163 @@
     },
     {
       "word": "LAYERS",
-      "t0": 4.425,
-      "t1": 4.883
+      "t0": 3.421,
+      "t1": 3.879
     },
     {
       "word": "ORANGE",
-      "t0": 5.206,
-      "t1": 5.435
+      "t0": 4.202,
+      "t1": 4.431
     },
     {
       "word": "WALLS",
-      "t0": 5.435,
-      "t1": 5.685
+      "t0": 4.431,
+      "t1": 4.681
     },
     {
       "word": "STACK",
-      "t0": 5.695,
-      "t1": 5.935
+      "t0": 4.692,
+      "t1": 4.931
     },
     {
       "word": "UP",
-      "t0": 5.935,
-      "t1": 6.018
+      "t0": 4.931,
+      "t1": 5.015
     },
     {
       "word": "ON",
-      "t0": 6.029,
-      "t1": 6.102
+      "t0": 5.025,
+      "t1": 5.098
     },
     {
       "word": "THE",
-      "t0": 6.102,
-      "t1": 6.143
+      "t0": 5.098,
+      "t1": 5.14
     },
     {
       "word": "BED",
-      "t0": 6.143,
-      "t1": 6.404
+      "t0": 5.14,
+      "t1": 5.4
     },
     {
       "word": "FACE",
-      "t0": 9.097,
-      "t1": 9.472
+      "t0": 7.004,
+      "t1": 7.379
     },
     {
       "word": "EYES",
-      "t0": 9.805,
-      "t1": 10.076
+      "t0": 7.712,
+      "t1": 7.983
     },
     {
       "word": "AND",
-      "t0": 10.076,
-      "t1": 10.117
+      "t0": 7.983,
+      "t1": 8.024
     },
     {
       "word": "A",
-      "t0": 10.117,
-      "t1": 10.159
+      "t0": 8.024,
+      "t1": 8.066
     },
     {
       "word": "GRIN",
-      "t0": 10.169,
-      "t1": 10.43
+      "t0": 8.077,
+      "t1": 8.337
     },
     {
       "word": "PRINT",
-      "t0": 10.43,
-      "t1": 10.638
+      "t0": 8.337,
+      "t1": 8.545
     },
     {
       "word": "IN",
-      "t0": 10.638,
-      "t1": 10.805
+      "t0": 8.545,
+      "t1": 8.712
     },
     {
       "word": "STEM",
-      "t0": 13.118,
-      "t1": 13.472
+      "t0": 10.101,
+      "t1": 10.456
     },
     {
       "word": "A",
-      "t0": 13.805,
-      "t1": 13.847
+      "t0": 10.789,
+      "t1": 10.831
     },
     {
       "word": "GREEN",
-      "t0": 13.847,
-      "t1": 14.014
+      "t0": 10.831,
+      "t1": 10.997
     },
     {
       "word": "TOP",
-      "t0": 14.014,
-      "t1": 14.222
+      "t0": 10.997,
+      "t1": 11.206
     },
     {
       "word": "POPS",
-      "t0": 14.222,
-      "t1": 14.483
+      "t0": 11.206,
+      "t1": 11.466
     },
     {
       "word": "ON",
-      "t0": 14.483,
-      "t1": 14.67
+      "t0": 11.466,
+      "t1": 11.653
     },
     {
       "word": "LIGHT",
-      "t0": 17.202,
-      "t1": 17.442
+      "t0": 13.142,
+      "t1": 13.382
     },
     {
       "word": "THE",
-      "t0": 17.786,
-      "t1": 17.848
+      "t0": 13.726,
+      "t1": 13.788
     },
     {
       "word": "PUMPKIN",
-      "t0": 17.859,
-      "t1": 18.182
+      "t0": 13.798,
+      "t1": 14.121
     },
     {
       "word": "GLOWS",
-      "t0": 18.182,
-      "t1": 18.557
+      "t0": 14.121,
+      "t1": 14.496
     },
     {
       "word": "INSIDE",
-      "t0": 18.557,
-      "t1": 19.036
+      "t0": 14.496,
+      "t1": 14.976
     },
     {
       "word": "DONE",
-      "t0": 21.184,
-      "t1": 21.444
+      "t0": 16.228,
+      "t1": 16.489
     },
     {
       "word": "FOLLOW",
-      "t0": 21.84,
-      "t1": 22.069
+      "t0": 16.885,
+      "t1": 17.114
     },
     {
       "word": "FOR",
-      "t0": 22.069,
-      "t1": 22.173
+      "t0": 17.114,
+      "t1": 17.218
     },
     {
       "word": "MORE",
-      "t0": 22.173,
-      "t1": 22.413
+      "t0": 17.218,
+      "t1": 17.458
     },
     {
       "word": "SPOOKY",
-      "t0": 22.423,
-      "t1": 22.778
+      "t0": 17.468,
+      "t1": 17.822
     },
     {
       "word": "PRINTS!",
-      "t0": 22.778,
-      "t1": 23.257
+      "t0": 17.822,
+      "t1": 18.301
     }
   ],
   "on_screen_text": [
@@ -282,92 +282,92 @@
     {
       "beat": "layers",
       "text": "LAYERS",
-      "shown": 4.5,
-      "spoken": 4.42
+      "shown": 3.5,
+      "spoken": 3.42
     },
     {
       "beat": "layers",
       "text": "ORANGE",
-      "shown": 5.25,
-      "spoken": 5.21
+      "shown": 4.25,
+      "spoken": 4.2
     },
     {
       "beat": "layers",
       "text": "STACK",
-      "shown": 5.75,
-      "spoken": 5.7
+      "shown": 4.75,
+      "spoken": 4.69
     },
     {
       "beat": "layers",
       "text": "BED",
-      "shown": 6.17,
-      "spoken": 6.14
+      "shown": 5.17,
+      "spoken": 5.14
     },
     {
       "beat": "face",
       "text": "FACE",
-      "shown": 9.17,
-      "spoken": 9.1
+      "shown": 7.08,
+      "spoken": 7.0
     },
     {
       "beat": "face",
       "text": "EYES",
-      "shown": 9.83,
-      "spoken": 9.8
+      "shown": 7.75,
+      "spoken": 7.71
     },
     {
       "beat": "face",
       "text": "GRIN",
-      "shown": 10.25,
-      "spoken": 10.17
+      "shown": 8.08,
+      "spoken": 8.08
     },
     {
       "beat": "stem",
       "text": "STEM",
-      "shown": 13.17,
-      "spoken": 13.12
+      "shown": 10.17,
+      "spoken": 10.1
     },
     {
       "beat": "stem",
       "text": "GREEN",
-      "shown": 13.92,
-      "spoken": 13.85
+      "shown": 10.83,
+      "spoken": 10.83
     },
     {
       "beat": "stem",
       "text": "POPS",
-      "shown": 14.25,
-      "spoken": 14.22
+      "shown": 11.25,
+      "spoken": 11.21
     },
     {
       "beat": "glow",
       "text": "LIGHT",
-      "shown": 17.25,
-      "spoken": 17.2
+      "shown": 13.17,
+      "spoken": 13.14
     },
     {
       "beat": "glow",
       "text": "GLOWS",
-      "shown": 18.25,
-      "spoken": 18.18
+      "shown": 14.17,
+      "spoken": 14.12
     },
     {
       "beat": "end",
       "text": "DONE",
-      "shown": 21.25,
-      "spoken": 21.18
+      "shown": 16.25,
+      "spoken": 16.23
     },
     {
       "beat": "end",
       "text": "FOLLOW FOR MORE",
-      "shown": 21.92,
-      "spoken": 22.17
+      "shown": 16.92,
+      "spoken": 17.22
     },
     {
       "beat": "end",
       "text": "SPOOKY PRINTS",
-      "shown": 22.5,
-      "spoken": 22.78
+      "shown": 17.5,
+      "spoken": 17.82
     }
   ],
   "text_issues": [],
