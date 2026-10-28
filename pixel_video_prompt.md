@@ -28,7 +28,7 @@ Edit only when the pictures or colours change:
 
 - `shorts/scenes.py` has one draw function and one event function per beat, registered in `SCENES`. The built-in beats are `hook`, `look`, `printing`, `finishing`, `weight`, `verdict`.
 - `shorts/sprites.py` holds the props those beats draw.
-- `shorts/palette.py` holds the 16 colours. Set `theme` in the topic file: `wood-metal` (default) paints planks and rivets, `tpu-abs` paints orange rubber and blue plastic. There is no `background.py`.
+- `shorts/palette.py` holds the 16 colours. Set `theme` in the topic file: `wood-metal` (default) paints planks and rivets, `tpu-abs` paints orange rubber and blue plastic, `halloween` paints a night sky. There is no `background.py`.
 - Voice synthesis lives in `shorts/timeline.py`. There is no `tts.py` and no offline ffmpeg voice. If edge-tts fails, say so and stop.
 - Frame encoding lives in `render.py`. There is no `frames.py`.
 
@@ -69,7 +69,7 @@ python3 render.py --config shorts/topics/<name>.json
 
 - Code-only. No filming and no AI image or video generation. It must look hand-made.
 - Draw every frame on a 108x192 canvas with Pillow, a palette of 14-16 colours, then upscale exactly 10x with NEAREST to 1080x1920. No smoothing. Bitmap font at integer scales only.
-- Output: 1080x1920, 30 fps, H.264 yuv420p, AAC 48 kHz stereo, 24-27 s.
+- Output: 1080x1920, 30 fps, H.264 yuv420p, AAC 48 kHz stereo, 24-27 s. A topic can set `target_duration`, `min_duration`, and `max_duration` when its lines are shorter; the default check stays 24-27 s.
 - 12 fps feel: hold each pose 2 or 3 frames. Small screen shake on impacts, sparkle pixels, sprite loops of 2-4 poses. Round cards slide in with a bell where that fits the format.
 - TikTok safe zones: no text in the top 12% (y<230), the bottom 20% (y>1536), or the right button strip (x>900, y 800-1500).
 - Voice: edge-tts `en-US-AndrewMultilingualNeural`, rate `+20%`, with WordBoundary timings. Build the timeline from the audio so scenes and icons follow the spoken words. Word-by-word captions near y=1450, current word in yellow.

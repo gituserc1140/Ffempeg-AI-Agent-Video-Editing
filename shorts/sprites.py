@@ -386,3 +386,88 @@ def shell(cv: Canvas, cx: int, cy: int) -> None:
     cv.box(cx - 9, cy - 8, cx + 8, cy + 7, fill=P.NAVY)
     cv.rect(cx - 7, cy - 6, cx + 6, cy + 5, fill=m["light"])
     cv.line([(cx - 7, cy - 6), (cx + 6, cy - 6)], P.WHITE)
+
+
+def bat(cv: Canvas, cx: int, cy: int, pose: int) -> None:
+    wing = 5 if pose % 2 == 0 else 2
+    cy += pose % 2
+    cv.line([(cx - 1, cy), (cx - wing, cy - wing)], P.NAVY)
+    cv.line([(cx + 1, cy), (cx + wing, cy - wing)], P.NAVY)
+    cv.pts([(cx - 1, cy), (cx, cy), (cx + 1, cy), (cx, cy + 1)], P.NAVY)
+    cv.px(cx - 1, cy, P.RED)
+
+
+def night_bits(cv: Canvas, pose: int) -> None:
+    """Bats and blinking stars, so a quiet beat still moves."""
+    stars = ((6, 50), (18, 72), (100, 46), (92, 68), (10, 100), (98, 96))
+    for i, (x, y) in enumerate(stars):
+        if (pose + i) % 3 != 0:
+            cv.px(x, y, P.WHITE if i % 2 == 0 else P.CREAM)
+    bat(cv, 10 + (pose % 8), 84, pose)
+    bat(cv, 96 - (pose % 6), 76, pose + 1)
+
+
+def workshop_bed(cv: Canvas, y: int = 122) -> None:
+    cv.box(14, y, 93, y + 5, fill=P.STEEL0, outline=P.NAVY)
+    cv.line([(15, y), (92, y)], P.STEEL2)
+    cv.line([(15, y + 1), (92, y + 1)], P.SHINE)
+
+
+def jack_o_lantern(
+    cv: Canvas,
+    cx: int,
+    base: int,
+    rows: int,
+    eyes: bool = False,
+    grin: bool = False,
+    stem: bool = False,
+    glow: bool = False,
+    pose: int = 0,
+) -> None:
+    """A pumpkin built from horizontal print layers, bottom up."""
+    rows = max(0, min(34, int(rows)))
+    for i in range(rows):
+        y = base - i
+        ny = (i - 16.5) / 17.0
+        half = max(2, int(round(18 * math.sqrt(max(0.0, 1.0 - ny * ny)))))
+        col = P.WOOD2 if (i // 2) % 2 == 0 else P.WOOD1
+        cv.line([(cx - half, y), (cx + half, y)], col)
+        cv.px(cx - half, y, P.NAVY)
+        cv.px(cx + half, y, P.NAVY)
+        rib = max(2, half // 2)
+        cv.px(cx - rib, y, P.WOOD0)
+        cv.px(cx + rib, y, P.WOOD0)
+        if glow and 6 < i < 28 and half > 5:
+            hot = P.YELLOW if pose % 2 == 0 else P.AMBER
+            cv.line([(cx - half + 4, y), (cx + half - 4, y)], hot)
+    if eyes and rows > 22:
+        lit = P.YELLOW if glow else P.NAVY
+        _pumpkin_eye(cv, cx - 8, base - 24, lit)
+        _pumpkin_eye(cv, cx + 8, base - 24, lit)
+    if grin and rows > 14:
+        lit = P.YELLOW if glow else P.NAVY
+        _pumpkin_grin(cv, cx, base - 12, lit)
+    if stem and rows >= 34:
+        top = base - 33
+        cv.rect(cx - 2, top - 8, cx + 1, top, fill=P.GREEN)
+        cv.px(cx - 2, top - 7, P.NAVY)
+        cv.rect(cx + 1, top - 6, cx + 8, top - 4, fill=P.GREEN)
+        cv.px(cx + 5, top - 7, P.STAIN)
+
+
+def _pumpkin_eye(cv: Canvas, cx: int, cy: int, color: int) -> None:
+    cv.poly([(cx, cy - 4), (cx + 4, cy + 2), (cx - 4, cy + 2)], fill=color, outline=P.NAVY)
+
+
+def _pumpkin_grin(cv: Canvas, cx: int, cy: int, color: int) -> None:
+    cv.poly([(cx - 10, cy - 2), (cx + 10, cy - 2), (cx + 6, cy + 3), (cx - 6, cy + 3)], fill=color, outline=P.NAVY)
+    for x in (cx - 6, cx, cx + 6):
+        cv.line([(x, cy - 2), (x, cy + 2)], P.NAVY)
+
+
+def printing_nozzle(cv: Canvas, cx: int, base: int, rows: int, pose: int) -> None:
+    top = base - max(rows, 0)
+    nx = cx + int(round(math.sin(pose / 2.0) * 14))
+    tip_x, tip_y = nozzle(cv, nx, max(36, top - 20), "pumpkin", pose, hardened=True)
+    if rows < 34 and tip_y < top:
+        strand(cv, tip_x, tip_y, top, "pumpkin")

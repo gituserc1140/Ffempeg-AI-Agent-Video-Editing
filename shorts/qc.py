@@ -104,7 +104,7 @@ def dead_air(changes: list[tuple[float, int]], min_pixels: int = 12, seconds: fl
     return issues
 
 
-def ffprobe(path: Path) -> dict:
+def ffprobe(path: Path, min_duration: float = 24.0, max_duration: float = 27.0) -> dict:
     out = subprocess.run(
         ["ffprobe", "-v", "error", "-show_entries",
          "stream=codec_type,codec_name,profile,width,height,pix_fmt,r_frame_rate,avg_frame_rate,sample_rate,channels,duration:format=duration,size,bit_rate",
@@ -120,7 +120,7 @@ def ffprobe(path: Path) -> dict:
         "30 fps": v["r_frame_rate"] == "30/1" and v["avg_frame_rate"] == "30/1",
         "h264 yuv420p": v["codec_name"] == "h264" and v["pix_fmt"] == "yuv420p",
         "aac 48 kHz stereo": a["codec_name"] == "aac" and a["sample_rate"] == "48000" and a["channels"] == 2,
-        "duration 24-27 s": 24.0 <= dur <= 27.0,
+        f"duration {min_duration:g}-{max_duration:g} s": min_duration <= dur <= max_duration,
     }
     return {"video": v, "audio": a, "format": data["format"], "checks": checks}
 

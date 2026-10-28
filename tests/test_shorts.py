@@ -62,6 +62,20 @@ class PixelTests(unittest.TestCase):
         self.assertEqual([tuple(rgb) for rgb in P.COLORS], original)
         self.assertEqual(P.THEME, "wood-metal")
 
+    def test_halloween_theme_is_a_night_sky(self) -> None:
+        original = [tuple(rgb) for rgb in P.COLORS]
+        try:
+            P.apply_theme("halloween")
+            self.assertEqual(tuple(P.COLORS[P.WOOD1]), (204, 78, 14))
+            self.assertEqual(tuple(P.COLORS[P.STEEL0]), (46, 50, 62))
+            self.assertEqual(len({tuple(rgb) for rgb in P.COLORS}), 16)
+            sky = np.asarray(build_background(theme="halloween"))
+            self.assertGreater(int((sky[:100] == P.NAVY2).sum()), 8000)
+            self.assertGreater(int((sky == P.CREAM).sum()), 20)
+        finally:
+            P.apply_theme("wood-metal")
+        self.assertEqual([tuple(rgb) for rgb in P.COLORS], original)
+
     def test_poses_hold_two_or_three_frames(self) -> None:
         holds, last, run = [], 0, 0
         for f in range(60):
@@ -108,6 +122,7 @@ class AudioTests(unittest.TestCase):
     def test_music_and_effects_are_finite(self) -> None:
         m = audio.music(2.0)
         self.assertEqual(m.shape, (96000, 2))
+        self.assertEqual(len(audio.music(18.9)), int(round(18.9 * audio.SR)))
         self.assertTrue(np.isfinite(m).all())
         for name, make in audio.SFX_BANK.items():
             s = make()

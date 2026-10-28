@@ -1,0 +1,376 @@
+{
+  "video": "output/halloween-pumpkin.mp4",
+  "contact_sheet": "output/halloween-pumpkin-contact.png",
+  "contact_sheet_tiles": 26,
+  "duration_s": 18.9,
+  "ffprobe_checks": {
+    "resolution 1080x1920": true,
+    "30 fps": true,
+    "h264 yuv420p": true,
+    "aac 48 kHz stereo": true,
+    "duration 18-27 s": true
+  },
+  "loudness": {
+    "integrated_lufs": -14.1,
+    "true_peak_dbfs": -1.1,
+    "lra_lu": 2.6
+  },
+  "loudness_ok": true,
+  "word_count": 37,
+  "timeline": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "end": 1.97,
+      "voice": [
+        0.05,
+        1.77
+      ],
+      "line": "Printing a pumpkin. Happy Halloween."
+    },
+    {
+      "id": "layers",
+      "start": 1.97,
+      "end": 5.48,
+      "voice": [
+        2.22,
+        4.28
+      ],
+      "line": "Layers. Orange walls stack up on the bed."
+    },
+    {
+      "id": "face",
+      "start": 5.48,
+      "end": 8.65,
+      "voice": [
+        5.73,
+        7.6
+      ],
+      "line": "Face. Eyes and a grin print in."
+    },
+    {
+      "id": "stem",
+      "start": 8.65,
+      "end": 11.7,
+      "voice": [
+        8.9,
+        10.54
+      ],
+      "line": "Stem. A green top pops on."
+    },
+    {
+      "id": "glow",
+      "start": 11.7,
+      "end": 14.89,
+      "voice": [
+        11.95,
+        13.87
+      ],
+      "line": "Light. The pumpkin glows inside."
+    },
+    {
+      "id": "end",
+      "start": 14.89,
+      "end": 18.9,
+      "voice": [
+        15.04,
+        17.2
+      ],
+      "line": "Done. Follow for more spooky prints!"
+    }
+  ],
+  "words": [
+    {
+      "word": "PRINTING",
+      "t0": 0.133,
+      "t1": 0.29
+    },
+    {
+      "word": "A",
+      "t0": 0.29,
+      "t1": 0.331
+    },
+    {
+      "word": "PUMPKIN",
+      "t0": 0.331,
+      "t1": 0.675
+    },
+    {
+      "word": "HAPPY",
+      "t0": 1.029,
+      "t1": 1.258
+    },
+    {
+      "word": "HALLOWEEN",
+      "t0": 1.269,
+      "t1": 1.769
+    },
+    {
+      "word": "LAYERS",
+      "t0": 2.302,
+      "t1": 2.76
+    },
+    {
+      "word": "ORANGE",
+      "t0": 3.083,
+      "t1": 3.312
+    },
+    {
+      "word": "WALLS",
+      "t0": 3.312,
+      "t1": 3.562
+    },
+    {
+      "word": "STACK",
+      "t0": 3.573,
+      "t1": 3.812
+    },
+    {
+      "word": "UP",
+      "t0": 3.812,
+      "t1": 3.896
+    },
+    {
+      "word": "ON",
+      "t0": 3.906,
+      "t1": 3.979
+    },
+    {
+      "word": "THE",
+      "t0": 3.979,
+      "t1": 4.021
+    },
+    {
+      "word": "BED",
+      "t0": 4.021,
+      "t1": 4.281
+    },
+    {
+      "word": "FACE",
+      "t0": 5.889,
+      "t1": 6.264
+    },
+    {
+      "word": "EYES",
+      "t0": 6.598,
+      "t1": 6.868
+    },
+    {
+      "word": "AND",
+      "t0": 6.868,
+      "t1": 6.91
+    },
+    {
+      "word": "A",
+      "t0": 6.91,
+      "t1": 6.952
+    },
+    {
+      "word": "GRIN",
+      "t0": 6.962,
+      "t1": 7.223
+    },
+    {
+      "word": "PRINT",
+      "t0": 7.223,
+      "t1": 7.431
+    },
+    {
+      "word": "IN",
+      "t0": 7.431,
+      "t1": 7.598
+    },
+    {
+      "word": "STEM",
+      "t0": 8.991,
+      "t1": 9.345
+    },
+    {
+      "word": "A",
+      "t0": 9.678,
+      "t1": 9.72
+    },
+    {
+      "word": "GREEN",
+      "t0": 9.72,
+      "t1": 9.887
+    },
+    {
+      "word": "TOP",
+      "t0": 9.887,
+      "t1": 10.095
+    },
+    {
+      "word": "POPS",
+      "t0": 10.095,
+      "t1": 10.356
+    },
+    {
+      "word": "ON",
+      "t0": 10.356,
+      "t1": 10.543
+    },
+    {
+      "word": "LIGHT",
+      "t0": 12.036,
+      "t1": 12.276
+    },
+    {
+      "word": "THE",
+      "t0": 12.62,
+      "t1": 12.682
+    },
+    {
+      "word": "PUMPKIN",
+      "t0": 12.692,
+      "t1": 13.015
+    },
+    {
+      "word": "GLOWS",
+      "t0": 13.015,
+      "t1": 13.39
+    },
+    {
+      "word": "INSIDE",
+      "t0": 13.39,
+      "t1": 13.87
+    },
+    {
+      "word": "DONE",
+      "t0": 15.126,
+      "t1": 15.387
+    },
+    {
+      "word": "FOLLOW",
+      "t0": 15.782,
+      "t1": 16.012
+    },
+    {
+      "word": "FOR",
+      "t0": 16.012,
+      "t1": 16.116
+    },
+    {
+      "word": "MORE",
+      "t0": 16.116,
+      "t1": 16.355
+    },
+    {
+      "word": "SPOOKY",
+      "t0": 16.366,
+      "t1": 16.72
+    },
+    {
+      "word": "PRINTS!",
+      "t0": 16.72,
+      "t1": 17.199
+    }
+  ],
+  "on_screen_text": [
+    {
+      "beat": "hook",
+      "text": "PUMPKIN",
+      "shown": 0.33,
+      "spoken": 0.33
+    },
+    {
+      "beat": "hook",
+      "text": "HALLOWEEN",
+      "shown": 1.33,
+      "spoken": 1.27
+    },
+    {
+      "beat": "layers",
+      "text": "LAYERS",
+      "shown": 2.33,
+      "spoken": 2.3
+    },
+    {
+      "beat": "layers",
+      "text": "ORANGE",
+      "shown": 3.08,
+      "spoken": 3.08
+    },
+    {
+      "beat": "layers",
+      "text": "STACK",
+      "shown": 3.58,
+      "spoken": 3.57
+    },
+    {
+      "beat": "layers",
+      "text": "BED",
+      "shown": 4.08,
+      "spoken": 4.02
+    },
+    {
+      "beat": "face",
+      "text": "FACE",
+      "shown": 5.92,
+      "spoken": 5.89
+    },
+    {
+      "beat": "face",
+      "text": "EYES",
+      "shown": 6.67,
+      "spoken": 6.6
+    },
+    {
+      "beat": "face",
+      "text": "GRIN",
+      "shown": 7.0,
+      "spoken": 6.96
+    },
+    {
+      "beat": "stem",
+      "text": "STEM",
+      "shown": 9.0,
+      "spoken": 8.99
+    },
+    {
+      "beat": "stem",
+      "text": "GREEN",
+      "shown": 9.75,
+      "spoken": 9.72
+    },
+    {
+      "beat": "stem",
+      "text": "POPS",
+      "shown": 10.17,
+      "spoken": 10.1
+    },
+    {
+      "beat": "glow",
+      "text": "LIGHT",
+      "shown": 12.08,
+      "spoken": 12.04
+    },
+    {
+      "beat": "glow",
+      "text": "GLOWS",
+      "shown": 13.08,
+      "spoken": 13.02
+    },
+    {
+      "beat": "end",
+      "text": "DONE",
+      "shown": 15.17,
+      "spoken": 15.13
+    },
+    {
+      "beat": "end",
+      "text": "FOLLOW FOR MORE",
+      "shown": 15.83,
+      "spoken": 16.12
+    },
+    {
+      "beat": "end",
+      "text": "SPOOKY PRINTS",
+      "shown": 16.42,
+      "spoken": 16.72
+    }
+  ],
+  "text_issues": [],
+  "voiceover_issues": [],
+  "dead_air": []
+}

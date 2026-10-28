@@ -169,9 +169,11 @@ def box_violations(box: tuple[int, int, int, int]) -> list[str]:
 
 
 def build_background(seed: int = 7, theme: str = "wood-metal") -> Image.Image:
-    """Static split background. wood-metal is planks and rivets. tpu-abs is rubber and molded plastic."""
+    """Static background. wood-metal is planks and rivets. tpu-abs is rubber and plastic. halloween is a night sky."""
     if theme == "tpu-abs":
         return _rubber_background(seed)
+    if theme == "halloween":
+        return _night_background(seed)
     rng = np.random.default_rng(seed)
     a = np.zeros((H, W), np.uint8)
     seam = np.array([split_x(y) for y in range(H)])
@@ -342,8 +344,30 @@ def particles(
             cv.px(px, py, colors[i % len(colors)])
 
 
+def _night_background(seed: int = 7) -> Image.Image:
+    """Purple night sky, a moon, and a printer bed. Stars stay off the centre title rows."""
+    rng = np.random.default_rng(seed)
+    a = np.full((H, W), P.NAVY2, np.uint8)
+    a[128:, :] = P.NAVY
+    for _ in range(48):
+        x = int(rng.integers(0, W))
+        y = int(rng.integers(0, 118))
+        if 24 <= y <= 46 and 24 <= x <= 84:
+            continue
+        a[y, x] = P.CREAM if rng.random() < 0.65 else P.WHITE
+    img = Image.fromarray(a, mode="P")
+    img.putpalette(P.FLAT)
+    d = ImageDraw.Draw(img)
+    d.ellipse([84, 4, 102, 22], fill=P.CREAM, outline=P.NAVY)
+    d.ellipse([90, 8, 95, 13], fill=P.NAVY2)
+    d.point((88, 16), fill=P.NAVY2)
+    return img
+
+
 def shine_streak(cv: Canvas, t: float, period: float = 3.0, sweep: float = 0.6) -> None:
     """Diagonal shine that sweeps across the metal half every `period` seconds."""
+    if P.THEME == "halloween":
+        return
     u = (t % period) / sweep
     if u > 1:
         return
