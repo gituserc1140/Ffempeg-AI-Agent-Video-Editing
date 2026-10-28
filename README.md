@@ -35,6 +35,10 @@ In chat, once the local server is enabled:
 
 > Probe https://samples.ffmpeg-api.com/BigBuckBunny_640x360.m4v and make a 3-second GIF from the first scene.
 
+## Pixel-art versus shorts
+
+`python3 render.py` builds a 26 s vertical pixel-art short, "Wood PLA vs Metal PLA", entirely from code. The voice is edge-tts; the chiptune and sound effects come from numpy. It writes `output/wood-vs-metal-pla.mp4`, a contact sheet, and a QC report. See [`shorts/README.md`](shorts/README.md) for how it works and how to swap the topic.
+
 ## Local tools
 
 `check_ffmpeg`, `probe_media`, `make_gif`, `trim_media`, `extract_audio`, `thumbnail`, `compress_media`.
@@ -51,4 +55,4 @@ python3 -m unittest discover -s tests -v
 - ChatGPT does not. RunwayML and Canva are the alternatives for poster videos.
 - VS Code has `.vscode/mcp.json`. GitHub Codespaces with Codex is still untried.
 - Social posting goes through Buffer.
-- New pixel-art shorts start from [`pixel_video_prompt.md`](pixel_video_prompt.md).
+- New pixel-art shorts start from [`pixel_video_prompt.md`](pixel_video_prompt.md) and [`shorts/topics/template.json`](shorts/topics/template.json).

@@ -1,0 +1,581 @@
+{
+  "video": "output/wood-vs-metal-pla.mp4",
+  "contact_sheet": "output/contact_sheet.png",
+  "contact_sheet_tiles": 35,
+  "duration_s": 26.066667,
+  "ffprobe_checks": {
+    "resolution 1080x1920": true,
+    "30 fps": true,
+    "h264 yuv420p": true,
+    "aac 48 kHz stereo": true,
+    "duration 24-27 s": true
+  },
+  "loudness": {
+    "integrated_lufs": -14.2,
+    "true_peak_dbfs": -1.2,
+    "lra_lu": 2.8
+  },
+  "loudness_ok": true,
+  "word_count": 60,
+  "timeline": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "end": 3.37,
+      "voice": [
+        0.25,
+        3.17
+      ],
+      "line": "Wood PLA versus metal-fill PLA. Who wins?"
+    },
+    {
+      "id": "look",
+      "start": 3.37,
+      "end": 7.47,
+      "voice": [
+        3.62,
+        7.27
+      ],
+      "line": "Looks. Wood is warm and matte, metal is shiny and cool."
+    },
+    {
+      "id": "printing",
+      "start": 7.47,
+      "end": 11.5,
+      "voice": [
+        7.72,
+        11.3
+      ],
+      "line": "Printing. Wood can clog. Metal wears nozzles, so go hardened."
+    },
+    {
+      "id": "finishing",
+      "start": 11.5,
+      "end": 15.46,
+      "voice": [
+        11.75,
+        15.26
+      ],
+      "line": "Finishing. Wood sands and stains. Metal polishes to a shine."
+    },
+    {
+      "id": "weight",
+      "start": 15.46,
+      "end": 19.65,
+      "voice": [
+        15.71,
+        19.45
+      ],
+      "line": "Weight. Metal's heavy, wood's light. Wood decor, metal trophies."
+    },
+    {
+      "id": "verdict",
+      "start": 19.65,
+      "end": 26.07,
+      "voice": [
+        19.8,
+        24.88
+      ],
+      "line": "It depends: warmth, wood. Weight and shine, metal. Follow for more filament battles!"
+    }
+  ],
+  "words": [
+    {
+      "word": "WOOD",
+      "t0": 0.323,
+      "t1": 0.531
+    },
+    {
+      "word": "PLA",
+      "t0": 0.542,
+      "t1": 0.792
+    },
+    {
+      "word": "VERSUS",
+      "t0": 0.792,
+      "t1": 1.26
+    },
+    {
+      "word": "METAL-FILL",
+      "t0": 1.26,
+      "t1": 1.844
+    },
+    {
+      "word": "PLA",
+      "t0": 1.969,
+      "t1": 2.323
+    },
+    {
+      "word": "WHO",
+      "t0": 2.656,
+      "t1": 2.729
+    },
+    {
+      "word": "WINS?",
+      "t0": 2.729,
+      "t1": 3.167
+    },
+    {
+      "word": "LOOKS",
+      "t0": 3.7,
+      "t1": 4.012
+    },
+    {
+      "word": "WOOD",
+      "t0": 4.325,
+      "t1": 4.419
+    },
+    {
+      "word": "IS",
+      "t0": 4.429,
+      "t1": 4.544
+    },
+    {
+      "word": "WARM",
+      "t0": 4.554,
+      "t1": 4.898
+    },
+    {
+      "word": "AND",
+      "t0": 4.898,
+      "t1": 4.992
+    },
+    {
+      "word": "MATTE,",
+      "t0": 4.992,
+      "t1": 5.283
+    },
+    {
+      "word": "METAL",
+      "t0": 5.648,
+      "t1": 5.992
+    },
+    {
+      "word": "IS",
+      "t0": 6.002,
+      "t1": 6.106
+    },
+    {
+      "word": "SHINY",
+      "t0": 6.106,
+      "t1": 6.658
+    },
+    {
+      "word": "AND",
+      "t0": 6.773,
+      "t1": 6.898
+    },
+    {
+      "word": "COOL",
+      "t0": 6.898,
+      "t1": 7.273
+    },
+    {
+      "word": "PRINTING",
+      "t0": 7.806,
+      "t1": 8.108
+    },
+    {
+      "word": "WOOD",
+      "t0": 8.442,
+      "t1": 8.525
+    },
+    {
+      "word": "CAN",
+      "t0": 8.525,
+      "t1": 8.608
+    },
+    {
+      "word": "CLOG",
+      "t0": 8.608,
+      "t1": 8.952
+    },
+    {
+      "word": "METAL",
+      "t0": 9.285,
+      "t1": 9.525
+    },
+    {
+      "word": "WEARS",
+      "t0": 9.535,
+      "t1": 9.702
+    },
+    {
+      "word": "NOZZLES,",
+      "t0": 9.702,
+      "t1": 10.254
+    },
+    {
+      "word": "SO",
+      "t0": 10.556,
+      "t1": 10.692
+    },
+    {
+      "word": "GO",
+      "t0": 10.702,
+      "t1": 10.879
+    },
+    {
+      "word": "HARDENED",
+      "t0": 10.89,
+      "t1": 11.296
+    },
+    {
+      "word": "FINISHING",
+      "t0": 11.902,
+      "t1": 12.298
+    },
+    {
+      "word": "WOOD",
+      "t0": 12.621,
+      "t1": 12.715
+    },
+    {
+      "word": "SANDS",
+      "t0": 12.715,
+      "t1": 13.11
+    },
+    {
+      "word": "AND",
+      "t0": 13.11,
+      "t1": 13.183
+    },
+    {
+      "word": "STAINS",
+      "t0": 13.183,
+      "t1": 13.725
+    },
+    {
+      "word": "METAL",
+      "t0": 14.058,
+      "t1": 14.225
+    },
+    {
+      "word": "POLISHES",
+      "t0": 14.225,
+      "t1": 14.715
+    },
+    {
+      "word": "TO",
+      "t0": 14.725,
+      "t1": 14.84
+    },
+    {
+      "word": "A",
+      "t0": 14.84,
+      "t1": 14.871
+    },
+    {
+      "word": "SHINE",
+      "t0": 14.881,
+      "t1": 15.256
+    },
+    {
+      "word": "WEIGHT",
+      "t0": 15.79,
+      "t1": 16.05
+    },
+    {
+      "word": "METAL'S",
+      "t0": 16.383,
+      "t1": 16.612
+    },
+    {
+      "word": "HEAVY,",
+      "t0": 16.612,
+      "t1": 16.935
+    },
+    {
+      "word": "WOOD'S",
+      "t0": 17.175,
+      "t1": 17.352
+    },
+    {
+      "word": "LIGHT",
+      "t0": 17.362,
+      "t1": 17.737
+    },
+    {
+      "word": "WOOD",
+      "t0": 18.06,
+      "t1": 18.144
+    },
+    {
+      "word": "DECOR,",
+      "t0": 18.154,
+      "t1": 18.685
+    },
+    {
+      "word": "METAL",
+      "t0": 18.696,
+      "t1": 18.852
+    },
+    {
+      "word": "TROPHIES",
+      "t0": 18.862,
+      "t1": 19.446
+    },
+    {
+      "word": "IT",
+      "t0": 19.879,
+      "t1": 19.942
+    },
+    {
+      "word": "DEPENDS",
+      "t0": 19.952,
+      "t1": 20.39
+    },
+    {
+      "word": "WARMTH,",
+      "t0": 20.765,
+      "t1": 21.129
+    },
+    {
+      "word": "WOOD",
+      "t0": 21.129,
+      "t1": 21.369
+    },
+    {
+      "word": "WEIGHT",
+      "t0": 21.712,
+      "t1": 22.035
+    },
+    {
+      "word": "AND",
+      "t0": 22.119,
+      "t1": 22.192
+    },
+    {
+      "word": "SHINE,",
+      "t0": 22.192,
+      "t1": 22.567
+    },
+    {
+      "word": "METAL",
+      "t0": 22.567,
+      "t1": 22.827
+    },
+    {
+      "word": "FOLLOW",
+      "t0": 23.192,
+      "t1": 23.442
+    },
+    {
+      "word": "FOR",
+      "t0": 23.452,
+      "t1": 23.587
+    },
+    {
+      "word": "MORE",
+      "t0": 23.587,
+      "t1": 23.89
+    },
+    {
+      "word": "FILAMENT",
+      "t0": 23.9,
+      "t1": 24.358
+    },
+    {
+      "word": "BATTLES!",
+      "t0": 24.358,
+      "t1": 24.879
+    }
+  ],
+  "on_screen_text": [
+    {
+      "beat": "hook",
+      "text": "WOOD PLA",
+      "shown": 0.33,
+      "spoken": 0.54
+    },
+    {
+      "beat": "hook",
+      "text": "VS",
+      "shown": 0.83,
+      "spoken": 0.79
+    },
+    {
+      "beat": "hook",
+      "text": "METAL PLA",
+      "shown": 1.33,
+      "spoken": 1.26
+    },
+    {
+      "beat": "look",
+      "text": "LOOKS",
+      "shown": 3.75,
+      "spoken": 3.7
+    },
+    {
+      "beat": "look",
+      "text": "WARM",
+      "shown": 4.58,
+      "spoken": 4.55
+    },
+    {
+      "beat": "look",
+      "text": "MATTE",
+      "shown": 5.0,
+      "spoken": 4.99
+    },
+    {
+      "beat": "look",
+      "text": "SHINY",
+      "shown": 6.17,
+      "spoken": 6.11
+    },
+    {
+      "beat": "look",
+      "text": "COOL",
+      "shown": 6.92,
+      "spoken": 6.9
+    },
+    {
+      "beat": "printing",
+      "text": "PRINTING",
+      "shown": 7.83,
+      "spoken": 7.81
+    },
+    {
+      "beat": "printing",
+      "text": "CLOG!",
+      "shown": 8.67,
+      "spoken": 8.61
+    },
+    {
+      "beat": "printing",
+      "text": "WEARS",
+      "shown": 9.58,
+      "spoken": 9.54
+    },
+    {
+      "beat": "printing",
+      "text": "HARDENED",
+      "shown": 10.92,
+      "spoken": 10.89
+    },
+    {
+      "beat": "finishing",
+      "text": "FINISHING",
+      "shown": 11.92,
+      "spoken": 11.9
+    },
+    {
+      "beat": "finishing",
+      "text": "SANDS",
+      "shown": 12.75,
+      "spoken": 12.71
+    },
+    {
+      "beat": "finishing",
+      "text": "STAINS",
+      "shown": 13.25,
+      "spoken": 13.18
+    },
+    {
+      "beat": "finishing",
+      "text": "POLISHES",
+      "shown": 14.25,
+      "spoken": 14.22
+    },
+    {
+      "beat": "finishing",
+      "text": "SHINE",
+      "shown": 14.92,
+      "spoken": 14.88
+    },
+    {
+      "beat": "weight",
+      "text": "WEIGHT",
+      "shown": 15.83,
+      "spoken": 15.79
+    },
+    {
+      "beat": "weight",
+      "text": "HEAVY",
+      "shown": 16.67,
+      "spoken": 16.61
+    },
+    {
+      "beat": "weight",
+      "text": "LIGHT",
+      "shown": 17.42,
+      "spoken": 17.36
+    },
+    {
+      "beat": "weight",
+      "text": "DECOR",
+      "shown": 18.17,
+      "spoken": 18.15
+    },
+    {
+      "beat": "weight",
+      "text": "TROPHIES",
+      "shown": 18.92,
+      "spoken": 18.86
+    },
+    {
+      "beat": "verdict",
+      "text": "IT",
+      "shown": 19.92,
+      "spoken": 19.88
+    },
+    {
+      "beat": "verdict",
+      "text": "DEPENDS",
+      "shown": 20.0,
+      "spoken": 19.95
+    },
+    {
+      "beat": "verdict",
+      "text": "WARMTH?",
+      "shown": 20.83,
+      "spoken": 20.76
+    },
+    {
+      "beat": "verdict",
+      "text": "WOOD",
+      "shown": 21.17,
+      "spoken": 21.13
+    },
+    {
+      "beat": "verdict",
+      "text": "WEIGHT &",
+      "shown": 21.75,
+      "spoken": 22.12
+    },
+    {
+      "beat": "verdict",
+      "text": "SHINE?",
+      "shown": 22.25,
+      "spoken": 22.19
+    },
+    {
+      "beat": "verdict",
+      "text": "METAL",
+      "shown": 22.58,
+      "spoken": 22.57
+    },
+    {
+      "beat": "verdict",
+      "text": "IT DEPENDS",
+      "shown": 23.25,
+      "spoken": 19.95
+    },
+    {
+      "beat": "verdict",
+      "text": "FOLLOW FOR MORE",
+      "shown": 23.25,
+      "spoken": 23.59
+    },
+    {
+      "beat": "verdict",
+      "text": "FILAMENT BATTLES",
+      "shown": 23.92,
+      "spoken": 24.36
+    }
+  ],
+  "text_issues": [],
+  "voiceover_issues": [],
+  "dead_air": []
+}
