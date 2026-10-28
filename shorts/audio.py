@@ -103,7 +103,7 @@ def tone(freq: float, dur: float, wave: str, duty: float = 0.5, decay: float = 0
 
 
 def music(duration: float, bpm: float = 120.0, end_hit: float | None = None) -> np.ndarray:
-    buf = np.zeros((int(duration * SR), 2))
+    buf = np.zeros((int(round(duration * SR)), 2))
     step = 60.0 / bpm / 4
     bar = step * 16
     for b in range(int(math.ceil(duration / bar)) + 1):

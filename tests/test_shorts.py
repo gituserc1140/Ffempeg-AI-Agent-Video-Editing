@@ -122,6 +122,7 @@ class AudioTests(unittest.TestCase):
     def test_music_and_effects_are_finite(self) -> None:
         m = audio.music(2.0)
         self.assertEqual(m.shape, (96000, 2))
+        self.assertEqual(len(audio.music(18.9)), int(round(18.9 * audio.SR)))
         self.assertTrue(np.isfinite(m).all())
         for name, make in audio.SFX_BANK.items():
             s = make()
