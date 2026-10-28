@@ -607,7 +607,7 @@ def pumpkin_hook_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
 
 
 def pumpkin_layers(cv: Canvas, t: float, b: Beat) -> None:
-    rows = _rows_since(t, b.cue("orange"), full=34, seconds=1.4)
+    rows = _rows_since(t, b.cue("topic"), full=34, seconds=1.55)
     pose = _pumpkin_world(cv, t, rows, nozzle=True)
     cv.text(b.label("topic"), 54, 28, color=P.YELLOW) if pop_dy(t, b.cue("topic")) is not None else None
     for key, color in (("bed", P.SHINE), ("stack", P.YELLOW), ("orange", P.AMBER)):
@@ -647,7 +647,7 @@ def pumpkin_face_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
 
 
 def pumpkin_stem(cv: Canvas, t: float, b: Beat) -> None:
-    stem = t >= b.cue("stem") - 0.01
+    stem = t >= b.cue("topic") - 0.01
     pose = _pumpkin_world(cv, t, 34, eyes=True, grin=True, stem=stem)
     cv.text(b.label("topic"), 54, 28, color=P.GREEN) if pop_dy(t, b.cue("topic")) is not None else None
     label(cv, b, "green", t, 30, 40, color=P.GREEN, bounce=False)
@@ -658,7 +658,7 @@ def pumpkin_stem(cv: Canvas, t: float, b: Beat) -> None:
 
 def pumpkin_stem_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
     return [
-        Sfx(b.cue("stem"), "blip", 0.6),
+        Sfx(b.cue("topic"), "blip", 0.6),
         Sfx(b.cue("green"), "blip_hi", 0.6),
         Sfx(b.cue("pops"), "impact", 0.9),
     ], [(b.cue("pops"), 1)]

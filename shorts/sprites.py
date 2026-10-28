@@ -403,8 +403,8 @@ def night_bits(cv: Canvas, pose: int) -> None:
     for i, (x, y) in enumerate(stars):
         if (pose + i) % 3 != 0:
             cv.px(x, y, P.WHITE if i % 2 == 0 else P.CREAM)
-    bat(cv, 14 + (pose % 8), 62, pose)
-    bat(cv, 94 - (pose % 7), 54, pose + 1)
+    bat(cv, 10 + (pose % 8), 84, pose)
+    bat(cv, 96 - (pose % 6), 76, pose + 1)
 
 
 def workshop_bed(cv: Canvas, y: int = 122) -> None:
