@@ -2,4 +2,7 @@
 Ffempeg Ai video editing 
 # Considerations 
 
--Can use in Claude - cursor and other apps google mcp ffempeg
+-Works in Claude
+-Doesnt work in chatgpt but runawayml and canva are alternatives 
+-possibly works in cursor 
+-Need to try in vs code via github codespace codex 
