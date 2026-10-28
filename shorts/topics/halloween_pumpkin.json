@@ -4,7 +4,7 @@
   "handle": "@STUDIORK3DPS",
   "voice": "en-US-AndrewMultilingualNeural",
   "rate": "+20%",
-  "target_duration": 20.0,
+  "target_duration": 18.9,
   "min_duration": 18.0,
   "max_duration": 27.0,
   "gap": 0.2,
@@ -15,8 +15,8 @@
     {
       "id": "hook",
       "scene": "pumpkin_hook",
-      "window": 4.0,
-      "lead": 0.25,
+      "window": 0,
+      "lead": 0.05,
       "line": "Printing a pumpkin. Happy Halloween.",
       "cues": {"print": "printing", "pumpkin": "pumpkin", "happy": "happy", "halloween": "halloween"},
       "labels": {"pumpkin": "PUMPKIN", "halloween": "HALLOWEEN"}
