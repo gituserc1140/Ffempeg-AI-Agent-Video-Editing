@@ -569,6 +569,141 @@ def uses_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
     ], [(b.cue("bracket"), 1)]
 
 
+# Halloween pumpkin -------------------------------------------------------
+
+PUMPKIN_X, PUMPKIN_BASE = 54, 121
+
+
+def _rows_since(t: float, t0: float, full: int = 34, seconds: float = 1.2, start: int = 0) -> int:
+    if t < t0:
+        return start
+    u = min(1.0, (t - t0) / seconds)
+    return start + int(round((full - start) * u))
+
+
+def _pumpkin_world(cv: Canvas, t: float, rows: int, eyes=False, grin=False, stem=False, glow=False, nozzle=False) -> int:
+    pose = pose_no(t)
+    S.night_bits(cv, pose)
+    S.workshop_bed(cv)
+    bob = pose % 2 if glow else 0
+    S.jack_o_lantern(cv, PUMPKIN_X, PUMPKIN_BASE - bob, rows, eyes, grin, stem, glow, pose)
+    if nozzle:
+        S.printing_nozzle(cv, PUMPKIN_X, PUMPKIN_BASE, rows, pose)
+    return pose
+
+
+def pumpkin_hook(cv: Canvas, t: float, b: Beat) -> None:
+    pose = _pumpkin_world(cv, t, 0, nozzle=True)
+    if (dy := pop_dy(t, b.cue("pumpkin"))) is not None:
+        cv.text(b.label("pumpkin"), 54, 32 + max(dy, -1), color=P.AMBER, scale=2, kind="title")
+    if (dy := pop_dy(t, b.cue("halloween"))) is not None:
+        cv.text(b.label("halloween"), 54, 52 + max(dy, 0), color=P.YELLOW, kind="title")
+        sparkle(cv, 14, 48, pose, P.YELLOW, size=1)
+        sparkle(cv, 94, 58, pose + 2, P.CREAM, size=1)
+
+
+def pumpkin_hook_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [Sfx(b.cue("pumpkin"), "whoosh", 0.8), Sfx(b.cue("halloween"), "bell", 0.9)], []
+
+
+def pumpkin_layers(cv: Canvas, t: float, b: Beat) -> None:
+    rows = _rows_since(t, b.cue("orange"), full=34, seconds=1.4)
+    pose = _pumpkin_world(cv, t, rows, nozzle=True)
+    cv.text(b.label("topic"), 54, 28, color=P.YELLOW) if pop_dy(t, b.cue("topic")) is not None else None
+    for key, color in (("bed", P.SHINE), ("stack", P.YELLOW), ("orange", P.AMBER)):
+        if pop_dy(t, b.cue(key)) is not None:
+            label(cv, b, key, t, 54, 40, color=color, bounce=False)
+            break
+    if rows and pose % 4 == 0:
+        sparkle(cv, PUMPKIN_X, PUMPKIN_BASE - rows - 2, pose, P.AMBER, size=1)
+
+
+def pumpkin_layers_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [
+        Sfx(b.cue("topic"), "whoosh", 0.6),
+        Sfx(b.cue("orange"), "blip", 0.6),
+        Sfx(b.cue("stack"), "blip_hi", 0.7),
+        Sfx(b.cue("bed"), "clank", 0.7),
+    ], [(b.cue("bed"), 1)]
+
+
+def pumpkin_face(cv: Canvas, t: float, b: Beat) -> None:
+    eyes = t >= b.cue("eyes") - 0.01
+    grin = t >= b.cue("grin") - 0.01
+    pose = _pumpkin_world(cv, t, 34, eyes=eyes, grin=grin, nozzle=not grin or poses_since(t, b.cue("grin")) < 6)
+    cv.text(b.label("topic"), 54, 28, color=P.YELLOW) if pop_dy(t, b.cue("topic")) is not None else None
+    label(cv, b, "eyes", t, 28, 40, color=P.YELLOW, bounce=False)
+    label(cv, b, "grin", t, 80, 40, color=P.AMBER, bounce=False)
+    if grin:
+        sparkle(cv, PUMPKIN_X, PUMPKIN_BASE - 8, pose, P.YELLOW, size=1)
+
+
+def pumpkin_face_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [
+        Sfx(b.cue("topic"), "blip", 0.5),
+        Sfx(b.cue("eyes"), "blip_hi", 0.8),
+        Sfx(b.cue("grin"), "ting", 0.8),
+    ], [(b.cue("grin"), 1)]
+
+
+def pumpkin_stem(cv: Canvas, t: float, b: Beat) -> None:
+    stem = t >= b.cue("stem") - 0.01
+    pose = _pumpkin_world(cv, t, 34, eyes=True, grin=True, stem=stem)
+    cv.text(b.label("topic"), 54, 28, color=P.GREEN) if pop_dy(t, b.cue("topic")) is not None else None
+    label(cv, b, "green", t, 30, 40, color=P.GREEN, bounce=False)
+    label(cv, b, "pops", t, 78, 40, color=P.YELLOW, bounce=False)
+    if stem:
+        particles(cv, t, b.cue("pops"), PUMPKIN_X, PUMPKIN_BASE - 40, 7, (P.GREEN, P.STAIN, P.YELLOW), count=8, speed=28, life=0.4)
+
+
+def pumpkin_stem_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [
+        Sfx(b.cue("stem"), "blip", 0.6),
+        Sfx(b.cue("green"), "blip_hi", 0.6),
+        Sfx(b.cue("pops"), "impact", 0.9),
+    ], [(b.cue("pops"), 1)]
+
+
+def pumpkin_glow(cv: Canvas, t: float, b: Beat) -> None:
+    glow = t >= b.cue("glows") - 0.01
+    pose = _pumpkin_world(cv, t, 34, eyes=True, grin=True, stem=True, glow=glow)
+    cv.text(b.label("topic"), 54, 28, color=P.YELLOW) if pop_dy(t, b.cue("topic")) is not None else None
+    label(cv, b, "glows", t, 54, 40, color=P.AMBER, bounce=False)
+    if glow:
+        sparkle(cv, 34, 96, pose, P.YELLOW)
+        sparkle(cv, 74, 100, pose + 1, P.CREAM)
+        particles(cv, t, b.cue("glows"), PUMPKIN_X, PUMPKIN_BASE - 16, 9, (P.YELLOW, P.AMBER, P.WHITE), count=10, speed=22, life=0.45)
+
+
+def pumpkin_glow_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [Sfx(b.cue("topic"), "blip", 0.5), Sfx(b.cue("glows"), "ting", 1.0)], [(b.cue("glows"), 1)]
+
+
+def pumpkin_end(cv: Canvas, t: float, b: Beat) -> None:
+    pose = _pumpkin_world(cv, t, 34, eyes=True, grin=True, stem=True, glow=True)
+    if t >= b.cue("done") - 0.01:
+        cv.box(6, 24, 101, 76, fill=P.NAVY, outline=P.NAVY2)
+        cv.rect(6, 24, 101, 24, fill=P.AMBER)
+    if (dy := pop_dy(t, b.cue("done"))) is not None:
+        cv.text(b.label("done"), 54, 28 + max(dy, 0), color=P.YELLOW)
+    if pop_dy(t, b.cue("follow")) is not None:
+        cv.text(b.label("follow1"), 54, 40, color=P.CREAM)
+        cv.text(b.cfg["handle"], 54, 64, color=P.YELLOW, kind="handle")
+        sparkle(cv, 16, 34, pose, P.YELLOW, size=1)
+        sparkle(cv, 92, 34, pose + 2, P.CREAM, size=1)
+    if pop_dy(t, b.cue("spooky")) is not None:
+        cv.text(b.label("follow2"), 54, 52, color=P.AMBER)
+
+
+def pumpkin_end_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [
+        Sfx(b.cue("done"), "bell", 1.0),
+        Sfx(b.cue("follow"), "whoosh", 0.6),
+        Sfx(b.cue("spooky"), "ting", 0.8),
+        Sfx(b.cue("prints"), "impact", 0.7),
+    ], [(b.cue("prints"), 1)]
+
+
 SCENES = {
     "hook": (hook, hook_events),
     "look": (look, look_events),
@@ -580,10 +715,27 @@ SCENES = {
     "habits": (habits, habits_events),
     "surface": (surface, surface_events),
     "uses": (uses, uses_events),
+    "pumpkin_hook": (pumpkin_hook, pumpkin_hook_events),
+    "pumpkin_layers": (pumpkin_layers, pumpkin_layers_events),
+    "pumpkin_face": (pumpkin_face, pumpkin_face_events),
+    "pumpkin_stem": (pumpkin_stem, pumpkin_stem_events),
+    "pumpkin_glow": (pumpkin_glow, pumpkin_glow_events),
+    "pumpkin_end": (pumpkin_end, pumpkin_end_events),
+}
+
+VERSUS_SCENES = set(SCENES) - {
+    "pumpkin_hook",
+    "pumpkin_layers",
+    "pumpkin_face",
+    "pumpkin_stem",
+    "pumpkin_glow",
+    "pumpkin_end",
 }
 
 
 def small_badge(cv: Canvas, b: Beat, t: float) -> None:
+    if b.scene not in VERSUS_SCENES:
+        return
     if b.scene == "hook" and t < b.cue("vs"):
         S.vs_badge(cv, 54, 98, big=False)
     elif b.scene not in ("hook", "verdict"):

@@ -62,6 +62,20 @@ class PixelTests(unittest.TestCase):
         self.assertEqual([tuple(rgb) for rgb in P.COLORS], original)
         self.assertEqual(P.THEME, "wood-metal")
 
+    def test_halloween_theme_is_a_night_sky(self) -> None:
+        original = [tuple(rgb) for rgb in P.COLORS]
+        try:
+            P.apply_theme("halloween")
+            self.assertEqual(tuple(P.COLORS[P.WOOD1]), (204, 78, 14))
+            self.assertEqual(tuple(P.COLORS[P.STEEL0]), (46, 50, 62))
+            self.assertEqual(len({tuple(rgb) for rgb in P.COLORS}), 16)
+            sky = np.asarray(build_background(theme="halloween"))
+            self.assertGreater(int((sky[:100] == P.NAVY2).sum()), 8000)
+            self.assertGreater(int((sky == P.CREAM).sum()), 20)
+        finally:
+            P.apply_theme("wood-metal")
+        self.assertEqual([tuple(rgb) for rgb in P.COLORS], original)
+
     def test_poses_hold_two_or_three_frames(self) -> None:
         holds, last, run = [], 0, 0
         for f in range(60):

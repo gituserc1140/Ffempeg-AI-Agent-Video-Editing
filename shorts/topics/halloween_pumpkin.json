@@ -1,0 +1,65 @@
+{
+  "title": "Printing a Pumpkin",
+  "output": "output/halloween-pumpkin.mp4",
+  "handle": "@STUDIORK3DPS",
+  "voice": "en-US-AndrewMultilingualNeural",
+  "rate": "+20%",
+  "target_duration": 25.5,
+  "gap": 0.2,
+  "theme": "halloween",
+  "left": {"name": "PUMPKIN", "short": "PUMPKIN", "material": "pumpkin"},
+  "right": {"name": "PRINTER", "short": "PRINT", "material": "pumpkin"},
+  "beats": [
+    {
+      "id": "hook",
+      "scene": "pumpkin_hook",
+      "window": 4.0,
+      "lead": 0.25,
+      "line": "Printing a pumpkin. Happy Halloween.",
+      "cues": {"print": "printing", "pumpkin": "pumpkin", "happy": "happy", "halloween": "halloween"},
+      "labels": {"pumpkin": "PUMPKIN", "halloween": "HALLOWEEN"}
+    },
+    {
+      "id": "layers",
+      "scene": "pumpkin_layers",
+      "window": 4.5,
+      "line": "Layers. Orange walls stack up on the bed.",
+      "cues": {"topic": "layers", "orange": "orange", "stack": "stack", "bed": "bed"},
+      "labels": {"topic": "LAYERS", "orange": "ORANGE", "stack": "STACK", "bed": "BED"}
+    },
+    {
+      "id": "face",
+      "scene": "pumpkin_face",
+      "window": 4.0,
+      "line": "Face. Eyes and a grin print in.",
+      "cues": {"topic": "face", "eyes": "eyes", "grin": "grin"},
+      "labels": {"topic": "FACE", "eyes": "EYES", "grin": "GRIN"}
+    },
+    {
+      "id": "stem",
+      "scene": "pumpkin_stem",
+      "window": 4.0,
+      "line": "Stem. A green top pops on.",
+      "cues": {"topic": "stem", "green": "green", "pops": "pops"},
+      "labels": {"topic": "STEM", "green": "GREEN", "pops": "POPS"}
+    },
+    {
+      "id": "glow",
+      "scene": "pumpkin_glow",
+      "window": 4.0,
+      "line": "Light. The pumpkin glows inside.",
+      "cues": {"topic": "light", "pumpkin": "pumpkin", "glows": "glows"},
+      "labels": {"topic": "LIGHT", "glows": "GLOWS"}
+    },
+    {
+      "id": "end",
+      "scene": "pumpkin_end",
+      "window": 4.5,
+      "lead": 0.15,
+      "tail": 1.0,
+      "line": "Done. Follow for more spooky prints!",
+      "cues": {"done": "done", "follow": "follow", "spooky": "spooky", "prints": "prints"},
+      "labels": {"done": "DONE", "follow1": "FOLLOW FOR MORE", "follow2": "SPOOKY PRINTS"}
+    }
+  ]
+}

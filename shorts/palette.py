@@ -41,6 +41,7 @@ FLAT = [channel for rgb in COLORS for channel in rgb] + [0] * (768 - 3 * len(COL
 # Same 16 slots. The TPU theme turns the wood slots orange and the right-hand
 # field blue. Nozzle metal (STEEL0, STEEL2, SHINE) stays grey in both themes.
 # GREEN and STAIN are the ABS dark and light slots in the TPU theme.
+# The Halloween theme is a night sky. Nozzle greys stay metal there too.
 THEMES = {
     "wood-metal": [tuple(rgb) for rgb in COLORS],
     "tpu-abs": [
@@ -61,6 +62,24 @@ THEMES = {
         (255, 214, 64),
         (110, 196, 255),
     ],
+    "halloween": [
+        (8, 4, 16),
+        (32, 14, 62),
+        (255, 226, 176),
+        (255, 255, 255),
+        (128, 42, 10),
+        (204, 78, 14),
+        (250, 132, 32),
+        (255, 176, 48),
+        (46, 50, 62),
+        (54, 32, 86),
+        (168, 176, 190),
+        (214, 222, 232),
+        (210, 32, 36),
+        (46, 158, 58),
+        (255, 208, 64),
+        (22, 96, 40),
+    ],
 }
 THEME = "wood-metal"
 
@@ -69,6 +88,7 @@ MATERIALS = {
     "metal": {"dark": STEEL0, "mid": STEEL1, "light": STEEL2, "accent": SHINE, "shine": WHITE},
     "tpu": {"dark": WOOD0, "mid": WOOD1, "light": WOOD2, "accent": AMBER, "shine": AMBER},
     "abs": {"dark": GREEN, "mid": STEEL1, "light": STAIN, "accent": WHITE, "shine": WHITE},
+    "pumpkin": {"dark": WOOD0, "mid": WOOD1, "light": WOOD2, "accent": AMBER, "shine": YELLOW},
 }
 
 

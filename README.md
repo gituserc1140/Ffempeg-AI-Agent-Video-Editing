@@ -37,7 +37,7 @@ In chat, once the local server is enabled:
 
 ## Pixel-art versus shorts
 
-`python3 render.py` builds the Wood PLA versus Metal PLA short. `python3 render.py --config shorts/topics/tpu_vs_abs.json` builds TPU versus ABS on an orange rubber and blue plastic stage. See [`shorts/README.md`](shorts/README.md).
+`python3 render.py` builds the Wood PLA versus Metal PLA short. `python3 render.py --config shorts/topics/tpu_vs_abs.json` builds TPU versus ABS on an orange rubber and blue plastic stage. `python3 render.py --config shorts/topics/halloween_pumpkin.json` builds a Halloween short of a pumpkin being printed. See [`shorts/README.md`](shorts/README.md).
 
 ## Local tools
 
