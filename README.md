@@ -2,7 +2,8 @@
 
 ## Considerations - please read 
 
-- Claude works with the config in this repo. Cursor is set up the same way, through `.cursor/mcp.json`.
+- Claude works with the config in this repo.
+- Cursor is set up the same way, through `.cursor/mcp.json`. Need premium for cloud agent - free tier cannot do 
 - ChatGPT does not. RunwayML and Canva are the alternatives for poster videos.
 - VS Code has `.vscode/mcp.json`. GitHub Codespaces with Codex is still untried.
 - Social posting goes through Buffer.
