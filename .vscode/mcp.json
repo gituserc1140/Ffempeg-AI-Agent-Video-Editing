@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "ffempeg": {
+      "type": "stdio",
+      "command": "python3",
+      "args": ["${workspaceFolder}/ffempeg/mcp_server.py"]
+    },
+    "ffmpeg-api": {
+      "type": "http",
+      "url": "https://mcp.ffmpeg-api.com/mcp"
+    }
+  }
+}
