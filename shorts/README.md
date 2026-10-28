@@ -8,9 +8,9 @@ Requirements: Python 3, `pip install -r requirements.txt` (Pillow, numpy, edge-t
 
 | File | What |
 | --- | --- |
-| `output/wood-vs-metal-pla.mp4` | H.264 yuv420p + AAC 48 kHz stereo |
-| `output/contact_sheet.png` | A frame every 0.75 s with the TikTok safe-zone lines drawn on |
-| `output/qc_report.json` | Timeline, word timings, on-screen text vs voice, ffprobe and ebur128 results |
+| `output/<name>.mp4` | H.264 yuv420p + AAC 48 kHz stereo |
+| `output/<name>-contact.png` | A frame every 0.75 s with the TikTok safe-zone lines drawn on |
+| `output/<name>-qc.json` | Timeline, word timings, on-screen text vs voice, ffprobe and ebur128 results |
 
 `render.py` exits non-zero if any check fails.
 
@@ -36,6 +36,8 @@ The reusable brief is [`pixel_video_prompt.md`](../pixel_video_prompt.md). Copy 
 - `voice`, `rate`, `handle`, `left` / `right` names, and `output`.
 - Each beat's `line` is what is spoken. Its `cues` map event names to spoken words: `"metal"`, or `"metal#2"` for the second time it is said. Its `labels` set the on-screen words.
 - `window` is the beat's preferred length. Spare time is spread toward it when the speech runs short.
+
+Optional `theme` picks the 16-colour stage. Leave it out for the wood and steel look. `tpu-abs` is the orange rubber and blue plastic stage used by `topics/tpu_vs_abs.json`. The nozzle greys stay metal in both.
 
 Then run `python3 render.py --config path/to/topic.json`.
 

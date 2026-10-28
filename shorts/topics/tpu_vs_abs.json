@@ -1,0 +1,78 @@
+{
+  "title": "TPU vs ABS: Which Filament Wins?",
+  "output": "output/tpu-vs-abs.mp4",
+  "handle": "@STUDIORK3DPS",
+  "voice": "en-US-AndrewMultilingualNeural",
+  "rate": "+20%",
+  "target_duration": 25.5,
+  "gap": 0.2,
+  "theme": "tpu-abs",
+  "left": {"name": "TPU", "short": "TPU", "material": "tpu"},
+  "right": {"name": "ABS", "short": "ABS", "material": "abs"},
+  "beats": [
+    {
+      "id": "hook",
+      "scene": "hook",
+      "window": 4.0,
+      "lead": 0.25,
+      "line": "TPU versus ABS. Which filament wins?",
+      "cues": {"left": "tpu", "vs": "versus", "right": "abs", "wins": "wins"}
+    },
+    {
+      "id": "feel",
+      "scene": "feel",
+      "round": 1,
+      "topic": "FEEL",
+      "window": 4.0,
+      "line": "Feel. Soft TPU bends. Hard ABS stays rigid.",
+      "cues": {"topic": "feel", "left_a": "soft", "left": "tpu", "left_b": "bends", "right_a": "hard", "right": "abs", "right_b": "rigid"},
+      "labels": {"left_a": "SOFT", "left_b": "BENDS", "right_a": "HARD", "right_b": "RIGID"}
+    },
+    {
+      "id": "habits",
+      "scene": "habits",
+      "round": 2,
+      "topic": "PRINTING",
+      "window": 5.0,
+      "line": "Printing. TPU strings and slips. ABS warps and lifts.",
+      "cues": {"topic": "printing", "left": "tpu", "string": "strings", "slip": "slips", "right": "abs", "warp": "warps", "lift": "lifts"},
+      "labels": {"string": "STRINGS", "slip": "SLIPS", "warp": "WARPS", "lift": "LIFTS"}
+    },
+    {
+      "id": "surface",
+      "scene": "surface",
+      "round": 3,
+      "topic": "FINISHING",
+      "window": 4.0,
+      "line": "Finishing. Grippy TPU. ABS sands smooth.",
+      "cues": {"topic": "finishing", "grip": "grippy", "left": "tpu", "right": "abs", "sand": "sands", "smooth": "smooth"},
+      "labels": {"grip": "GRIPPY", "sand": "SANDS", "smooth": "SMOOTH"}
+    },
+    {
+      "id": "uses",
+      "scene": "uses",
+      "round": 4,
+      "topic": "USES",
+      "window": 4.0,
+      "line": "Uses. TPU grips and cases. ABS brackets and shells.",
+      "cues": {"topic": "uses", "left": "tpu", "grip": "grips", "case": "cases", "right": "abs", "bracket": "brackets", "shell": "shells"},
+      "labels": {"grip": "GRIPS", "case": "CASES", "bracket": "BRACKETS", "shell": "SHELLS"}
+    },
+    {
+      "id": "verdict",
+      "scene": "verdict",
+      "window": 3.0,
+      "lead": 0.15,
+      "tail": 1.0,
+      "line": "It depends: bend, TPU. Tough ABS. Follow for more filament battles!",
+      "cues": {
+        "it": "it", "depends": "depends", "left_q": "bend", "left": "tpu",
+        "right_q": "tough", "right": "abs", "follow": "follow", "filament": "filament", "battles": "battles"
+      },
+      "labels": {
+        "verdict1": "IT", "verdict2": "DEPENDS", "left_q": "BEND?", "right_q": "TOUGH?",
+        "follow1": "FOLLOW FOR MORE", "follow2": "FILAMENT BATTLES"
+      }
+    }
+  ]
+}

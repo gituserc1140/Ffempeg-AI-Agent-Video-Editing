@@ -151,6 +151,8 @@ def build(cfg: dict, cache: Path) -> Timeline:
         "right_name": cfg["right"]["name"],
         "left_short": cfg["left"]["short"],
         "right_short": cfg["right"]["short"],
+        "left_mat": cfg["left"].get("material", "wood"),
+        "right_mat": cfg["right"].get("material", "metal"),
         "handle": cfg["handle"],
     }
     clips = []

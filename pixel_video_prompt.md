@@ -28,7 +28,7 @@ Edit only when the pictures or colours change:
 
 - `shorts/scenes.py` has one draw function and one event function per beat, registered in `SCENES`. The built-in beats are `hook`, `look`, `printing`, `finishing`, `weight`, `verdict`.
 - `shorts/sprites.py` holds the props those beats draw.
-- `shorts/palette.py` holds the 16 colours. `pixel.build_background()` in `shorts/pixel.py` paints the wood and steel split. There is no `background.py`.
+- `shorts/palette.py` holds the 16 colours. Set `theme` in the topic file: `wood-metal` (default) paints planks and rivets, `tpu-abs` paints orange rubber and blue plastic. There is no `background.py`.
 - Voice synthesis lives in `shorts/timeline.py`. There is no `tts.py` and no offline ffmpeg voice. If edge-tts fails, say so and stop.
 - Frame encoding lives in `render.py`. There is no `frames.py`.
 
@@ -75,7 +75,7 @@ python3 render.py --config shorts/topics/<name>.json
 - Voice: edge-tts `en-US-AndrewMultilingualNeural`, rate `+20%`, with WordBoundary timings. Build the timeline from the audio so scenes and icons follow the spoken words. Word-by-word captions near y=1450, current word in yellow.
 - Audio: chiptune at 120 bpm in a minor key, plus retro sound effects timed to the cues. Duck the music under the voice. Master to about -14 LUFS with true peak below -1 dBFS, and verify with ffmpeg ebur128.
 - On-screen text must match the voiceover. Round labels are fine.
-- `render.py` exits non-zero when a check fails. `output/qc_report.json` lists the failures. `output/contact_sheet.png` is a frame every 0.75 s with the safe-zone lines drawn on.
+- `render.py` exits non-zero when a check fails. The report next to the mp4 (`<name>-qc.json`) lists the failures. `<name>-contact.png` is a frame every 0.75 s with the safe-zone lines drawn on.
 
 ### Steps
 
@@ -83,7 +83,7 @@ python3 render.py --config shorts/topics/<name>.json
 2. Change `sprites.py`, `scenes.py`, and `palette.py` only for visuals the current beats cannot show. Keep one scene function per beat.
 3. Put each new sound on the same cue as the picture, in that beat's event function. The effect names are `bell`, `impact`, `whoosh`, `blip`, `blip_hi`, `ting`, `rasp`, `clank`, `grind`.
 4. Run `python3 render.py --config shorts/topics/<name>.json`. Look at the contact sheet. Fix overlaps, weak contrast, clipped text, and any stretch over 1 second with almost no motion.
-5. Read `output/qc_report.json`. Fix every failed ffprobe, loudness, safe-zone, or voiceover check.
+5. Read the `<name>-qc.json` beside the mp4. Fix every failed ffprobe, loudness, safe-zone, or voiceover check.
 6. Deliver the `.mp4`, the contact sheet, and the topic file. Keep the reply short.
 
 ---
