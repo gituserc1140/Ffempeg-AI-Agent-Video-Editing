@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ffempeg": {
+      "command": "python3",
+      "args": ["ffempeg/mcp_server.py"]
+    },
+    "ffmpeg-api": {
+      "type": "http",
+      "url": "https://mcp.ffmpeg-api.com/mcp"
+    }
+  }
+}
