@@ -7,3 +7,4 @@ Ffempeg Ai video editing
 -possibly works in cursor 
 -Need to try in vs code via github codespace codex 
 -Social Media via buffer
+-Refer to pixel_video_prompt.md 
