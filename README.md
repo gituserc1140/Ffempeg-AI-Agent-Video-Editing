@@ -37,7 +37,7 @@ In chat, once the local server is enabled:
 
 ## Pixel-art versus shorts
 
-`python3 render.py` builds a 26 s vertical pixel-art short, "Wood PLA vs Metal PLA", entirely from code. The voice is edge-tts; the chiptune and sound effects come from numpy. It writes `output/wood-vs-metal-pla.mp4`, a contact sheet, and a QC report. See [`shorts/README.md`](shorts/README.md) for how it works and how to swap the topic.
+`python3 render.py` builds the Wood PLA versus Metal PLA short. `python3 render.py --config shorts/topics/tpu_vs_abs.json` builds TPU versus ABS in the same style. See [`shorts/README.md`](shorts/README.md).
 
 ## Local tools
 

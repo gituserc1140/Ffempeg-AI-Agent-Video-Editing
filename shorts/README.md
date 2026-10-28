@@ -8,9 +8,9 @@ Requirements: Python 3, `pip install -r requirements.txt` (Pillow, numpy, edge-t
 
 | File | What |
 | --- | --- |
-| `output/wood-vs-metal-pla.mp4` | H.264 yuv420p + AAC 48 kHz stereo |
-| `output/contact_sheet.png` | A frame every 0.75 s with the TikTok safe-zone lines drawn on |
-| `output/qc_report.json` | Timeline, word timings, on-screen text vs voice, ffprobe and ebur128 results |
+| `output/<name>.mp4` | H.264 yuv420p + AAC 48 kHz stereo |
+| `output/<name>-contact.png` | A frame every 0.75 s with the TikTok safe-zone lines drawn on |
+| `output/<name>-qc.json` | Timeline, word timings, on-screen text vs voice, ffprobe and ebur128 results |
 
 `render.py` exits non-zero if any check fails.
 

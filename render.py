@@ -158,7 +158,7 @@ def main() -> int:
         return 1
 
     print("[4/5] QC")
-    sheet = out_dir / "contact_sheet.png"
+    sheet = out_dir / f"{out_mp4.stem}-contact.png"
     tiles = qc.contact_sheet(out_mp4, sheet, duration)
     probe = qc.ffprobe(out_mp4)
     final_loud = audio.ebur128(["-i", str(out_mp4)])
@@ -185,7 +185,7 @@ def main() -> int:
         "voiceover_issues": vo_problems,
         "dead_air": dead,
     }
-    (out_dir / "qc_report.json").write_text(json.dumps(report, indent=2))
+    (out_dir / f"{out_mp4.stem}-qc.json").write_text(json.dumps(report, indent=2))
 
     print("[5/5] summary")
     for name, ok in probe["checks"].items():

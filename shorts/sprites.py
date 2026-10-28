@@ -13,14 +13,18 @@ from .pixel import Canvas, sparkle
 
 def spool(cv: Canvas, cx: int, cy: int, mat: str, phase: int = 0, r: int = 13) -> None:
     m = MATERIALS[mat]
+    if mat == "tpu":
+        cy += phase % 2
     cv.circle(cx, cy, r, fill=m["dark"], outline=P.NAVY)
     cv.circle(cx, cy, r - 2, fill=m["light"], outline=m["mid"])
     for rr in (r - 5, r - 8):
         if rr > 4:
             cv.circle(cx, cy, rr, outline=m["mid"])
-    if mat == "metal":
+    if mat in ("metal", "abs"):
         cv.pts([(cx - r + 4 + i, cy - r + 6 - i) for i in range(4)], P.SHINE)
         cv.px(cx - r + 5, cy - r + 7, P.WHITE)
+    elif mat == "tpu":
+        cv.pts([(cx - 3, cy - r + 5), (cx - 2, cy - r + 6), (cx + 2, cy + r - 6)], P.RED)
     else:
         cv.pts([(cx - 4 + i, cy - r + 4) for i in range(3)], P.AMBER)
     cv.circle(cx, cy, 4, fill=m["dark"], outline=P.NAVY)
@@ -29,7 +33,8 @@ def spool(cv: Canvas, cx: int, cy: int, mat: str, phase: int = 0, r: int = 13) -
         ang = (phase % 4) * math.pi / 6 + k * 2 * math.pi / 3
         hx = cx + round(math.cos(ang) * (r - 1))
         hy = cy + round(math.sin(ang) * (r - 1))
-        cv.pts([(hx, hy), (hx + 1, hy)], P.CREAM if mat == "wood" else P.SHINE)
+        hub = {"wood": P.CREAM, "tpu": P.YELLOW, "abs": P.WHITE}.get(mat, P.SHINE)
+        cv.pts([(hx, hy), (hx + 1, hy)], hub)
     cv.line([(cx + r - 1, cy + 2), (cx + r + 3, cy + 6)], m["light"], width=2)
 
 
@@ -286,3 +291,98 @@ def vs_badge(cv: Canvas, cx: int, cy: int, big: bool, flash: bool = False) -> No
         cv.box(cx - 9, cy - 6, cx + 8, cy + 6, fill=P.RED)
         cv.rect(cx - 8, cy - 5, cx + 7, cy - 5, fill=P.YELLOW)
         cv.text("VS", cx, cy - 3, color=P.CREAM, kind="badge", clamp=False)
+
+
+def flex_bar(cv: Canvas, cx: int, y0: int, bend: int, mat: str = "tpu", length: int = 26) -> None:
+    """A vertical bar. `bend` bows it sideways, in canvas pixels."""
+    m = MATERIALS[mat]
+    for i in range(length):
+        off = round(math.sin(i / (length - 1) * math.pi) * bend)
+        x = cx + off
+        y = y0 + i
+        cv.pts([(x - 2, y), (x + 2, y)], P.NAVY)
+        cv.pts([(x - 1, y), (x, y)], m["light"])
+        cv.px(x + 1, y, m["mid"])
+    cv.pts([(cx - 1, y0), (cx, y0), (cx + 1, y0)], P.NAVY)
+
+
+def rigid_bar(cv: Canvas, cx: int, y0: int, mat: str = "abs", length: int = 26) -> None:
+    m = MATERIALS[mat]
+    cv.box(cx - 3, y0, cx + 3, y0 + length, fill=m["light"])
+    cv.line([(cx - 2, y0 + 1), (cx + 2, y0 + 1)], P.WHITE)
+    cv.line([(cx - 2, y0 + length - 1), (cx + 2, y0 + length - 1)], m["mid"])
+
+
+def ooze(cv: Canvas, x: int, y0: int, y1: int, pose: int, mat: str = "tpu") -> None:
+    color = MATERIALS[mat]["light"]
+    for strand in range(3):
+        pts = []
+        for y in range(y0, y1, 2):
+            pts.append((x - 3 + strand * 3 + round(math.sin((y + pose * 3 + strand) / 2) * 2), y))
+        cv.pts(pts, color if strand != 1 else MATERIALS[mat]["mid"])
+
+
+def warp_part(cv: Canvas, cx: int, bed_y: int, lift: int, mat: str = "abs") -> None:
+    m = MATERIALS[mat]
+    cv.box(cx - 15, bed_y, cx + 14, bed_y + 3, fill=P.NAVY2)
+    for i in range(8):
+        rise = int(round(lift * (i / 7)))
+        y = bed_y - 1 - i
+        cv.line([(cx - 10, y - rise), (cx + 8, y)], m["light"] if i % 2 else m["mid"], width=1)
+    if lift:
+        cv.px(cx - 10, bed_y - 8 - lift, P.NAVY)
+        cv.px(cx - 9, bed_y - 7 - lift, P.RED)
+
+
+def grip_pad(cv: Canvas, cx: int, cy: int) -> None:
+    m = MATERIALS["tpu"]
+    cv.box(cx - 12, cy - 8, cx + 11, cy + 8, fill=m["mid"])
+    for row in range(3):
+        for col in range(4):
+            cv.circle(cx - 8 + col * 5, cy - 4 + row * 5, 1, fill=m["dark"])
+
+
+def plastic_block(cv: Canvas, cx: int, cy: int, rough: float, shine: float) -> None:
+    m = MATERIALS["abs"]
+    x0, y0, x1, y1 = cx - 14, cy - 9, cx + 13, cy + 8
+    cv.box(x0, y0, x1, y1, fill=m["light"] if shine > 0.4 else m["mid"])
+    rng = np.random.default_rng(4)
+    for _ in range(24):
+        sx = int(rng.integers(x0 + 1, x1))
+        sy = int(rng.integers(y0 + 1, y1))
+        if rng.random() < rough:
+            cv.px(sx, sy, P.STEEL1)
+    if shine > 0.4:
+        cv.line([(x0 + 1, y0 + 1), (x1 - 1, y0 + 1)], P.WHITE)
+    if shine >= 1:
+        cv.line([(x0 + 3, y0 + 3), (x1 - 4, y0 + 3)], P.SHINE)
+
+
+def phone_case(cv: Canvas, cx: int, cy: int) -> None:
+    m = MATERIALS["tpu"]
+    cv.box(cx - 7, cy - 11, cx + 7, cy + 10, fill=m["light"])
+    cv.rect(cx - 2, cy - 8, cx + 2, cy - 5, fill=P.NAVY)
+    cv.px(cx, cy + 7, m["dark"])
+
+
+def grip_handle(cv: Canvas, cx: int, cy: int) -> None:
+    """A ribbed sleeve, the sort of grip you print in a soft filament."""
+    m = MATERIALS["tpu"]
+    cv.box(cx - 2, cy - 10, cx + 2, cy + 8, fill=m["dark"])
+    for y in range(cy - 8, cy + 7, 3):
+        cv.rect(cx - 6, y, cx + 6, y + 1, fill=m["light"])
+
+
+def bracket(cv: Canvas, cx: int, cy: int) -> None:
+    m = MATERIALS["abs"]
+    cv.box(cx - 10, cy + 2, cx + 8, cy + 7, fill=m["light"])
+    cv.box(cx - 10, cy - 10, cx - 5, cy + 7, fill=m["light"])
+    cv.px(cx - 8, cy - 6, P.NAVY)
+    cv.px(cx + 4, cy + 4, P.NAVY)
+
+
+def shell(cv: Canvas, cx: int, cy: int) -> None:
+    m = MATERIALS["abs"]
+    cv.box(cx - 9, cy - 8, cx + 8, cy + 7, fill=P.NAVY)
+    cv.rect(cx - 7, cy - 6, cx + 6, cy + 5, fill=m["light"])
+    cv.line([(cx - 7, cy - 6), (cx + 6, cy - 6)], P.WHITE)

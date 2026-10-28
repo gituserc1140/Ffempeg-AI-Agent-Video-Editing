@@ -109,22 +109,29 @@ def hook(cv: Canvas, t: float, b: Beat) -> None:
     pose = pose_no(t)
     tw, tv, tm, twin = (b.cue(k) for k in ("left", "vs", "right", "wins"))
     left, right = b.cfg["left_name"], b.cfg["right_name"]
+    left_mat, right_mat = b.cfg.get("left_mat", "wood"), b.cfg.get("right_mat", "metal")
+    title_color = {"wood": P.AMBER, "tpu": P.YELLOW, "metal": P.SHINE, "abs": P.WHITE}
 
     if t >= tw - 0.01:
         cv.box(6, 25, 101, 61, fill=P.NAVY, outline=P.NAVY2)
-    for name, cue_t, y, color in ((left, tw, 30, P.AMBER), ("VS", tv, 41, P.RED), (right, tm, 52, P.SHINE)):
+    for name, cue_t, y, color in (
+        (left, tw, 30, title_color[left_mat]),
+        ("VS", tv, 41, P.RED),
+        (right, tm, 52, title_color[right_mat]),
+    ):
         dy = pop_dy(t, cue_t)
         if dy is not None:
             cv.text(name, 54, y + max(dy, -1), color=color, kind="title")
 
     fast = t >= twin
-    for cue_t, x_from, x_to, mat, seed in ((tw, -24, 25, "wood", 1), (tm, 132, 83, "metal", 2)):
+    for cue_t, x_from, x_to, mat, seed in ((tw, -24, 25, left_mat, 1), (tm, 132, 83, right_mat, 2)):
         x = slam_x(t, cue_t, x_from, x_to)
         if x is None:
             continue
-        S.spool(cv, x, 98, mat, pose if fast else pose // 3, r=15)
-        colors = (P.WOOD2, P.AMBER, P.CREAM) if mat == "wood" else (P.SHINE, P.WHITE, P.STEEL2)
-        particles(cv, t, cue_t, x_to, 112, seed, colors, count=14, speed=45, life=0.5)
+        bob = (pose % 2) if mat == "tpu" and fast else 0
+        S.spool(cv, x, 98 + bob, mat, pose if fast else pose // 3, r=15)
+        m = P.MATERIALS[mat]
+        particles(cv, t, cue_t, x_to, 112, seed, (m["light"], m["accent"], P.CREAM), count=14, speed=45, life=0.5)
 
     if t >= tv:
         n = poses_since(t, tv)
@@ -373,7 +380,11 @@ def verdict(cv: Canvas, t: float, b: Beat) -> None:
     t_dep = b.cue("depends")
 
     S.vs_badge(cv, 54, 100, big=True, flash=0 <= t - t_dep < 0.17)
-    for side, cx, mat, q_cue, win_cue in ((L, 25, "wood", "left_q", "left"), (R, 83, "metal", "right_q", "right")):
+    for side, cx, mat_key, q_cue, win_cue in (
+        (L, 25, "left_mat", "left_q", "left"),
+        (R, 83, "right_mat", "right_q", "right"),
+    ):
+        mat = b.cfg.get(mat_key, "wood" if side == L else "metal")
         if (dy := pop_dy(t, b.cue(q_cue))) is not None:
             S.spool(cv, cx, 101 + dy, mat, pose // 2, r=12)
         if (dy := pop_dy(t, b.cue(win_cue))) is not None:
@@ -390,9 +401,11 @@ def verdict(cv: Canvas, t: float, b: Beat) -> None:
             cv.box(4, 59, 50, 69, fill=P.NAVY)
             label(cv, b, "left_q", t, L, 61, plaque=None, color=P.AMBER, bounce=False)
         if t >= b.cue("right_q"):
-            cv.box(56, 59, 104, 78, fill=P.NAVY)
+            paired = "right_q2" in b.cfg.get("cues", {})
+            cv.box(56, 59, 104, 78 if paired else 69, fill=P.NAVY)
             label(cv, b, "right_q", t, 80, 61, plaque=None, color=P.SHINE, bounce=False)
-            label(cv, b, "right_q2", t, 80, 70, plaque=None, color=P.SHINE, bounce=False)
+            if paired:
+                label(cv, b, "right_q2", t, 80, 70, plaque=None, color=P.SHINE, bounce=False)
         return
 
     cv.box(3, 24, 104, 68, fill=P.NAVY, outline=P.NAVY2)
@@ -413,7 +426,7 @@ def verdict_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
         Sfx(b.cue("left_q"), "blip", 0.7, -0.4),
         Sfx(b.cue("left"), "ting", 0.8, -0.4),
         Sfx(b.cue("right_q"), "blip", 0.7, 0.4),
-        Sfx(b.cue("right_q2"), "blip_hi", 0.6, 0.4),
+        *([Sfx(b.cue("right_q2"), "blip_hi", 0.6, 0.4)] if "right_q2" in b.cfg.get("cues", {}) else []),
         Sfx(b.cue("right"), "clank", 0.7, 0.4),
         Sfx(b.cue("right"), "ting", 0.6, 0.4),
         Sfx(b.cue("follow") - 0.1, "whoosh", 0.7),
@@ -423,6 +436,139 @@ def verdict_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
     return sfx, [(b.cue("depends"), 2)]
 
 
+# TPU vs ABS ---------------------------------------------------------------
+
+BAR_Y = 78
+
+
+def feel(cv: Canvas, t: float, b: Beat) -> None:
+    pose = pose_no(t)
+    if t >= b.cue("left"):
+        bend = (6, 11, 8, 12)[pose % 4] if t >= b.cue("left_b") else 3
+        S.flex_bar(cv, L, BAR_Y, bend)
+    if t >= b.cue("right"):
+        S.rigid_bar(cv, R, BAR_Y)
+        if t >= b.cue("right_b"):
+            sparkle(cv, R + 8, BAR_Y + 4, pose, P.WHITE, size=1)
+    label(cv, b, "left_a", t, L, ROW1, color=P.YELLOW)
+    label(cv, b, "left_b", t, L, ROW2, color=P.AMBER)
+    label(cv, b, "right_a", t, R, ROW1, color=P.WHITE)
+    label(cv, b, "right_b", t, R, ROW2, color=P.SHINE)
+
+
+def feel_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [
+        Sfx(b.cue("left"), "blip", 0.7, -0.4),
+        Sfx(b.cue("left_a"), "blip_hi", 0.5, -0.3),
+        Sfx(b.cue("left_b"), "whoosh", 0.7, -0.4),
+        Sfx(b.cue("right"), "clank", 0.9, 0.4),
+        Sfx(b.cue("right_a"), "impact", 0.45, 0.4),
+        Sfx(b.cue("right_b"), "ting", 0.7, 0.3),
+    ], [(b.cue("left_b"), 1), (b.cue("right"), 1)]
+
+
+def habits(cv: Canvas, t: float, b: Beat) -> None:
+    pose = pose_no(t)
+    if t >= b.cue("left"):
+        slipping = t >= b.cue("slip")
+        stringing = t >= b.cue("string")
+        jitter = (pose % 3 - 1) if slipping else 0
+        layers = 5 if not slipping else 3
+        S.print_bed(cv, L, BED_Y, "tpu", layers)
+        x, tip = S.nozzle(cv, L, NOZZLE_TOP, "tpu", pose, feeding=not slipping, jitter=jitter)
+        if stringing:
+            S.ooze(cv, x, tip + 1, BED_Y - layers, pose)
+        else:
+            S.strand(cv, x, tip + 1, BED_Y - 1 - layers, "tpu")
+    label(cv, b, "string", t, L, ROW1, color=P.YELLOW)
+    label(cv, b, "slip", t, L, ROW2, color=P.AMBER)
+
+    if t >= b.cue("right"):
+        lift = 0
+        if t >= b.cue("warp"):
+            lift = 3 + (3 if t >= b.cue("lift") else 0)
+        S.warp_part(cv, R, BED_Y, lift)
+        feeding = t < b.cue("warp")
+        x, tip = S.nozzle(cv, R, NOZZLE_TOP, "abs", pose, feeding=feeding)
+        if feeding:
+            S.strand(cv, x, tip + 1, BED_Y - 6, "abs")
+        elif 0 <= t - b.cue("lift") < 0.45:
+            particles(cv, t, b.cue("lift"), R - 8, BED_Y - 8, 71, (P.WHITE, P.CREAM, P.RED), count=8, speed=28, life=0.4)
+    label(cv, b, "warp", t, R, ROW1, color=P.WHITE)
+    label(cv, b, "lift", t, R, ROW2, color=P.SHINE)
+
+
+def habits_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [
+        Sfx(b.cue("left"), "blip", 0.6, -0.4),
+        Sfx(b.cue("string"), "rasp", 0.5, -0.4),
+        Sfx(b.cue("slip"), "whoosh", 0.6, -0.3),
+        Sfx(b.cue("right"), "blip_hi", 0.6, 0.4),
+        Sfx(b.cue("warp"), "impact", 0.7, 0.4),
+        Sfx(b.cue("lift"), "whoosh", 0.7, 0.4),
+    ], [(b.cue("slip"), 1), (b.cue("warp"), 2), (b.cue("lift"), 1)]
+
+
+def surface(cv: Canvas, t: float, b: Beat) -> None:
+    pose = pose_no(t)
+    if t >= b.cue("grip"):
+        S.grip_pad(cv, L, 98)
+        if t < b.cue("right"):
+            S.sandpaper(cv, L + (4 if pose % 2 else -4), 84)
+            particles(cv, t, b.cue("grip"), L, 88, 81, (P.YELLOW, P.AMBER), count=6, speed=18, life=0.35)
+    label(cv, b, "grip", t, L, ROW1, color=P.YELLOW)
+    if t >= b.cue("right"):
+        sanding = b.cue("sand") <= t < b.cue("smooth")
+        smooth = 1.0 if t >= b.cue("smooth") else (0.55 if sanding else 0.0)
+        rough = 0.0 if t >= b.cue("smooth") else (0.35 if sanding else 1.0)
+        S.plastic_block(cv, R, 98, rough, smooth)
+        if sanding:
+            S.sandpaper(cv, R + ((-6, 0, 6, 0)[pose % 4]), 82)
+        if t >= b.cue("smooth"):
+            sparkle(cv, R - 10, 90, pose, P.WHITE)
+            sparkle(cv, R + 9, 104, pose + 2, P.WHITE)
+    label(cv, b, "sand", t, R, ROW1, color=P.WHITE)
+    label(cv, b, "smooth", t, R, ROW2, color=P.SHINE)
+
+
+def surface_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [
+        Sfx(b.cue("grip"), "blip", 0.7, -0.4),
+        Sfx(b.cue("left"), "blip_hi", 0.4, -0.3),
+        Sfx(b.cue("right"), "clank", 0.5, 0.4),
+        Sfx(b.cue("sand"), "rasp", 0.9, 0.4),
+        Sfx(b.cue("smooth"), "ting", 0.9, 0.4),
+    ], []
+
+
+def uses(cv: Canvas, t: float, b: Beat) -> None:
+    pose = pose_no(t)
+    if (dy := pop_dy(t, b.cue("grip"))) is not None:
+        S.grip_handle(cv, 14, 90 + dy)
+    if (dy := pop_dy(t, b.cue("case"))) is not None:
+        S.phone_case(cv, 36, 90 + dy)
+    if (dy := pop_dy(t, b.cue("bracket"))) is not None:
+        S.bracket(cv, 76, 92 + dy)
+    if (dy := pop_dy(t, b.cue("shell"))) is not None:
+        S.shell(cv, 99, 92 + dy)
+        sparkle(cv, 104, 78, pose, P.WHITE, size=1)
+    label(cv, b, "grip", t, L, ROW1, color=P.YELLOW)
+    label(cv, b, "case", t, L, ROW2, color=P.AMBER)
+    label(cv, b, "bracket", t, R, ROW1, color=P.WHITE)
+    label(cv, b, "shell", t, R, ROW2, color=P.SHINE)
+
+
+def uses_events(b: Beat) -> tuple[list[Sfx], list[Shake]]:
+    return [
+        Sfx(b.cue("left"), "blip", 0.5, -0.4),
+        Sfx(b.cue("grip"), "blip", 0.7, -0.4),
+        Sfx(b.cue("case"), "blip_hi", 0.7, -0.3),
+        Sfx(b.cue("right"), "clank", 0.5, 0.4),
+        Sfx(b.cue("bracket"), "clank", 0.8, 0.4),
+        Sfx(b.cue("shell"), "ting", 0.8, 0.3),
+    ], [(b.cue("bracket"), 1)]
+
+
 SCENES = {
     "hook": (hook, hook_events),
     "look": (look, look_events),
@@ -430,6 +576,10 @@ SCENES = {
     "finishing": (finishing, finishing_events),
     "weight": (weight, weight_events),
     "verdict": (verdict, verdict_events),
+    "feel": (feel, feel_events),
+    "habits": (habits, habits_events),
+    "surface": (surface, surface_events),
+    "uses": (uses, uses_events),
 }
 
 

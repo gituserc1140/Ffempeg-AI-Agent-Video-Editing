@@ -1,0 +1,520 @@
+{
+  "video": "output/tpu-vs-abs.mp4",
+  "contact_sheet": "output/tpu-vs-abs-contact.png",
+  "contact_sheet_tiles": 36,
+  "duration_s": 26.4,
+  "ffprobe_checks": {
+    "resolution 1080x1920": true,
+    "30 fps": true,
+    "h264 yuv420p": true,
+    "aac 48 kHz stereo": true,
+    "duration 24-27 s": true
+  },
+  "loudness": {
+    "integrated_lufs": -14.1,
+    "true_peak_dbfs": -1.1,
+    "lra_lu": 2.0
+  },
+  "loudness_ok": true,
+  "word_count": 49,
+  "timeline": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "end": 3.74,
+      "voice": [
+        0.25,
+        3.54
+      ],
+      "line": "TPU versus ABS. Which filament wins?"
+    },
+    {
+      "id": "feel",
+      "start": 3.74,
+      "end": 7.68,
+      "voice": [
+        3.99,
+        7.48
+      ],
+      "line": "Feel. Soft TPU bends. Hard ABS stays rigid."
+    },
+    {
+      "id": "habits",
+      "start": 7.68,
+      "end": 11.79,
+      "voice": [
+        7.93,
+        11.59
+      ],
+      "line": "Printing. TPU strings and slips. ABS warps and lifts."
+    },
+    {
+      "id": "surface",
+      "start": 11.79,
+      "end": 15.24,
+      "voice": [
+        12.04,
+        15.04
+      ],
+      "line": "Finishing. Grippy TPU. ABS sands smooth."
+    },
+    {
+      "id": "uses",
+      "start": 15.24,
+      "end": 19.83,
+      "voice": [
+        15.49,
+        19.63
+      ],
+      "line": "Uses. TPU grips and cases. ABS brackets and shells."
+    },
+    {
+      "id": "verdict",
+      "start": 19.83,
+      "end": 26.4,
+      "voice": [
+        19.98,
+        25.2
+      ],
+      "line": "It depends: bend, TPU. Tough ABS. Follow for more filament battles!"
+    }
+  ],
+  "words": [
+    {
+      "word": "TPU",
+      "t0": 0.333,
+      "t1": 0.802
+    },
+    {
+      "word": "VERSUS",
+      "t0": 0.802,
+      "t1": 1.292
+    },
+    {
+      "word": "ABS",
+      "t0": 1.552,
+      "t1": 2.229
+    },
+    {
+      "word": "WHICH",
+      "t0": 2.562,
+      "t1": 2.656
+    },
+    {
+      "word": "FILAMENT",
+      "t0": 2.667,
+      "t1": 3.021
+    },
+    {
+      "word": "WINS?",
+      "t0": 3.021,
+      "t1": 3.542
+    },
+    {
+      "word": "FEEL",
+      "t0": 4.127,
+      "t1": 4.419
+    },
+    {
+      "word": "SOFT",
+      "t0": 4.762,
+      "t1": 4.96
+    },
+    {
+      "word": "TPU",
+      "t0": 4.96,
+      "t1": 5.346
+    },
+    {
+      "word": "BENDS",
+      "t0": 5.346,
+      "t1": 5.783
+    },
+    {
+      "word": "HARD",
+      "t0": 6.127,
+      "t1": 6.315
+    },
+    {
+      "word": "ABS",
+      "t0": 6.419,
+      "t1": 6.877
+    },
+    {
+      "word": "STAYS",
+      "t0": 6.887,
+      "t1": 7.169
+    },
+    {
+      "word": "RIGID",
+      "t0": 7.169,
+      "t1": 7.481
+    },
+    {
+      "word": "PRINTING",
+      "t0": 8.015,
+      "t1": 8.327
+    },
+    {
+      "word": "TPU",
+      "t0": 8.66,
+      "t1": 8.994
+    },
+    {
+      "word": "STRINGS",
+      "t0": 8.994,
+      "t1": 9.442
+    },
+    {
+      "word": "AND",
+      "t0": 9.452,
+      "t1": 9.515
+    },
+    {
+      "word": "SLIPS",
+      "t0": 9.525,
+      "t1": 10.067
+    },
+    {
+      "word": "ABS",
+      "t0": 10.39,
+      "t1": 10.785
+    },
+    {
+      "word": "WARPS",
+      "t0": 10.796,
+      "t1": 11.119
+    },
+    {
+      "word": "AND",
+      "t0": 11.119,
+      "t1": 11.192
+    },
+    {
+      "word": "LIFTS",
+      "t0": 11.192,
+      "t1": 11.587
+    },
+    {
+      "word": "FINISHING",
+      "t0": 12.194,
+      "t1": 12.579
+    },
+    {
+      "word": "GRIPPY",
+      "t0": 12.912,
+      "t1": 13.34
+    },
+    {
+      "word": "TPU",
+      "t0": 13.454,
+      "t1": 14.058
+    },
+    {
+      "word": "ABS",
+      "t0": 14.412,
+      "t1": 14.537
+    },
+    {
+      "word": "SANDS",
+      "t0": 14.548,
+      "t1": 14.746
+    },
+    {
+      "word": "SMOOTH",
+      "t0": 14.746,
+      "t1": 15.037
+    },
+    {
+      "word": "USES",
+      "t0": 15.571,
+      "t1": 16.05
+    },
+    {
+      "word": "TPU",
+      "t0": 16.383,
+      "t1": 16.696
+    },
+    {
+      "word": "GRIPS",
+      "t0": 16.696,
+      "t1": 17.06
+    },
+    {
+      "word": "AND",
+      "t0": 17.185,
+      "t1": 17.279
+    },
+    {
+      "word": "CASES",
+      "t0": 17.279,
+      "t1": 17.821
+    },
+    {
+      "word": "ABS",
+      "t0": 18.154,
+      "t1": 18.54
+    },
+    {
+      "word": "BRACKETS",
+      "t0": 18.54,
+      "t1": 19.019
+    },
+    {
+      "word": "AND",
+      "t0": 19.029,
+      "t1": 19.081
+    },
+    {
+      "word": "SHELLS",
+      "t0": 19.081,
+      "t1": 19.633
+    },
+    {
+      "word": "IT",
+      "t0": 20.067,
+      "t1": 20.119
+    },
+    {
+      "word": "DEPENDS",
+      "t0": 20.119,
+      "t1": 20.619
+    },
+    {
+      "word": "BEND,",
+      "t0": 20.827,
+      "t1": 21.192
+    },
+    {
+      "word": "TPU",
+      "t0": 21.369,
+      "t1": 21.91
+    },
+    {
+      "word": "TOUGH",
+      "t0": 22.265,
+      "t1": 22.442
+    },
+    {
+      "word": "ABS",
+      "t0": 22.629,
+      "t1": 23.223
+    },
+    {
+      "word": "FOLLOW",
+      "t0": 23.608,
+      "t1": 23.806
+    },
+    {
+      "word": "FOR",
+      "t0": 23.806,
+      "t1": 23.921
+    },
+    {
+      "word": "MORE",
+      "t0": 23.931,
+      "t1": 24.265
+    },
+    {
+      "word": "FILAMENT",
+      "t0": 24.265,
+      "t1": 24.681
+    },
+    {
+      "word": "BATTLES!",
+      "t0": 24.681,
+      "t1": 25.202
+    }
+  ],
+  "on_screen_text": [
+    {
+      "beat": "hook",
+      "text": "TPU",
+      "shown": 0.33,
+      "spoken": 0.33
+    },
+    {
+      "beat": "hook",
+      "text": "VS",
+      "shown": 0.83,
+      "spoken": 0.8
+    },
+    {
+      "beat": "hook",
+      "text": "ABS",
+      "shown": 1.58,
+      "spoken": 1.55
+    },
+    {
+      "beat": "feel",
+      "text": "FEEL",
+      "shown": 4.17,
+      "spoken": 4.13
+    },
+    {
+      "beat": "feel",
+      "text": "SOFT",
+      "shown": 4.83,
+      "spoken": 4.76
+    },
+    {
+      "beat": "feel",
+      "text": "BENDS",
+      "shown": 5.42,
+      "spoken": 5.35
+    },
+    {
+      "beat": "feel",
+      "text": "HARD",
+      "shown": 6.17,
+      "spoken": 6.13
+    },
+    {
+      "beat": "feel",
+      "text": "RIGID",
+      "shown": 7.25,
+      "spoken": 7.17
+    },
+    {
+      "beat": "habits",
+      "text": "PRINTING",
+      "shown": 8.08,
+      "spoken": 8.01
+    },
+    {
+      "beat": "habits",
+      "text": "STRINGS",
+      "shown": 9.0,
+      "spoken": 8.99
+    },
+    {
+      "beat": "habits",
+      "text": "SLIPS",
+      "shown": 9.58,
+      "spoken": 9.52
+    },
+    {
+      "beat": "habits",
+      "text": "WARPS",
+      "shown": 10.83,
+      "spoken": 10.8
+    },
+    {
+      "beat": "habits",
+      "text": "LIFTS",
+      "shown": 11.25,
+      "spoken": 11.19
+    },
+    {
+      "beat": "surface",
+      "text": "FINISHING",
+      "shown": 12.25,
+      "spoken": 12.19
+    },
+    {
+      "beat": "surface",
+      "text": "GRIPPY",
+      "shown": 12.92,
+      "spoken": 12.91
+    },
+    {
+      "beat": "surface",
+      "text": "SANDS",
+      "shown": 14.58,
+      "spoken": 14.55
+    },
+    {
+      "beat": "surface",
+      "text": "SMOOTH",
+      "shown": 14.75,
+      "spoken": 14.75
+    },
+    {
+      "beat": "uses",
+      "text": "USES",
+      "shown": 15.58,
+      "spoken": 15.57
+    },
+    {
+      "beat": "uses",
+      "text": "GRIPS",
+      "shown": 16.75,
+      "spoken": 16.7
+    },
+    {
+      "beat": "uses",
+      "text": "CASES",
+      "shown": 17.33,
+      "spoken": 17.28
+    },
+    {
+      "beat": "uses",
+      "text": "BRACKETS",
+      "shown": 18.58,
+      "spoken": 18.54
+    },
+    {
+      "beat": "uses",
+      "text": "SHELLS",
+      "shown": 19.08,
+      "spoken": 19.08
+    },
+    {
+      "beat": "verdict",
+      "text": "IT",
+      "shown": 20.08,
+      "spoken": 20.07
+    },
+    {
+      "beat": "verdict",
+      "text": "DEPENDS",
+      "shown": 20.17,
+      "spoken": 20.12
+    },
+    {
+      "beat": "verdict",
+      "text": "BEND?",
+      "shown": 20.83,
+      "spoken": 20.83
+    },
+    {
+      "beat": "verdict",
+      "text": "TPU",
+      "shown": 21.42,
+      "spoken": 21.37
+    },
+    {
+      "beat": "verdict",
+      "text": "TOUGH?",
+      "shown": 22.33,
+      "spoken": 22.26
+    },
+    {
+      "beat": "verdict",
+      "text": "ABS",
+      "shown": 22.67,
+      "spoken": 22.63
+    },
+    {
+      "beat": "verdict",
+      "text": "IT DEPENDS",
+      "shown": 23.67,
+      "spoken": 20.12
+    },
+    {
+      "beat": "verdict",
+      "text": "FOLLOW FOR MORE",
+      "shown": 23.67,
+      "spoken": 23.93
+    },
+    {
+      "beat": "verdict",
+      "text": "FILAMENT BATTLES",
+      "shown": 24.33,
+      "spoken": 24.68
+    }
+  ],
+  "text_issues": [],
+  "voiceover_issues": [],
+  "dead_air": []
+}

@@ -41,4 +41,6 @@ FLAT = [channel for rgb in COLORS for channel in rgb] + [0] * (768 - 3 * len(COL
 MATERIALS = {
     "wood": {"dark": WOOD0, "mid": WOOD1, "light": WOOD2, "accent": AMBER, "shine": WOOD2},
     "metal": {"dark": STEEL0, "mid": STEEL1, "light": STEEL2, "accent": SHINE, "shine": WHITE},
+    "tpu": {"dark": RED, "mid": AMBER, "light": YELLOW, "accent": AMBER, "shine": CREAM},
+    "abs": {"dark": STEEL0, "mid": CREAM, "light": WHITE, "accent": SHINE, "shine": WHITE},
 }
