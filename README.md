@@ -6,3 +6,4 @@ Ffempeg Ai video editing
 -Doesnt work in chatgpt but runawayml and canva are alternatives 
 -possibly works in cursor 
 -Need to try in vs code via github codespace codex 
+-Social Media via buffer
