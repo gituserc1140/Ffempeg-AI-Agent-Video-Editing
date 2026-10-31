@@ -1,0 +1,5 @@
+pillow>=10.0
+numpy>=1.26
+edge-tts>=6.1
+requests>=2.31
+boto3>=1.34

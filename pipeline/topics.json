@@ -1,0 +1,158 @@
+[
+  {
+    "slug": "pla-vs-petg",
+    "title": "PLA vs PETG",
+    "format": "battle",
+    "caption": "PLA vs PETG: which filament wins? #3dprinting #pla #petg #filament",
+    "layout": "split",
+    "subject_a": {"label": "PLA", "color": "orange", "icon": "spool"},
+    "subject_b": {"label": "PETG", "color": "cyan", "icon": "spool"},
+    "beats": [
+      {"scene": "hook", "side": "both", "icon": "spool", "trigger": "filament",
+       "line": "Which filament should you pick for your next print?"},
+      {"scene": "card", "side": "b", "icon": "shield", "trigger": "strength", "label": "ROUND 1",
+       "line": "Round one, strength. PETG flexes and takes a beating while PLA stays stiff."},
+      {"scene": "card", "side": "a", "icon": "check", "trigger": "ease", "label": "ROUND 2",
+       "line": "Round two, ease. PLA prints cleanly with less fuss and almost no stringing."},
+      {"scene": "icon", "side": "b", "icon": "flame", "trigger": "heat",
+       "line": "Round three, heat. PETG handles a warm car far better than PLA."},
+      {"scene": "icon", "side": "b", "icon": "hard", "trigger": "tough",
+       "line": "For tough everyday parts that live outside, choose PETG."},
+      {"scene": "end", "side": "both", "icon": "star", "trigger": "winner",
+       "line": "Follow for more quick filament battles, and pick your winner!"}
+    ]
+  },
+  {
+    "slug": "fix-stringing",
+    "title": "Fix stringing",
+    "format": "troubleshooting",
+    "caption": "Stop stringing in three quick fixes. #3dprinting #stringing #troubleshooting",
+    "layout": "single",
+    "subject_a": {"label": "FIX", "color": "orange", "icon": "strand"},
+    "beats": [
+      {"scene": "hook", "side": "a", "icon": "strand", "trigger": "strings",
+       "line": "Is your print covered in spiderweb strings? Here is the quick fix."},
+      {"scene": "fix", "side": "a", "icon": "drop", "trigger": "dry",
+       "line": "First, wet filament is the usual culprit, so dry your spool."},
+      {"scene": "fix", "side": "a", "icon": "flame", "trigger": "lower",
+       "line": "Second, too much heat makes the nozzle ooze, so lower the temperature."},
+      {"scene": "fix", "side": "a", "icon": "nozzle", "trigger": "retraction",
+       "line": "Third, turn on retraction so the filament pulls back before every travel move."},
+      {"scene": "icon", "side": "a", "icon": "layers", "trigger": "clean",
+       "line": "Fix those three and your surface comes out clean and smooth."},
+      {"scene": "end", "side": "a", "icon": "star", "trigger": "fixes",
+       "line": "Follow for more printing fixes and save this one for later!"}
+    ]
+  },
+  {
+    "slug": "first-layer-tips",
+    "title": "Three first layer tips",
+    "format": "tip",
+    "caption": "Three tips for a perfect first layer. #3dprinting #firstlayer #tips",
+    "layout": "single",
+    "subject_a": {"label": "TIPS", "color": "green", "icon": "layers"},
+    "beats": [
+      {"scene": "hook", "side": "a", "icon": "layers", "trigger": "layer",
+       "line": "Want a perfect first layer every single time? Try these three tips."},
+      {"scene": "card", "side": "a", "icon": "gear", "trigger": "level", "label": "TIP 1",
+       "line": "Tip one, level your bed so the nozzle height is even."},
+      {"scene": "card", "side": "a", "icon": "drop", "trigger": "clean", "label": "TIP 2",
+       "line": "Tip two, clean the plate with soap so the plastic sticks properly."},
+      {"scene": "card", "side": "a", "icon": "layers", "trigger": "slow", "label": "TIP 3",
+       "line": "Tip three, slow down the first layer so every line lays down smoothly."},
+      {"scene": "icon", "side": "a", "icon": "shield", "trigger": "stick",
+       "line": "Do all three and your prints will stick for the whole job."},
+      {"scene": "end", "side": "a", "icon": "heart", "trigger": "tips",
+       "line": "Follow for more tips and share this with a friend!"}
+    ]
+  },
+  {
+    "slug": "fix-warping",
+    "title": "Fix warping",
+    "format": "troubleshooting",
+    "caption": "Corners lifting? Fix warping fast. #3dprinting #warping #troubleshooting",
+    "layout": "single",
+    "subject_a": {"label": "FIX", "color": "cyan", "icon": "warp"},
+    "beats": [
+      {"scene": "hook", "side": "a", "icon": "warp", "trigger": "warping",
+       "line": "Corners lifting off the bed? That is warping, and it is fixable."},
+      {"scene": "fix", "side": "a", "icon": "shield", "trigger": "shield",
+       "line": "Cold drafts shrink the plastic unevenly, so shield your printer from air."},
+      {"scene": "fix", "side": "a", "icon": "flame", "trigger": "warm",
+       "line": "A warm bed keeps the bottom layers gripping, so heat it properly."},
+      {"scene": "fix", "side": "a", "icon": "layers", "trigger": "brim",
+       "line": "A brim adds extra grip around the edges where the lifting starts."},
+      {"scene": "icon", "side": "a", "icon": "check", "trigger": "flat",
+       "line": "Combine all of these and those corners stay flat and tight."},
+      {"scene": "end", "side": "a", "icon": "heart", "trigger": "printing",
+       "line": "Follow for more printer fixes and happy printing, friends!"}
+    ]
+  },
+  {
+    "slug": "tpu-spotlight",
+    "title": "Flexible filament spotlight",
+    "format": "spotlight",
+    "caption": "Flexible filament in 25 seconds. #3dprinting #tpu #flexible",
+    "layout": "single",
+    "subject_a": {"label": "FLEX", "color": "pink", "icon": "wave"},
+    "beats": [
+      {"scene": "hook", "side": "a", "icon": "wave", "trigger": "flexible",
+       "line": "Meet flexible filament, the rubbery material that bends without breaking."},
+      {"scene": "icon", "side": "a", "icon": "shield", "trigger": "toughness",
+       "line": "Its biggest strength is toughness, perfect for phone cases and soft grips."},
+      {"scene": "icon", "side": "a", "icon": "cross", "trigger": "slow",
+       "line": "The weakness is speed, because it must print slow and gentle."},
+      {"scene": "icon", "side": "a", "icon": "wave", "trigger": "bounce",
+       "line": "Best uses are bumpers, gaskets and anything that needs to bounce back."},
+      {"scene": "icon", "side": "a", "icon": "drop", "trigger": "dry",
+       "line": "Keep the spool dry and use a direct drive extruder for the best results."},
+      {"scene": "end", "side": "a", "icon": "star", "trigger": "spotlights",
+       "line": "Follow for more material spotlights and save this for later!"}
+    ]
+  },
+  {
+    "slug": "rough-to-polished",
+    "title": "Rough to polished",
+    "format": "before-after",
+    "caption": "Rough print to showroom finish. #3dprinting #postprocessing #painting",
+    "layout": "single",
+    "subject_a": {"label": "GLOW UP", "color": "orange", "icon": "layers"},
+    "beats": [
+      {"scene": "hook", "side": "a", "icon": "layers", "trigger": "rough",
+       "line": "Rough print to showroom finish in three simple steps."},
+      {"scene": "icon", "side": "a", "icon": "gear", "trigger": "sand",
+       "line": "Step one, sand the layer lines with coarse paper, then move to fine."},
+      {"scene": "icon", "side": "a", "icon": "drop", "trigger": "primer",
+       "line": "Step two, spray a thin coat of primer to fill the tiny gaps."},
+      {"scene": "icon", "side": "a", "icon": "star", "trigger": "paint",
+       "line": "Step three, paint in light coats and let each one dry fully."},
+      {"scene": "card", "side": "a", "icon": "wave", "trigger": "patient", "label": "PATIENCE",
+       "line": "Be patient, because rushing the drying is how mistakes happen."},
+      {"scene": "end", "side": "a", "icon": "star", "trigger": "results",
+       "line": "Follow for more glow ups and show me your results!"}
+    ]
+  },
+  {
+    "slug": "matte-vs-silk",
+    "title": "Matte vs silk",
+    "format": "battle",
+    "caption": "Matte vs silk filament, who wins? #3dprinting #silk #matte",
+    "layout": "split",
+    "subject_a": {"label": "MATTE", "color": "orange", "icon": "spool"},
+    "subject_b": {"label": "SILK", "color": "pink", "icon": "spool"},
+    "beats": [
+      {"scene": "hook", "side": "both", "icon": "spool", "trigger": "finish",
+       "line": "Matte or silk, which finish will win on your shelf today?"},
+      {"scene": "card", "side": "b", "icon": "star", "trigger": "looks", "label": "ROUND 1",
+       "line": "Round one, looks. Silk shines and sparkles under every light."},
+      {"scene": "card", "side": "a", "icon": "layers", "trigger": "flaws", "label": "ROUND 2",
+       "line": "Round two, hiding flaws. Matte hides layer lines far better."},
+      {"scene": "card", "side": "a", "icon": "check", "trigger": "forgiving", "label": "ROUND 3",
+       "line": "Round three, printing ease. Matte is forgiving, silk likes slow speeds."},
+      {"scene": "icon", "side": "b", "icon": "star", "trigger": "silk",
+       "line": "For display models and gifts, silk steals the show."},
+      {"scene": "end", "side": "both", "icon": "heart", "trigger": "battles",
+       "line": "For everyday parts, matte wins. Follow for more finish battles!"}
+    ]
+  }
+]

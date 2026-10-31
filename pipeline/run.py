@@ -1,0 +1,100 @@
+"""Daily entry point: brief -> render -> QC -> publish.  python -m pipeline.run"""
+import argparse
+import datetime as dt
+import json
+import os
+import sys
+from pathlib import Path
+
+from . import brief as brief_mod, publish, qc
+from .render import render
+
+HERE = Path(__file__).parent
+USED = HERE / "used.json"
+TOPICS = HERE / "topics.json"
+
+
+def _load_used():
+    return json.loads(USED.read_text()) if USED.exists() else []
+
+
+def fallback_topic(used):
+    topics = json.loads(TOPICS.read_text())
+    counts = {t["slug"]: 0 for t in topics}
+    for u in used:
+        base = u.get("topic")
+        if base in counts:
+            counts[base] += 1
+    return min(topics, key=lambda t: counts[t["slug"]])
+
+
+def _summary(lines):
+    path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if path:
+        with open(path, "a") as fh:
+            fh.write("\n".join(lines) + "\n")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", default="out")
+    ap.add_argument("--no-llm", action="store_true")
+    ap.add_argument("--no-publish", action="store_true")
+    ap.add_argument("--fallback-voice", action="store_true")
+    ap.add_argument("--format", choices=brief_mod.FORMATS)
+    args = ap.parse_args()
+
+    now = dt.datetime.now(dt.timezone.utc)
+    slot = now.hour // 8
+    fmt = args.format or brief_mod.FORMATS[(now.timetuple().tm_yday * 3 + slot) % len(brief_mod.FORMATS)]
+    used = _load_used()
+
+    candidates = []
+    if not args.no_llm:
+        generated = brief_mod.generate(fmt, [u["title"] for u in used])
+        if generated:
+            candidates.append(("llm", generated))
+    topic = fallback_topic(used)
+    candidates.append(("topic bank", dict(topic)))
+
+    out = Path(args.out)
+    chosen = report = meta = None
+    for source, brief in candidates:
+        try:
+            meta = render(brief, out, args.fallback_voice)
+            report = qc.run(out)
+        except Exception as exc:
+            print(f"[run] {source} brief failed to render: {exc}")
+            continue
+        print(f"[run] {source} brief '{brief['title']}' QC ok={report['ok']}")
+        if report["ok"]:
+            chosen = (source, brief)
+            break
+    if not chosen:
+        _summary(["### Render failed", "No brief passed QC. See the uploaded artifact."])
+        return 1
+
+    source, brief = chosen
+    stamp = now.strftime("%Y%m%d-%H%M")
+    key = f"shorts/{stamp}-{brief['slug']}.mp4"
+    result = {"url": None, "post_id": None, "error": "publishing skipped"}
+    if not args.no_publish:
+        result = publish.publish(out / "video.mp4", key, brief["caption"])
+        if result["error"]:
+            print(f"::warning::{result['error']}")
+
+    entry = dict(date=now.isoformat(timespec="minutes"), title=brief["title"], slug=brief["slug"],
+                 topic=topic["slug"] if source == "topic bank" else None, source=source,
+                 voice=meta["voice_engine"], buffer_post=result["post_id"])
+    USED.write_text(json.dumps(_load_used() + [entry], indent=2) + "\n")
+
+    _summary([f"### {brief['title']}", f"- Brief source: **{source}**",
+              f"- Voice: **{meta['voice_engine']}**", f"- Duration: {meta['duration']:.2f}s",
+              f"- Buffer draft: {result['post_id'] or 'not created'}",
+              f"- Publish status: {result['error'] or 'ok'}", "",
+              *[f"- {'PASS' if r['ok'] else 'FAIL'} {n}: {r['detail']}" for n, r in report["checks"].items()]])
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

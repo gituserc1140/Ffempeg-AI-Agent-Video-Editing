@@ -1,0 +1,104 @@
+"""Generate a brief with an LLM (Cohere, then GitHub Models). Returns None on any failure
+so the caller can fall back to the curated topic bank."""
+import json
+import os
+import re
+from pathlib import Path
+
+import requests
+
+from . import config as C
+from .sprites import ICONS
+from .validate import normalize, validate
+
+COHERE_URL = "https://api.cohere.com/v2/chat"
+COHERE_MODEL = os.environ.get("COHERE_MODEL", "command-a-03-2025")
+GH_MODELS_URL = "https://models.github.ai/inference/chat/completions"
+GH_MODEL = os.environ.get("GH_MODEL", "openai/gpt-4.1-mini")
+
+LAYOUT = {"battle": "split"}
+FORMATS = ["battle", "troubleshooting", "tip", "spotlight", "before-after"]
+
+_EXAMPLE = json.loads((Path(__file__).parent / "topics.json").read_text())[0]
+
+SYSTEM = f"""You write briefs for 25 second pixel-art 3D printing shorts. Reply with ONE JSON object only.
+
+Schema (follow the example exactly):
+- slug: lowercase-words-with-hyphens, title, caption (social post text with 3-4 hashtags)
+- layout: "split" for battles (two subjects), otherwise "single"
+- subject_a / subject_b (battles only): {{label (max 8 letters), color, icon}}
+- beats: 5 or 6 objects. Beat 1 scene "hook", last beat scene "end", middle beats "icon", "card" or "fix".
+  Each beat: scene, side ("a","b" or "both"; use "a" for single layout), icon, trigger, line, and label for card beats.
+- color must be one of {sorted(C.FAMILIES)}. icon must be one of {sorted(ICONS)}.
+- "fix" beats show a red problem icon that turns green at the trigger word: use them for troubleshooting.
+- "card" beats slide in a label such as "ROUND 1" or "TIP 1" (max 8 characters).
+
+Script rules:
+- Total 60-70 words across all lines, one line per beat, each line 6-14 words, no word over 14 letters.
+- Plain ASCII only: letters, spaces and . , ! ? ' - characters. No digits (write numbers as words, "3D" is allowed), no emoji.
+- General terms only: no temperatures, measurements or brand names.
+- trigger is ONE word that appears in that beat's line; the icon pops when it is spoken. Say the key term once clearly.
+- The last line asks viewers to follow, and its content fits the topic.
+
+Example:
+{json.dumps(_EXAMPLE)}"""
+
+
+def _headers_bearer(token):
+    return {"Authorization": "Bearer " + token, "Content-Type": "application/json"}
+
+
+def _cohere(messages, key):
+    r = requests.post(COHERE_URL, headers=_headers_bearer(key), timeout=90, json={
+        "model": COHERE_MODEL, "messages": messages, "temperature": 0.9,
+        "response_format": {"type": "json_object"}})
+    r.raise_for_status()
+    return r.json()["message"]["content"][0]["text"]
+
+
+def _github_models(messages, token):
+    r = requests.post(GH_MODELS_URL, headers=dict(
+        _headers_bearer(token), Accept="application/vnd.github+json",
+        **{"X-GitHub-Api-Version": "2022-11-28"}), timeout=90, json={
+        "model": GH_MODEL, "messages": messages, "temperature": 0.9,
+        "response_format": {"type": "json_object"}})
+    r.raise_for_status()
+    return r.json()["choices"][0]["message"]["content"]
+
+
+def _providers():
+    out = []
+    if os.environ.get("COHERE_API_KEY"):
+        out.append(("cohere", lambda m: _cohere(m, os.environ["COHERE_API_KEY"])))
+    if os.environ.get("GITHUB_TOKEN"):
+        out.append(("github-models", lambda m: _github_models(m, os.environ["GITHUB_TOKEN"])))
+    return out
+
+
+def _parse(text):
+    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
+    return json.loads(text)
+
+
+def generate(fmt, recent_titles, attempts=2):
+    layout = LAYOUT.get(fmt, "single")
+    ask = (f"Format: {fmt}. Layout: {layout}. Pick a fresh topic about 3D printing. "
+           f"Do not reuse these recent topics: {', '.join(recent_titles[-25:]) or 'none'}.")
+    for name, call in _providers():
+        messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": ask}]
+        for attempt in range(attempts):
+            try:
+                brief = normalize(_parse(call(messages)))
+                brief["format"], brief["layout"] = fmt, layout
+                errs = validate(brief)
+                if not errs:
+                    print(f"[brief] {name} produced '{brief['title']}'")
+                    return brief
+                print(f"[brief] {name} attempt {attempt + 1} invalid: {errs}")
+                messages += [{"role": "assistant", "content": json.dumps(brief)},
+                             {"role": "user", "content": "Fix these problems and return the full JSON: "
+                              + "; ".join(errs)}]
+            except Exception as exc:
+                print(f"[brief] {name} attempt {attempt + 1} failed: {exc}")
+                break
+    return None
