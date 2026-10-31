@@ -26,7 +26,7 @@ SYSTEM = f"""You write briefs for 25 second pixel-art 3D printing shorts. Reply 
 Schema (follow the example exactly):
 - slug: lowercase-words-with-hyphens, title, caption (social post text with 3-4 hashtags)
 - layout: "split" for battles (two subjects), otherwise "single"
-- subject_a / subject_b (battles only): {{label (max 8 letters), color, icon}}
+- subject_a (always) and subject_b (split layout only): {{label (max 8 letters), color, icon}}
 - beats: 5 or 6 objects. Beat 1 scene "hook", last beat scene "end", middle beats "icon", "card" or "fix".
   Each beat: scene, side ("a","b" or "both"; use "a" for single layout), icon, trigger, line, and label for card beats.
 - color must be one of {sorted(C.FAMILIES)}. icon must be one of {sorted(ICONS)}.
@@ -60,10 +60,12 @@ def _github_models(messages, token):
     r = requests.post(GH_MODELS_URL, headers=dict(
         _headers_bearer(token), Accept="application/vnd.github+json",
         **{"X-GitHub-Api-Version": "2022-11-28"}), timeout=90, json={
-        "model": GH_MODEL, "messages": messages, "temperature": 0.9,
-        "response_format": {"type": "json_object"}})
+        "model": GH_MODEL, "messages": messages, "temperature": 0.9})
     r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"]
+    content = r.json()["choices"][0]["message"].get("content") or ""
+    if not content.strip():
+        raise RuntimeError("empty response from GitHub Models")
+    return content
 
 
 def _providers():
@@ -80,7 +82,7 @@ def _parse(text):
     return json.loads(text)
 
 
-def generate(fmt, recent_titles, attempts=2):
+def generate(fmt, recent_titles, attempts=3):
     layout = LAYOUT.get(fmt, "single")
     ask = (f"Format: {fmt}. Layout: {layout}. Pick a fresh topic about 3D printing. "
            f"Do not reuse these recent topics: {', '.join(recent_titles[-25:]) or 'none'}.")

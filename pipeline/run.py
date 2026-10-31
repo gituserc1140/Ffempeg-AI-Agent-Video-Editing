@@ -7,7 +7,10 @@ import sys
 from pathlib import Path
 
 from . import brief as brief_mod, publish, qc
+from . import config as C
 from .render import render
+
+BASE_RATE = C.VOICE_RATE
 
 HERE = Path(__file__).parent
 USED = HERE / "used.json"
@@ -18,14 +21,19 @@ def _load_used():
     return json.loads(USED.read_text()) if USED.exists() else []
 
 
-def fallback_topic(used):
+def ranked_topics(used):
+    """Topic bank, least-used first."""
     topics = json.loads(TOPICS.read_text())
     counts = {t["slug"]: 0 for t in topics}
     for u in used:
         base = u.get("topic")
         if base in counts:
             counts[base] += 1
-    return min(topics, key=lambda t: counts[t["slug"]])
+    return sorted(topics, key=lambda t: counts[t["slug"]])
+
+
+def fallback_topic(used):
+    return ranked_topics(used)[0]
 
 
 def _summary(lines):
@@ -54,17 +62,25 @@ def main():
         generated = brief_mod.generate(fmt, [u["title"] for u in used])
         if generated:
             candidates.append(("llm", generated))
-    topic = fallback_topic(used)
-    candidates.append(("topic bank", dict(topic)))
+    candidates += [("topic bank", dict(t)) for t in ranked_topics(used)]
 
     out = Path(args.out)
     chosen = report = meta = None
     for source, brief in candidates:
-        try:
-            meta = render(brief, out, args.fallback_voice)
-            report = qc.run(out)
-        except Exception as exc:
-            print(f"[run] {source} brief failed to render: {exc}")
+        meta = report = None
+        # A slower real voice can push a script over the limit; retry once with faster speech.
+        for rate in (C.VOICE_RATE, "+32%"):
+            C.VOICE_RATE = rate
+            try:
+                meta = render(brief, out, args.fallback_voice)
+                report = qc.run(out)
+                break
+            except Exception as exc:
+                print(f"[run] {source} brief '{brief.get('title')}' failed at rate {rate}: {exc}")
+                if "too long" not in str(exc):
+                    break
+        C.VOICE_RATE = BASE_RATE
+        if not report:
             continue
         print(f"[run] {source} brief '{brief['title']}' QC ok={report['ok']}")
         if report["ok"]:
@@ -84,7 +100,7 @@ def main():
             print(f"::warning::{result['error']}")
 
     entry = dict(date=now.isoformat(timespec="minutes"), title=brief["title"], slug=brief["slug"],
-                 topic=topic["slug"] if source == "topic bank" else None, source=source,
+                 topic=brief["slug"] if source == "topic bank" else None, source=source,
                  voice=meta["voice_engine"], buffer_post=result["post_id"])
     USED.write_text(json.dumps(_load_used() + [entry], indent=2) + "\n")
 
