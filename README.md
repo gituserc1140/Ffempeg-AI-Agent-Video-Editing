@@ -2,7 +2,7 @@
 
 ## Considerations - please read 
 
-- Claude works with the config in this repo.
+- Claude works with the config in this repo but is limited and made separate config in G-drive and Claude storage.
 - Cursor is set up the same way, through `.cursor/mcp.json`. Need premium for cloud agent - free tier cannot do 
 - ChatGPT does not. RunwayML and Canva are the alternatives for poster videos.
 - VS Code has `.vscode/mcp.json`. GitHub Codespaces with Codex is still untried.
