@@ -58,3 +58,27 @@ python3 -m unittest discover -s tests -v
 ```
 
 
+
+## Automated daily videos
+
+`.github/workflows/daily-videos.yml` renders about 3 pixel-art shorts a day (rules in `pixel_video_prompt.md`), runs deterministic QC, and saves them as Buffer drafts.
+
+Brief source order: Cohere, then GitHub Models, then `pipeline/topics.json`.
+
+Hosting: Buffer needs a public URL, so the repo must be **public**. Each video is attached to a rolling `videos` GitHub Release (assets older than 14 days are pruned) using the built-in token, so no storage account is needed.
+
+Repository secrets:
+
+- `COHERE_API_KEY`: primary brief writer.
+- `BUFFER_API_KEY` and `BUFFER_CHANNEL_ID`: draft creation.
+- Optional instead of Releases (e.g. for a private repo): `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, plus `PUBLIC_BASE_URL` (otherwise 7-day presigned URLs).
+
+Run locally:
+
+```bash
+pip install -r pipeline/requirements.txt   # also needs ffmpeg and espeak-ng
+python -m pipeline.run --no-llm --no-publish --fallback-voice --out out
+python -m unittest tests.test_pipeline
+```
+
+Scheduled workflows only run from the default branch, and GitHub pauses them after 60 days without repo activity (the `used.json` commits keep it active).

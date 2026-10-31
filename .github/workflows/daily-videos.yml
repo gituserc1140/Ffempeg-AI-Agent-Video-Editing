@@ -1,0 +1,90 @@
+name: Daily videos
+
+on:
+  schedule:
+    # Three videos a day (UTC). GitHub may start scheduled runs 5-30 minutes late.
+    - cron: "17 6 * * *"
+    - cron: "17 12 * * *"
+    - cron: "17 18 * * *"
+  workflow_dispatch:
+    inputs:
+      format:
+        description: "Force a format (leave empty to rotate)"
+        required: false
+        type: choice
+        default: ""
+        options: ["", battle, troubleshooting, tip, spotlight, before-after]
+      publish:
+        description: "Upload and create the Buffer draft"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write   # commit pipeline/used.json
+  models: read      # GitHub Models fallback for brief generation
+
+concurrency:
+  group: daily-videos
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+
+      - name: Install ffmpeg and espeak-ng
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg espeak-ng
+
+      - run: pip install -r pipeline/requirements.txt
+
+      - name: Generate, render, QC and publish
+        env:
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_CHANNEL_ID: ${{ secrets.BUFFER_CHANNEL_ID }}
+          S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          PUBLIC_BASE_URL: ${{ secrets.PUBLIC_BASE_URL }}
+          FORMAT_INPUT: ${{ inputs.format }}
+          PUBLISH_INPUT: ${{ inputs.publish }}
+        run: |
+          args=(--out out)
+          if [ -n "$FORMAT_INPUT" ]; then args+=(--format "$FORMAT_INPUT"); fi
+          if [ "$PUBLISH_INPUT" = "false" ]; then args+=(--no-publish); fi
+          python -m pipeline.run "${args[@]}"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: video-${{ github.run_id }}
+          path: |
+            out/video.mp4
+            out/contact_sheet.png
+            out/qc.json
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Record the topic
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pipeline/used.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Record generated video"
+            git pull --rebase
+            git push
+          fi
