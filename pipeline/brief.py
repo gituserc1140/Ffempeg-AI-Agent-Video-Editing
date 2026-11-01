@@ -31,6 +31,10 @@ Schema (follow the example exactly):
   Each beat: scene, side ("a","b" or "both"; use "a" for single layout), icon, trigger, line, and label for card beats.
 - color must be one of {sorted(C.FAMILIES)}. icon must be one of {sorted(ICONS)}.
 - "fix" beats show a red problem icon that turns green at the trigger word: use them for troubleshooting.
+- BATTLE (split) videos: use "round" beats for the middle beats, each with module, fx_a, fx_b and win ("a","b","tie").
+  Modules and allowed fx: bend (bend|snap|hold), heat (sag|hold), speed (fast|slow), drop (crack|bounce|hold),
+  detail (chunky|sharp). fx_a is how subject A behaves, fx_b subject B. The trigger is the topic word, spoken in the line.
+  The last beat may carry "verdict": 1-2 rows {{"trait": word spoken in that line, "pick": "a" or "b"}}.
 - "card" beats slide in a label such as "ROUND 1" or "TIP 1" (max 8 characters).
 
 Script rules:

@@ -82,3 +82,16 @@ python -m unittest tests.test_pipeline
 ```
 
 Scheduled workflows only run from the default branch, and GitHub pauses them after 60 days without repo activity (the `used.json` commits keep it active).
+
+## Battle rounds
+
+Battle briefs can use `round` beats (module `bend`, `heat`, `speed`, `drop` or `detail`, plus `fx_a`, `fx_b` and `win`) and a `verdict` plaque on the last beat. The split layout has a textured background, score pips and a check or cross per round. See `tpu-vs-abs` in `pipeline/topics.json` and `pipeline/rounds.py`. edge-tts now retries with a backoff because the service throttles bursts.
+
+## Status: parked
+
+The pipeline renders and passes QC with a Cohere-written brief (tested locally). It is parked until the voice is sorted:
+
+- edge-tts returns "No audio was received" from both the Codespace and GitHub Actions, so renders fall back to the robotic espeak-ng voice.
+- Options when resuming: retry edge-tts later, swap in another TTS (for example AssemblyAI, as in `pixel_video_prompt (2).md`), or accept the fallback voice.
+- The scheduled cron in `daily-videos.yml` should stay disabled (Actions tab, Disable workflow) until then, so it does not publish fallback-voice drafts.
+- Local key setup: put `COHERE_API_KEY=...` in `.env` (gitignored, no spaces or quotes), then `set -a; . ./.env; set +a`.

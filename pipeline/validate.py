@@ -3,10 +3,11 @@ import re
 
 from . import config as C
 from .font import CHARSET, text_width
+from .rounds import MODULES
 from .sprites import ICONS
 from .tts import normalize_token
 
-SCENES_MID = {"icon", "card", "fix"}
+SCENES_MID = {"icon", "card", "fix", "round"}
 SIDES = {"a", "b", "both"}
 BRANDS = {
     "prusa", "bambu", "creality", "ender", "polymaker", "sunlu", "esun", "hatchbox",
@@ -28,7 +29,10 @@ def normalize(brief):
     brief["handle"] = C.HANDLE
     brief["beats"] = [dict(b, line=clean_text(b.get("line", "")),
                            trigger=clean_text(b.get("trigger", "")),
-                           label=clean_text(b.get("label", "")).upper())
+                           label=clean_text(b.get("label", "")).upper(),
+                           **({"verdict": [dict(r, trait=clean_text(r.get("trait", "")).upper())
+                                           for r in b["verdict"]]}
+                              if isinstance(b.get("verdict"), list) else {}))
                       for b in brief.get("beats", [])]
     return brief
 
@@ -97,6 +101,29 @@ def validate(brief, allow_numbers=False):
             label = b.get("label", "")
             if not label or any(ch not in CHARSET for ch in label) or text_width(label, 1) > 58:
                 errs.append(f"{tag}: card needs a short label like 'ROUND 1'")
+        if b.get("scene") == "round":
+            mod = b.get("module")
+            if brief["layout"] != "split":
+                errs.append(f"{tag}: round scenes need the split layout")
+            elif mod not in MODULES:
+                errs.append(f"{tag}: module must be one of {sorted(MODULES)}")
+            else:
+                for k in ("fx_a", "fx_b"):
+                    if b.get(k) not in MODULES[mod]:
+                        errs.append(f"{tag}: {k} must be one of {list(MODULES[mod])} for {mod}")
+            if b.get("win", "tie") not in ("a", "b", "tie"):
+                errs.append(f"{tag}: win must be a, b or tie")
+        if b.get("verdict") is not None:
+            rows = b["verdict"]
+            if want != "end" or not isinstance(rows, list) or not 1 <= len(rows) <= 2:
+                errs.append(f"{tag}: verdict is 1-2 rows on the last beat")
+            else:
+                spoken = [normalize_token(w) for w in line.split()]
+                for row in rows:
+                    if row.get("pick") not in ("a", "b") or \
+                            normalize_token(row.get("trait", "")) not in spoken or \
+                            text_width(row.get("trait", ""), 1) > 70:
+                        errs.append(f"{tag}: verdict rows need a spoken trait word and pick a or b")
         if not allow_numbers and re.search(r"\d", line.replace("3D", "").replace("3d", "")):
             errs.append(f"{tag}: no digits allowed, spell numbers out")
         low = {normalize_token(w) for w in line.split()}

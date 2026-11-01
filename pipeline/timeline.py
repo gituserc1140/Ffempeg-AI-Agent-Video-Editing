@@ -94,6 +94,10 @@ def _sfx(plan):
             ev += [(tr, "pop"), (tr + 0.02, "impact")]
         elif kind == "card":
             ev += [(tr - 0.05, "whoosh"), (tr + 0.12, "bell")]
+        elif kind == "round":
+            ev += [(tr - 0.05, "whoosh"), (tr, "pop"), (tr + 0.12, "bell"), (tr + 0.4, "impact")]
+            if tr + 1.2 < b["end"]:
+                ev.append((tr + 1.2, "success"))
         elif kind == "fix":
             ev += [(s + 0.15, "fail"), (tr, "success"), (tr + 0.05, "sparkle")]
         elif kind == "end":

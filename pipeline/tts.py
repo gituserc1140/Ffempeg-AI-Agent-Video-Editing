@@ -4,6 +4,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import time
 from pathlib import Path
 
 import numpy as np
@@ -65,7 +66,9 @@ def _edge(lines, tmp):
     for i, text in enumerate(lines):
         mp3 = Path(tmp) / f"line{i}.mp3"
         last = None
-        for _ in range(3):
+        for attempt in range(6):
+            if attempt:
+                time.sleep(1.5 * attempt)  # the service throttles bursts of requests
             try:
                 events = asyncio.run(asyncio.wait_for(_edge_line(text, mp3), 45))
                 if mp3.stat().st_size < 1000:

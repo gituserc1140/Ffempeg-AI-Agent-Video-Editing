@@ -76,6 +76,19 @@ class Validation(unittest.TestCase):
         self.assertIn("digits", errs)
         self.assertIn("brand", errs)
 
+    def test_round_beats_need_valid_module_and_fx(self):
+        brief = normalize(json.loads(json.dumps(TOPICS[0])))
+        self.assertEqual(brief["beats"][1]["scene"], "round")
+        brief["beats"][1]["fx_a"] = "explode"
+        self.assertTrue(any("fx_a" in e for e in validate(brief)))
+        brief["beats"][1]["module"] = "nope"
+        self.assertTrue(any("module" in e for e in validate(brief)))
+
+    def test_verdict_trait_must_be_spoken(self):
+        brief = normalize(json.loads(json.dumps(TOPICS[0])))
+        brief["beats"][-1]["verdict"][0]["trait"] = "BANANA"
+        self.assertTrue(any("verdict" in e for e in validate(brief)))
+
     def test_trigger_must_be_spoken(self):
         brief = normalize(json.loads(json.dumps(TOPICS[0])))
         brief["beats"][2]["trigger"] = "banana"

@@ -7,6 +7,7 @@ import random
 from . import config as C
 from .font import text_width
 from . import stages
+from .rounds import DRAW as ROUND_DRAW
 from .sprites import ICONS
 
 POSE = C.POSE_FPS
@@ -273,6 +274,61 @@ def fix(c, plan, bi, t):
     return _shake(ps)
 
 
+RESULT_POSE = 14
+PIP_Y = 38
+
+
+def _pips(c, plan, bi, ps):
+    rounds = [i for i, b in enumerate(plan.beats) if b["scene"] == "round"]
+    ta, tb = tints(plan.brief)
+    x = 54 - (len(rounds) * 8 - 3) // 2
+    for i in rounds:
+        win = plan.beats[i].get("win")
+        done = i < bi or (i == bi and ps >= RESULT_POSE)
+        col = 5
+        if done and win:
+            col = {"a": ta[0], "b": tb[0]}.get(win, 4)
+        c.rect(x, PIP_Y, x + 4, PIP_Y + 4, 3 if i == bi else 4)
+        c.rect(x + 1, PIP_Y + 1, x + 3, PIP_Y + 3, col)
+        x += 8
+
+
+def round_(c, plan, bi, t):
+    brief, b = plan.brief, plan.beats[bi]
+    ps, pb = _beat_state(b, t)
+    _chrome(c, brief, pb, show_vs=False)
+    _pips(c, plan, bi, ps)
+    _keyword(c, plan, b, ps, 48)
+    ta, tb = tints(brief)
+    draw = ROUND_DRAW[b["module"]]
+    draw(c, 27, b["fx_a"], ps, ta, pb)
+    draw(c, 81, b["fx_b"], ps, tb, pb)
+    if ps >= RESULT_POSE and b.get("win") in ("a", "b"):
+        for who, cx in (("a", 27), ("b", 81)):
+            c.sprite("check" if b["win"] == who else "cross", cx, 114,
+                     _pop(1, ps - RESULT_POSE), tint=ta)
+    return _shake(ps)
+
+
+def _verdict(c, brief, b, ps):
+    rows = b["verdict"]
+    ta, tb = tints(brief)
+    x0, x1, y0 = 12, 88, 76
+    y1 = y0 + 4 + 20 * len(rows)
+    c.rect(x0 - 2, y0 - 2, x1 + 2, y1 + 2, 12)
+    c.rect(x0, y0, x1, y1, 1)
+    for i, row in enumerate(rows):
+        if ps < i * 4:
+            continue
+        y = y0 + 4 + i * 20
+        c.text_center(row["trait"], 50, y, 3, 1, kind="label")
+        tint = ta if row["pick"] == "a" else tb
+        label = brief["subject_" + row["pick"]]["label"]
+        w = text_width(label, 1)
+        c.rect(50 - w // 2 - 3, y + 9, 50 + (w + 1) // 2 + 2, y + 17, tint[0])
+        c.text_center(label, 50, y + 10, 0, 1, kind="label", shadow=False)
+
+
 def end(c, plan, bi, t):
     brief, b = plan.brief, plan.beats[bi]
     ps, pb = _beat_state(b, t)
@@ -283,11 +339,14 @@ def end(c, plan, bi, t):
     cx, cy, half = _show(c, b["icon"], slot, ps, pb)
     _sparkles(c, ps, pb, cx, cy, seed=bi * 19)
     _ring(c, ps, cx, cy, half)
-    _keyword(c, plan, b, ps, 104)
+    if b.get("verdict") and ps >= 0:
+        _verdict(c, brief, b, ps)
+    else:
+        _keyword(c, plan, b, ps, 104)
     if pb >= 4:
         col = 12 if (pb // 3) % 2 == 0 else 3
-        c.text_center(brief["handle"], 45, 124, col, 1, kind="handle")
+        c.text_center(brief["handle"], 45, 128 if b.get("verdict") else 124, col, 1, kind="handle")
     return _shake(ps)
 
 
-SCENES = {"hook": hook, "icon": icon, "card": card, "fix": fix, "end": end}
+SCENES = {"hook": hook, "icon": icon, "card": card, "fix": fix, "round": round_, "end": end}
