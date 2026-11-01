@@ -25,5 +25,14 @@
     "source": "llm",
     "voice": "edge-tts",
     "buffer_post": "6ae690951ee172cd6dd18f5e"
+  },
+  {
+    "date": "2026-11-01T06:27+00:00",
+    "title": "Three first layer tips",
+    "slug": "first-layer-tips",
+    "topic": "first-layer-tips",
+    "source": "topic bank",
+    "voice": "edge-tts",
+    "buffer_post": "6ae6dc5337c1acd2a0eddbd4"
   }
 ]
