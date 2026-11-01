@@ -24,9 +24,16 @@ class FontAndSprites(unittest.TestCase):
         for ch, rows in GLYPHS.items():
             self.assertEqual(len(rows), 7, ch)
 
-    def test_icons_are_12x12(self):
+    def test_icons_are_square_pixel_art(self):
         for name, rows in ICONS.items():
-            self.assertEqual([len(r) for r in rows], [12] * 12, name)
+            self.assertEqual(len({len(r) for r in rows}), 1, name)
+            self.assertIn(len(rows), {12, 28}, name)
+
+    def test_detailed_spool_fits_canvas_and_palette(self):
+        c = Canvas()
+        c.sprite("spool", 27, 62, 1, tint=(13, 14))
+        self.assertEqual(c.img.getpixel((27, 62)), C.PALETTE[0])
+        self.assertLessEqual(c.color_count(), 16)
 
     def test_text_stays_in_palette_and_records_box(self):
         c = Canvas()

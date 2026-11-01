@@ -30,6 +30,7 @@ You are a motion-graphics programmer. Reuse the attached pipeline (config.py, pi
 ### Fixed rules (do not change)
 - Code-only. No filming and no AI image or video generation. It must look hand-made.
 - Draw every frame on a 108x192 canvas with Pillow, 14-16 colour palette, then upscale exactly 10x with NEAREST to 1080x1920. No smoothing. Bitmap font at integer scales only.
+- Visual quality: use layered, textured backdrops, detailed multi-shade focal sprites, a clear title hierarchy and a framed caption rail. Avoid large blank fields and isolated generic icons; keep the main subject large and readable.
 - Output: 1080x1920, 30 fps, H.264 yuv420p, AAC 48 kHz stereo, 24-27 s.
 - 12 fps feel: hold each pose 2-3 frames. Small screen shake on impacts, sparkle pixels, 2-4 frame sprite loops. Round cards slide in with a bell where it fits the format.
 - TikTok safe zones: no text in the top 12% (y<230), bottom 20% (y>1536) or the right button strip (x>900, y 800-1500).
