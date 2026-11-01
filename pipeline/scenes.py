@@ -6,7 +6,7 @@ import random
 
 from . import config as C
 from .font import text_width
-from .sprites import SCALES
+from .sprites import ICONS
 
 POSE = C.POSE_FPS
 SHAKE = [(1, 0), (-1, 1), (0, -1)]
@@ -28,41 +28,42 @@ def _pop(base, ps):
     return seq[ps] if ps < len(seq) else base
 
 
-def _slots(brief, side):
+def _slots(brief, side, base=None):
     ta, tb = tints(brief)
     if brief["layout"] != "split":
-        return [dict(cx=54, cy=68, s=4, tint=ta, who="a")]
-    a = dict(cx=27, cy=76, s=3, tint=ta, who="a")
-    b = dict(cx=81, cy=76, s=3, tint=tb, who="b")
+        return [dict(cx=54, base=base or 94, s=4, tint=ta, who="a", span=(14, 94))]
+    a = dict(cx=27, base=base or 96, s=3, tint=ta, who="a", span=(3, 51))
+    b = dict(cx=81, base=base or 96, s=3, tint=tb, who="b", span=(57, 105))
     return {"a": [a], "b": [b]}.get(side, [a, b])
 
 
-def _sprite_scale(name, slot, ps=None):
-    if name in SCALES:
-        return SCALES[name]
+def _scale(name, slot, ps=None):
+    """Integer scale so the icon fills the slot whatever its native size."""
+    art = ICONS[name]
+    base = max(1, round(12 * slot["s"] / len(art[0])))
     if ps is None:
-        return slot["s"]
+        return base
     if ps < 0:
-        return max(1, slot["s"] - 1)
-    return _pop(slot["s"], ps)
+        return max(1, base - 1) if len(art[0]) == 12 else base
+    return _pop(base, ps) if len(art[0]) == 12 else base
+
+
+def _cy(name, slot, scale, pb=0):
+    """Centre y that puts the icon's feet on the platform."""
+    return slot["base"] - len(ICONS[name]) * scale // 2 + _bob(pb)
 
 
 def _platform(c, slots):
     for slot in slots:
-        if slot["who"] == "a":
-            x0, x1 = 3, 51
-            tint = slot["tint"][0]
-        elif slot["who"] == "b":
-            x0, x1 = 57, 105
-            tint = slot["tint"][0]
-        else:
-            x0, x1, tint = 8, 100, slot["tint"][0]
-        c.rect(x0, 91, x1, 99, 0)
-        c.rect(x0 + 1, 92, x1 - 1, 93, tint)
-        c.rect(x0 + 2, 94, x1 - 2, 97, 5)
-        c.rect(x0 + 4, 98, x1 - 4, 99, 2)
+        top = slot["base"]
+        x0, x1 = slot["span"]
+        tint = slot["tint"][0]
+        c.rect(x0, top, x1, top + 8, 0)
+        c.rect(x0 + 1, top + 1, x1 - 1, top + 2, tint)
+        c.rect(x0 + 2, top + 3, x1 - 2, top + 6, 5)
+        c.rect(x0 + 4, top + 7, x1 - 4, top + 8, 2)
         for x in range(x0 + 4, x1 - 2, 8):
-            c.rect(x, 95, x + 2, 95, 12)
+            c.rect(x, top + 4, x + 2, top + 4, 12)
 
 
 def _idle_slots(brief, active):
@@ -73,8 +74,24 @@ def _idle_slots(brief, active):
     return [s for s in _slots(brief, "both") if s["who"] not in have]
 
 
+TAGS = {"troubleshooting": "FIX IT", "tip": "QUICK TIP", "spotlight": "SPOTLIGHT",
+        "before-after": "BEFORE/AFTER", "explainer": "EXPLAINED"}
+
+
+def _banner(c, brief):
+    tag = TAGS.get(brief.get("format"), "3D PRINT")
+    scale = 2 if text_width(tag, 2) <= 80 else 1
+    c.rect(10, 26, 97, 46, 0)
+    c.rect(10, 26, 97, 27, 12)
+    c.rect(10, 45, 97, 46, 14)
+    c.rect(10, 28, 12, 44, 13)
+    c.rect(95, 28, 97, 44, 6)
+    c.text_center(tag, 54, 29 if scale == 2 else 33, 12, scale, kind="label")
+
+
 def _chrome(c, brief, p, show_vs, show_title=False):
     if brief["layout"] != "split":
+        _banner(c, brief)
         return
     ta, tb = tints(brief)
     c.rect(0, 23, 52, 36, 0)
@@ -125,9 +142,9 @@ def _sparkles(c, ps, pb, cx, cy, seed):
                 c.px(x + dx, y + dy, col)
 
 
-def _ring(c, ps, cx, cy, s):
+def _ring(c, ps, cx, cy, half):
     if 0 <= ps <= 3:
-        r = 6 * s + 2 + ps * 3
+        r = half + 2 + ps * 3
         c.rect(cx - r, cy - r, cx + r, cy - r, 12)
         c.rect(cx - r, cy + r, cx + r, cy + r, 12)
         c.rect(cx - r, cy - r, cx - r, cy + r, 12)
@@ -154,37 +171,39 @@ def _shake(ps):
     return SHAKE[ps] if 0 <= ps < len(SHAKE) else (0, 0)
 
 
+def _show(c, name, slot, ps, pb, recolor=None):
+    """Draw one icon on its platform; returns (cx, cy, half) for effects."""
+    scale = _scale(name, slot, ps)
+    cy = _cy(name, slot, scale, pb)
+    half = len(ICONS[name]) * scale // 2
+    if ps < 0:
+        c.sprite(name, slot["cx"], cy, scale, ghost=True)
+    else:
+        c.sprite(name, slot["cx"], cy, scale, tint=slot["tint"], recolor=recolor)
+    return slot["cx"], cy, half
+
+
+def _idle(c, brief, slots, pb):
+    for s in _idle_slots(brief, slots):
+        name = brief["subject_" + s["who"]]["icon"]
+        scale = _scale(name, s, -1)
+        c.sprite(name, s["cx"], _cy(name, s, scale, pb), scale, tint=s["tint"])
+
+
 def hook(c, plan, bi, t):
     brief, b = plan.brief, plan.beats[bi]
     ps, pb = _beat_state(b, t)
     split = brief["layout"] == "split"
     _chrome(c, brief, pb, show_vs=ps >= 0, show_title=split)
-    if split:
-        slots = _slots(brief, "both")
-        _platform(c, slots)
-        for slot, subj in zip(slots, ("subject_a", "subject_b")):
-            icon = brief[subj]["icon"]
-            _draw_icon(c, icon, slot, ps, pb)
-            _sparkles(c, ps, pb, slot["cx"], slot["cy"], seed=bi * 7 + slot["cx"])
-            _ring(c, ps, slot["cx"], slot["cy"], _sprite_scale(icon, slot))
-    else:
-        slot = _slots(brief, "a")[0]
-        _platform(c, [slot])
-        _draw_icon(c, b["icon"], slot, ps, pb)
-        _sparkles(c, ps, pb, slot["cx"], slot["cy"], seed=bi)
-        _ring(c, ps, slot["cx"], slot["cy"], _sprite_scale(b["icon"], slot))
+    slots = _slots(brief, "both")
+    _platform(c, slots)
+    names = [brief[k]["icon"] for k in ("subject_a", "subject_b")] if split else [b["icon"]]
+    for slot, name in zip(slots, names):
+        cx, cy, half = _show(c, name, slot, ps, pb)
+        _sparkles(c, ps, pb, cx, cy, seed=bi * 7 + cx)
+        _ring(c, ps, cx, cy, half)
     _keyword(c, plan, b, ps, 106)
     return _shake(ps)
-
-
-def _draw_icon(c, name, slot, ps, pb, recolor=None, ghost_before=True):
-    scale = _sprite_scale(name, slot, ps)
-    if ps < 0:
-        if ghost_before:
-            c.sprite(name, slot["cx"], slot["cy"] + _bob(pb), scale, ghost=True)
-        return
-    c.sprite(name, slot["cx"], slot["cy"] + _bob(pb), scale,
-             tint=slot["tint"], recolor=recolor)
 
 
 def icon(c, plan, bi, t):
@@ -192,14 +211,12 @@ def icon(c, plan, bi, t):
     ps, pb = _beat_state(b, t)
     _chrome(c, brief, pb, show_vs=True)
     slots = _slots(brief, b["side"])
-    _platform(c, _slots(brief, "both") if brief["layout"] == "split" else slots)
-    for s in _idle_slots(brief, slots):
-        icon_name = brief["subject_" + s["who"]]["icon"]
-        c.sprite(icon_name, s["cx"], s["cy"] + _bob(pb), _sprite_scale(icon_name, s, -1), tint=s["tint"])
+    _platform(c, _slots(brief, "both"))
+    _idle(c, brief, slots, pb)
     for s in slots:
-        _draw_icon(c, b["icon"], s, ps, pb)
-        _sparkles(c, ps, pb, s["cx"], s["cy"], seed=bi * 11 + s["cx"])
-        _ring(c, ps, s["cx"], s["cy"], _sprite_scale(b["icon"], s))
+        cx, cy, half = _show(c, b["icon"], s, ps, pb)
+        _sparkles(c, ps, pb, cx, cy, seed=bi * 11 + cx)
+        _ring(c, ps, cx, cy, half)
     _keyword(c, plan, b, ps, 106)
     return _shake(ps)
 
@@ -209,13 +226,11 @@ def card(c, plan, bi, t):
     ps, pb = _beat_state(b, t)
     _chrome(c, brief, pb, show_vs=True)
     slots = _slots(brief, b["side"])
-    _platform(c, _slots(brief, "both") if brief["layout"] == "split" else slots)
-    for s in _idle_slots(brief, slots):
-        icon_name = brief["subject_" + s["who"]]["icon"]
-        c.sprite(icon_name, s["cx"], s["cy"] + _bob(pb), _sprite_scale(icon_name, s, -1), tint=s["tint"])
+    _platform(c, _slots(brief, "both"))
+    _idle(c, brief, slots, pb)
     for s in slots:
-        _draw_icon(c, b["icon"], s, ps, pb)
-        _sparkles(c, ps, pb, s["cx"], s["cy"], seed=bi * 13 + s["cx"])
+        cx, cy, _ = _show(c, b["icon"], s, ps, pb)
+        _sparkles(c, ps, pb, cx, cy, seed=bi * 13 + cx)
     if ps >= 0:
         x0 = int(-70 + (14 + 70) * min(ps, 3) / 3)
         c.rect(x0 + 2, 108, x0 + 62, 130, 12)
@@ -235,20 +250,19 @@ def fix(c, plan, bi, t):
     ps, pb = _beat_state(b, t)
     _chrome(c, brief, pb, show_vs=True)
     slots = _slots(brief, b["side"])
-    _platform(c, _slots(brief, "both") if brief["layout"] == "split" else slots)
-    for s in _idle_slots(brief, slots):
-        icon_name = brief["subject_" + s["who"]]["icon"]
-        c.sprite(icon_name, s["cx"], s["cy"] + _bob(pb), _sprite_scale(icon_name, s, -1), tint=s["tint"])
+    _platform(c, _slots(brief, "both"))
+    _idle(c, brief, slots, pb)
     for s in slots:
+        scale = _scale(b["icon"], s)
+        cy = _cy(b["icon"], s, scale, pb)
+        half = len(ICONS[b["icon"]]) * scale // 2
         if ps < 0:
-            scale = _sprite_scale(b["icon"], s)
-            c.sprite(b["icon"], s["cx"], s["cy"] + _bob(pb), scale, tint=s["tint"], recolor=(11, 7))
-            c.sprite("cross", s["cx"] + 6 * scale, s["cy"] - 6 * scale + (pb % 2), 2)
+            c.sprite(b["icon"], s["cx"], cy, scale, tint=s["tint"], recolor=(11, 7))
+            c.sprite("cross", s["cx"] + half, cy - half + (pb % 2), 2)
         else:
-            scale = _sprite_scale(b["icon"], s)
-            c.sprite(b["icon"], s["cx"], s["cy"] + _bob(pb), scale, recolor=(10, 15))
-            c.sprite("check", s["cx"] + 6 * scale, s["cy"] - 6 * scale, _pop(2, ps))
-            _sparkles(c, ps, pb, s["cx"], s["cy"], seed=bi * 17 + s["cx"])
+            c.sprite(b["icon"], s["cx"], cy, scale, recolor=(10, 15))
+            c.sprite("check", s["cx"] + half, cy - half, _pop(2, ps))
+            _sparkles(c, ps, pb, s["cx"], cy, seed=bi * 17 + s["cx"])
     _keyword(c, plan, b, ps, 106)
     return _shake(ps)
 
@@ -257,18 +271,16 @@ def end(c, plan, bi, t):
     brief, b = plan.brief, plan.beats[bi]
     ps, pb = _beat_state(b, t)
     _chrome(c, brief, pb, show_vs=False)
-    slot = dict(cx=54, cy=58, s=4, tint=tints(brief)[0], who="a")
-    if brief["layout"] == "split":
-        slot["s"] = 3
-    platform_slot = dict(slot, who="both")
-    _platform(c, [platform_slot])
-    _draw_icon(c, b["icon"], slot, ps, pb)
-    _sparkles(c, ps, pb, slot["cx"], slot["cy"], seed=bi * 19)
-    _ring(c, ps, slot["cx"], slot["cy"], _sprite_scale(b["icon"], slot))
-    _keyword(c, plan, b, ps, 94)
+    split = brief["layout"] == "split"
+    slot = dict(cx=54, base=94, s=3 if split else 4, tint=tints(brief)[0], who="a", span=(14, 94))
+    _platform(c, [slot])
+    cx, cy, half = _show(c, b["icon"], slot, ps, pb)
+    _sparkles(c, ps, pb, cx, cy, seed=bi * 19)
+    _ring(c, ps, cx, cy, half)
+    _keyword(c, plan, b, ps, 104)
     if pb >= 4:
         col = 12 if (pb // 3) % 2 == 0 else 3
-        c.text_center(brief["handle"], 45, 118, col, 1, kind="handle")
+        c.text_center(brief["handle"], 45, 124, col, 1, kind="handle")
     return _shake(ps)
 
 

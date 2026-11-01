@@ -6,6 +6,7 @@ from .font import GLYPHS, text_width
 from .sprites import CHARS, ICONS
 
 PAL = C.PALETTE
+DARK = {3: 4, 4: 5, 6: 7, 8: 9, 10: 15, 11: 7, 12: 6, 13: 14}
 
 
 class Canvas:
@@ -21,10 +22,23 @@ class Canvas:
         if 0 <= x < C.W and 0 <= y < C.H:
             self.img.putpixel((x, y), PAL[col])
 
-    def sprite(self, name, cx, cy, scale, tint=(6, 7), ghost=False, recolor=None):
+    def line(self, x0, y0, x1, y1, col, width=1):
+        self.d.line([(x0, y0), (x1, y1)], fill=PAL[col], width=width)
+
+    def circle(self, cx, cy, r, col, fill=False):
+        box = [cx - r, cy - r, cx + r, cy + r]
+        if fill:
+            self.d.ellipse(box, fill=PAL[col])
+        else:
+            self.d.ellipse(box, outline=PAL[col])
+
+    def sprite(self, name, cx, cy, scale, tint=(6, 7), ghost=False, recolor=None, shade=True):
+        """Draw an icon centred on (cx, cy). Silhouette edges get a darker rim on the
+        bottom/right and a dotted highlight on the top/left so shapes read as solid."""
         art = ICONS[name]
-        x0 = cx - len(art[0]) * scale // 2
-        y0 = cy - len(art) * scale // 2
+        rows, cols = len(art) * scale, len(art[0]) * scale
+        x0, y0 = cx - cols // 2, cy - rows // 2
+        grid = [[None] * cols for _ in range(rows)]
         for j, row in enumerate(art):
             for i, ch in enumerate(row):
                 if ch == ".":
@@ -39,8 +53,26 @@ class Canvas:
                     col = tint[1]
                 else:
                     col = CHARS[ch]
-                self.rect(x0 + i * scale, y0 + j * scale,
-                          x0 + (i + 1) * scale - 1, y0 + (j + 1) * scale - 1, col)
+                for dy in range(scale):
+                    for dx in range(scale):
+                        grid[j * scale + dy][i * scale + dx] = col
+
+        def empty(x, y):
+            return not (0 <= y < rows and 0 <= x < cols) or grid[y][x] is None
+
+        main = (recolor[0] if recolor else tint[0])
+        dark = (recolor[1] if recolor else tint[1])
+        for y in range(rows):
+            for x in range(cols):
+                col = grid[y][x]
+                if col is None:
+                    continue
+                if shade and not ghost:
+                    if empty(x, y + 1) or empty(x + 1, y):
+                        col = dark if col == main else DARK.get(col, col)
+                    elif (empty(x, y - 1) or empty(x - 1, y)) and (x + y) % 2 == 0:
+                        col = 3 if col != 3 else 4
+                self.px(x0 + x, y0 + y, col)
 
     def text(self, s, x, y, col, scale=1, kind="voice", shadow=True, clamp=True):
         s = s.upper()
