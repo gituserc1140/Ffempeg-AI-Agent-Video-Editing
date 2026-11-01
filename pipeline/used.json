@@ -16,5 +16,14 @@
     "source": "topic bank",
     "voice": "edge-tts",
     "buffer_post": "6ae685fdf0984eef333c009e"
+  },
+  {
+    "date": "2026-11-01T01:05+00:00",
+    "title": "FDM vs Resin",
+    "slug": "fdm-vs-resin",
+    "topic": null,
+    "source": "llm",
+    "voice": "edge-tts",
+    "buffer_post": "6ae690951ee172cd6dd18f5e"
   }
 ]
