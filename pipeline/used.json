@@ -197,5 +197,15 @@
     "trend": "Aerospace Engineer Builds a Working 3D-Printed EDF Afterburner",
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T23:25+00:00",
+    "title": "Auto 3D Print",
+    "slug": "auto-3d-print",
+    "topic": null,
+    "source": "llm",
+    "trend": "Detroit automakers expand 3D printing to cut manufacturing costs",
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
