@@ -52,5 +52,14 @@
     "source": "llm",
     "voice": "edge-tts",
     "buffer_post": "6ae73022cf3a3112f3f8242d"
+  },
+  {
+    "date": "2026-11-01T16:31+00:00",
+    "title": "Support Structures",
+    "slug": "support-structures",
+    "topic": null,
+    "source": "llm",
+    "voice": "espeak-ng (fallback)",
+    "buffer_post": "6ae7698f93985ec108e2ecf5"
   }
 ]
