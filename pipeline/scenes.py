@@ -313,14 +313,14 @@ def round_(c, plan, bi, t):
 def _verdict(c, brief, b, ps):
     rows = b["verdict"]
     ta, tb = tints(brief)
-    x0, x1, y0 = 12, 88, 76
-    y1 = y0 + 4 + 20 * len(rows)
+    x0, x1, y0 = 12, 88, 79
+    y1 = y0 + 3 + 18 * len(rows)
     c.rect(x0 - 2, y0 - 2, x1 + 2, y1 + 2, 12)
     c.rect(x0, y0, x1, y1, 1)
     for i, row in enumerate(rows):
         if ps < i * 4:
             continue
-        y = y0 + 4 + i * 20
+        y = y0 + 3 + i * 18
         c.text_center(row["trait"], 50, y, 3, 1, kind="label")
         tint = ta if row["pick"] == "a" else tb
         label = brief["subject_" + row["pick"]]["label"]
@@ -345,7 +345,7 @@ def end(c, plan, bi, t):
         _keyword(c, plan, b, ps, 104)
     if pb >= 4:
         col = 12 if (pb // 3) % 2 == 0 else 3
-        c.text_center(brief["handle"], 45, 128 if b.get("verdict") else 124, col, 1, kind="handle")
+        c.text_center(brief["handle"], 45, 123 if b.get("verdict") else 124, col, 1, kind="handle")
     return _shake(ps)
 
 
