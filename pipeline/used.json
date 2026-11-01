@@ -97,5 +97,15 @@
     "source": "topic bank",
     "voice": "edge-tts",
     "buffer_post": "6ae783afcfdcf9feb7197d12"
+  },
+  {
+    "date": "2026-11-01T21:21+00:00",
+    "title": "Rough to polished",
+    "slug": "rough-to-polished",
+    "topic": "rough-to-polished",
+    "source": "topic bank",
+    "trend": null,
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
