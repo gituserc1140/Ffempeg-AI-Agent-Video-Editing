@@ -19,28 +19,14 @@ GH_MODEL = os.environ.get("GH_MODEL", "openai/gpt-4.1-mini")
 LAYOUT = {"battle": "split"}
 FORMATS = ["battle", "troubleshooting", "tip", "spotlight", "before-after"]
 
-_THERMO = [
-    {"shape": "rect", "x": 6, "y": 1, "w": 4, "h": 10, "c": "w"},
-    {"shape": "circle", "x": 8, "y": 12, "r": 3, "c": "w"},
-    {"shape": "rect", "x": 7, "y": 4, "w": 2, "h": 8, "c": "r"},
-    {"shape": "circle", "x": 8, "y": 12, "r": 2, "c": "r"},
-    {"shape": "line", "x1": 11, "y1": 3, "x2": 13, "y2": 3, "c": "g"},
-    {"shape": "line", "x1": 11, "y1": 6, "x2": 13, "y2": 6, "c": "g"},
-]
-
 _EXAMPLE = json.loads((Path(__file__).parent / "topics.json").read_text())[0]
 
-SPRITE_RULES = f"""- sprites (optional, 1-3 entries): design custom pixel icons so this video looks unique. Object: name -> list of 6-16 shapes
-  drawn in order on a 16x16 grid (x right, y down, 0-15), later shapes paint over earlier ones:
-  {{{{"shape":"rect","x":N,"y":N,"w":N,"h":N,"c":L}}}}  {{{{"shape":"circle","x":N,"y":N,"r":N,"c":L}}}}  {{{{"shape":"line","x1":N,"y1":N,"x2":N,"y2":N,"c":L}}}}
-  N is a whole number, L is one colour letter: a = the subject's main colour, A = its dark shade, w white, g grey, d dark-grey, o orange,
-  O dark-orange, c cyan, C dark-cyan, n green, r red, y yellow, p pink, u purple, N dark-green, k black.
-  Draw ONE recognisable object centred on the grid, 10-15 cells tall, at least three colours, with the largest shapes first
-  and small details (highlights, eyes, screws) last. Names are new lowercase words (letters/digits only, 3-16 chars) that are
-  not built-in icons. Use a sprite name as an icon wherever it fits the topic; use built-in icons for the rest.
-  Example (a thermometer): {json.dumps({"thermo": _THERMO})}
+SPRITE_RULES = """- sprites (REQUIRED, exactly 2 entries): descriptions for topic-specific pixel art that GPT-5 will draw for this video. Object of
+  new_name -> a short visual description (max 12 words) of ONE simple object, e.g. {"thermo": "red mercury thermometer"}.
+  Names are new lowercase words (letters/digits only, 3-16 chars), not built-in icons. Use each name as the icon of at least
+  one beat (or subject), choosing the beats where the topic's key object appears; use built-in icons for the rest. Never name a brand.
 """
-if not os.environ.get("CUSTOM_SPRITES"):  # experimental: Cohere's drawings are currently crude
+if not os.environ.get("OPENAI_API_KEY"):
     SPRITE_RULES = ""
 
 SYSTEM = f"""You write briefs for 25 second pixel-art 3D printing shorts. Reply with ONE JSON object only.
@@ -63,7 +49,7 @@ Schema (follow the example exactly):
 - "card" beats slide in a label such as "ROUND 1" or "TIP 1" (max 8 characters).
 
 Script rules:
-- Total 60-70 words across all lines (46-56 for round videos), one line per beat, each line 6-14 words, no word over 14 letters.
+- Total 60-66 words across all lines (46-56 for round videos), one line per beat, each line 6-14 words, no word over 14 letters.
 - Plain ASCII only: letters, spaces and . , ! ? ' - characters. No digits (write numbers as words, "3D" is allowed), no emoji.
 - General terms only: no temperatures, measurements or brand names.
 - trigger is ONE word that appears in that beat's line; the icon pops when it is spoken. Say the key term once clearly.
@@ -111,7 +97,7 @@ def _parse(text):
     return json.loads(text)
 
 
-def generate(fmt, recent_titles, attempts=3, trend=None):
+def generate(fmt, recent_titles, attempts=4, trend=None):
     layout = LAYOUT.get(fmt, "single")
     ask = (f"Format: {fmt}. Layout: {layout}. Pick a fresh topic about 3D printing. "
            f"Do not reuse these recent topics: {', '.join(recent_titles[-25:]) or 'none'}.")
@@ -127,6 +113,8 @@ def generate(fmt, recent_titles, attempts=3, trend=None):
                 brief = normalize(_parse(call(messages)))
                 brief["format"], brief["layout"] = fmt, layout
                 errs = validate(brief)
+                if SPRITE_RULES and not brief.get("sprites_given"):
+                    errs.append("add the required 'sprites' object with two new sprite names and descriptions")
                 if not errs:
                     print(f"[brief] {name} produced '{brief['title']}'")
                     return brief

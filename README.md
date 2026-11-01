@@ -73,6 +73,7 @@ Hosting: Buffer needs a public URL, so the repo must be **public**. Each video i
 Repository secrets:
 
 - `COHERE_API_KEY`: primary brief writer.
+- Optional `OPENAI_API_KEY`: enables up to two topic-specific sprites per video. GPT-5 generates palette-grid pixel art (not image-generation output); without the key or if generation fails, videos use built-in sprites. The workflow defaults to `OPENAI_SPRITE_MODEL=gpt-5`.
 - `BUFFER_API_KEY` and `BUFFER_CHANNEL_ID`: draft creation.
 - Every run also opens an issue assigned to and mentioning the repo owner (then closes it), so GitHub emails and pushes an alert. Needs the `issues: write` permission, already set in the workflow.
 - Optional `NTFY_TOPIC`: sends a phone alert (via the free ntfy.sh app) after every run, with the video title, topic and Buffer status. Pick a long random topic name, subscribe to it in the ntfy app, and keep it secret.

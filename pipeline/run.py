@@ -120,6 +120,7 @@ def main():
     USED.write_text(json.dumps(_load_used() + [entry], indent=2) + "\n")
 
     _summary([f"### {brief['title']}", f"- Brief source: **{source}**",
+              f"- Topic-specific sprites: {', '.join(brief.get('custom_sprites', [])) or 'none; built-in icons used'}",
               f"- Trend headline: {trend or 'none'}"
               + ("" if source == "llm" or not trend else " (not used: the LLM brief failed, topic bank used)") + "",
               f"- Voice: **{meta['voice_engine']}**", f"- Duration: {meta['duration']:.2f}s",

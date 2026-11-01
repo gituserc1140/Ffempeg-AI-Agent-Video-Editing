@@ -29,9 +29,9 @@ def normalize(brief):
     brief = dict(brief)
     brief["handle"] = C.HANDLE
     raw = brief.pop("sprites", None)
-    dropped = set(register_custom(dict(list(raw.items())[:4]) if isinstance(raw, dict) else {}))
-    if isinstance(raw, dict):
-        dropped |= set(list(raw)[4:])
+    dropped = register_custom(raw)
+    brief["sprites_given"] = bool(raw)
+    brief["custom_sprites"] = [n for n in (raw if isinstance(raw, dict) else {}) if n not in dropped]
     if dropped:  # a badly drawn sprite falls back to a built-in icon rather than failing the video
         for holder in [brief.get("subject_a"), brief.get("subject_b"), *brief.get("beats", [])]:
             if isinstance(holder, dict) and holder.get("icon") in dropped:
@@ -151,8 +151,15 @@ def validate(brief, allow_numbers=False):
         low = {normalize_token(w) for w in line.split()}
         if low & BRANDS:
             errs.append(f"{tag}: brand names are not allowed")
+    custom = brief.get("custom_sprites") or []
+    used = {x.get("icon") for x in [brief["subject_a"], brief.get("subject_b"), *beats] if isinstance(x, dict)}
+    for name in custom:
+        if name not in used:
+            errs.append(f"use your custom sprite {name} as the icon of at least one beat")
     rounds = any(b.get("scene") == "round" for b in beats)
     lo, hi = (44, 58) if rounds else (56, 74)
     if not lo <= words <= hi:
-        errs.append(f"script has {words} words, need {lo}-{hi}")
+        gap = lo - words if words < lo else hi - words
+        errs.append(f"script has {words} words, need {lo}-{hi}: "
+                    f"{'add at least' if gap > 0 else 'cut at least'} {abs(gap) + 3} words spread over the lines")
     return errs

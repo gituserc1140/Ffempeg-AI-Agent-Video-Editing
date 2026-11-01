@@ -94,6 +94,11 @@ class Validation(unittest.TestCase):
         brief["beats"][2]["trigger"] = "banana"
         self.assertTrue(any("trigger" in e for e in validate(brief)))
 
+    def test_every_generated_sprite_must_be_used(self):
+        brief = normalize(json.loads(json.dumps(TOPICS[1])))
+        brief["custom_sprites"] = ["unused"]
+        self.assertTrue(any("custom sprite unused" in e for e in validate(brief)))
+
     def test_smart_punctuation_is_normalised(self):
         brief = json.loads(json.dumps(TOPICS[0]))
         brief["beats"][0]["line"] = "Which filament should you pick for your next print\u2014today?"
@@ -218,15 +223,61 @@ if __name__ == "__main__":
 
 
 class CustomSprites(unittest.TestCase):
-    def test_shapes_register_and_bad_ones_fall_back(self):
-        from pipeline import sprites, validate
-        shapes = [{"shape": "rect", "x": 4, "y": 2, "w": 8, "h": 12, "c": "a"},
-                  {"shape": "circle", "x": 8, "y": 8, "r": 3, "c": "y"},
-                  {"shape": "line", "x1": 0, "y1": 15, "x2": 15, "y2": 15, "c": "k"}]
-        brief = {"sprites": {"widget": shapes, "flat": [{"shape": "rect", "x": 0, "y": 0, "w": 1, "h": 1, "c": "a"}]},
-                 "subject_a": {"icon": "widget"}, "beats": [{"line": "x", "icon": "flat"}]}
-        out = validate.normalize(brief)
-        self.assertIn("widget", sprites.ICONS)
+    @staticmethod
+    def _rows():
+        rows = [["."] * 24 for _ in range(24)]
+        for y in range(3, 21):
+            for x in range(4, 20):
+                rows[y][x] = "k" if y in (3, 20) or x in (4, 19) else "a"
+        rows[8][8:10] = ["A", "w"]
+        rows[12][14] = "y"
+        return ["".join(row) for row in rows]
+
+    def test_gpt5_response_generates_palette_rows(self):
+        import os
+        from pipeline import art
+
+        rows = self._rows()
+        response = mock.Mock()
+        response.json.return_value = {"output": [{"content": [{
+            "type": "output_text", "text": json.dumps({"rows": rows})}]}]}
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}), \
+                mock.patch.object(art, "MODEL", "gpt-5"), \
+                mock.patch.object(art, "CACHE", Path(tmp)), \
+                mock.patch.object(art.requests, "post", return_value=response) as post:
+            generated = art.draw("thermo", "red mercury thermometer")
+
+        self.assertEqual(generated, rows)
+        self.assertEqual(post.call_args.args[0], art.URL)
+        payload = post.call_args.kwargs["json"]
+        self.assertEqual(payload["model"], "gpt-5")
+        self.assertEqual(payload["text"]["format"]["type"], "json_schema")
+        self.assertEqual(post.call_args.kwargs["headers"]["Authorization"], "Bearer " + "test-key")
+
+    def test_missing_openai_key_skips_sprite_generation(self):
+        import os
+        from pipeline import art
+
+        with mock.patch.dict(os.environ, {"OPENAI_API_KEY": ""}), \
+                mock.patch.object(art.requests, "post") as post:
+            self.assertIsNone(art.draw("thermo", "red thermometer"))
+        post.assert_not_called()
+
+    def test_bad_sprite_falls_back_to_builtin_icon(self):
+        from pipeline import art, sprites, validate
+
+        rows = self._rows()
+        self.assertEqual(sprites.check_sprite("widget", rows), [])
+        brief = {"sprites": {"widget": "red box", "broken": "nothing"},
+                 "subject_a": {"icon": "widget"}, "beats": [{"line": "x", "icon": "broken"}]}
+        with mock.patch.object(art, "draw", side_effect=lambda n, d: rows if n == "widget" else None):
+            out = validate.normalize(brief)
         self.assertEqual(out["subject_a"]["icon"], "widget")
         self.assertEqual(out["beats"][0]["icon"], "gear")
-        sprites.ICONS.pop("widget")
+        try:
+            c = Canvas()
+            c.sprite("widget", 54, 96, 1, tint=(13, 14))
+            self.assertLessEqual(c.color_count(), 16)
+        finally:
+            sprites.ICONS.pop("widget", None)
