@@ -106,6 +106,10 @@ def validate(brief, allow_numbers=False):
             errs.append(f"{tag}: trigger must be a word spoken in the line")
         elif len(trig) > 14:
             errs.append(f"{tag}: trigger too long")
+        if i == 0 and any(x.get("scene") == "round" for x in beats):
+            first = [normalize_token(w) for w in line.split()[:3]]
+            if trig not in first:
+                errs.append(f"{tag}: round videos need the hook trigger in the first three words")
         if b.get("scene") == "card":
             label = b.get("label", "")
             if not label or any(ch not in CHARSET for ch in label) or text_width(label, 1) > 58:

@@ -87,7 +87,8 @@ def _drop(c, cx, fx, ps, tint, pb):
             c.px(cx + dx + (min(j, 4) * (1 if dx > 0 else -1)), y + 3 + dy - (k % 2), tint[0])
     elif j in (0, 1, 2) and fx == "hold":
         for s in (-1, 1):
-            c.rect(cx + s * (9 + j * 2), 94, cx + s * (11 + j * 2), 95, 4)
+            x = cx + s * (9 + j * 2)
+            c.rect(min(x, x + s * 2), 94, max(x, x + s * 2), 95, 4)
 
 
 def _detail(c, cx, fx, ps, tint, pb):

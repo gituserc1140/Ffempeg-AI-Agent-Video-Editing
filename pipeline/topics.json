@@ -182,5 +182,266 @@
       {"scene": "end", "side": "both", "icon": "heart", "trigger": "battles",
        "line": "For everyday parts, matte wins. Follow for more finish battles!"}
     ]
+  },
+  {
+    "slug": "pla-vs-petg-rounds",
+    "title": "PLA vs PETG",
+    "format": "battle",
+    "caption": "PLA vs PETG: four tests, one winner? #3dprinting #filament #pla #petg",
+    "layout": "split",
+    "subject_a": {
+      "label": "PLA",
+      "color": "orange",
+      "icon": "spool"
+    },
+    "subject_b": {
+      "label": "PETG",
+      "color": "cyan",
+      "icon": "spool"
+    },
+    "beats": [
+      {
+        "scene": "hook",
+        "side": "both",
+        "icon": "spool",
+        "trigger": "easy",
+        "line": "Easy PLA or tough PETG? Which filament wins?"
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "bend",
+        "module": "bend",
+        "fx_a": "snap",
+        "fx_b": "bend",
+        "win": "b",
+        "line": "Round one, bend. PETG flexes while PLA snaps."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "heat",
+        "module": "heat",
+        "fx_a": "sag",
+        "fx_b": "hold",
+        "win": "b",
+        "line": "Round two, heat. PLA goes soft, PETG holds."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "speed",
+        "module": "speed",
+        "fx_a": "fast",
+        "fx_b": "slow",
+        "win": "a",
+        "line": "Round three, speed. PLA prints fast, PETG is slower."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "drop",
+        "module": "drop",
+        "fx_a": "crack",
+        "fx_b": "bounce",
+        "win": "b",
+        "line": "Round four, drop. PETG bounces, PLA cracks."
+      },
+      {
+        "scene": "end",
+        "side": "both",
+        "icon": "star",
+        "trigger": "depends",
+        "verdict": [
+          {
+            "trait": "EASY",
+            "pick": "a"
+          },
+          {
+            "trait": "TOUGH",
+            "pick": "b"
+          }
+        ],
+        "line": "It depends. Easy? PLA. Tough? PETG. Follow for more filament battles!"
+      }
+    ]
+  },
+  {
+    "slug": "pla-vs-abs-rounds",
+    "title": "PLA vs ABS",
+    "format": "battle",
+    "caption": "PLA vs ABS: four tests, one winner? #3dprinting #filament #pla #abs",
+    "layout": "split",
+    "subject_a": {
+      "label": "PLA",
+      "color": "green",
+      "icon": "spool"
+    },
+    "subject_b": {
+      "label": "ABS",
+      "color": "orange",
+      "icon": "spool"
+    },
+    "beats": [
+      {
+        "scene": "hook",
+        "side": "both",
+        "icon": "spool",
+        "trigger": "simple",
+        "line": "Simple PLA or strong ABS? Which filament wins?"
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "bend",
+        "module": "bend",
+        "fx_a": "snap",
+        "fx_b": "bend",
+        "win": "b",
+        "line": "Round one, bend. ABS bends while PLA snaps."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "heat",
+        "module": "heat",
+        "fx_a": "sag",
+        "fx_b": "hold",
+        "win": "b",
+        "line": "Round two, heat. PLA sags, ABS holds."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "speed",
+        "module": "speed",
+        "fx_a": "fast",
+        "fx_b": "slow",
+        "win": "a",
+        "line": "Round three, speed. PLA prints fast, ABS is slower."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "drop",
+        "module": "drop",
+        "fx_a": "crack",
+        "fx_b": "hold",
+        "win": "b",
+        "line": "Round four, drop. ABS holds, PLA cracks."
+      },
+      {
+        "scene": "end",
+        "side": "both",
+        "icon": "star",
+        "trigger": "depends",
+        "verdict": [
+          {
+            "trait": "EASY",
+            "pick": "a"
+          },
+          {
+            "trait": "HEAT",
+            "pick": "b"
+          }
+        ],
+        "line": "It depends. Easy? PLA. Heat? ABS. Follow for more filament battles!"
+      }
+    ]
+  },
+  {
+    "slug": "nylon-vs-petg-rounds",
+    "title": "Nylon vs PETG",
+    "format": "battle",
+    "caption": "Nylon vs PETG: four tests, one winner? #3dprinting #filament #nylon #petg",
+    "layout": "split",
+    "subject_a": {
+      "label": "NYLON",
+      "color": "pink",
+      "icon": "spool"
+    },
+    "subject_b": {
+      "label": "PETG",
+      "color": "cyan",
+      "icon": "spool"
+    },
+    "beats": [
+      {
+        "scene": "hook",
+        "side": "both",
+        "icon": "spool",
+        "trigger": "tough",
+        "line": "Tough nylon or easy PETG? Which filament wins?"
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "bend",
+        "module": "bend",
+        "fx_a": "bend",
+        "fx_b": "hold",
+        "win": "a",
+        "line": "Round one, bend. Nylon flexes while PETG holds."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "detail",
+        "module": "detail",
+        "fx_a": "chunky",
+        "fx_b": "sharp",
+        "win": "b",
+        "line": "Round two, detail. PETG stays sharp, nylon is chunky."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "speed",
+        "module": "speed",
+        "fx_a": "slow",
+        "fx_b": "fast",
+        "win": "b",
+        "line": "Round three, speed. PETG prints fast, nylon is slow."
+      },
+      {
+        "scene": "round",
+        "side": "both",
+        "icon": "check",
+        "trigger": "drop",
+        "module": "drop",
+        "fx_a": "bounce",
+        "fx_b": "crack",
+        "win": "a",
+        "line": "Round four, drop. Nylon bounces, PETG cracks."
+      },
+      {
+        "scene": "end",
+        "side": "both",
+        "icon": "star",
+        "trigger": "depends",
+        "verdict": [
+          {
+            "trait": "TOUGH",
+            "pick": "a"
+          },
+          {
+            "trait": "EASY",
+            "pick": "b"
+          }
+        ],
+        "line": "It depends. Tough? Nylon. Easy? PETG. Follow for more filament battles!"
+      }
+    ]
   }
 ]

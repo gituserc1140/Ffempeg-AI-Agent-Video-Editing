@@ -303,10 +303,15 @@ def round_(c, plan, bi, t):
     draw = ROUND_DRAW[b["module"]]
     draw(c, 27, b["fx_a"], ps, ta, pb)
     draw(c, 81, b["fx_b"], ps, tb, pb)
-    if ps >= RESULT_POSE and b.get("win") in ("a", "b"):
+    for k in range(10):
+        x = 4 + (k * 37 + pb * (1 + k % 3)) % 100
+        y = 44 + (k * 23 - pb * (1 + k % 2)) % 66
+        c.px(x, y, 12 if (pb + k) % 4 == 0 else 4)
+    if ps >= RESULT_POSE:
+        win = b.get("win", "tie")
         for who, cx in (("a", 27), ("b", 81)):
-            c.sprite("check" if b["win"] == who else "cross", cx, 114 + _bob(pb),
-                     _pop(1, ps - RESULT_POSE), tint=ta)
+            mark = "check" if win in ("tie", who) else "cross"
+            c.sprite(mark, cx, 114 + _bob(pb), _pop(1, ps - RESULT_POSE), tint=ta)
     return _shake(ps)
 
 
