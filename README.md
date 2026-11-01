@@ -5,8 +5,11 @@
 - Claude works with the config in this repo but is limited and made separate config in G-drive and Claude storage.
 - Cursor is set up the same way, through `.cursor/mcp.json`. Need premium for cloud agent - free tier cannot do 
 - ChatGPT does not. RunwayML and Canva are the alternatives for poster videos.
-- VS Code has `.vscode/mcp.json`. GitHub Codespaces with Codex is still untried.
-- **Could possibly automate with a cron job** 
+- VS Code has `.vscode/mcp.json`.
+- GitHub Code spaces Codex can but low quality struggles with high quality
+- Github agent can but low quality struggles with high quality
+- **Could possibly automate with a cron job**
+- cron job helps automate but videos lower quality struggles with high quality
 - Social posting goes through Buffer.
 - New pixel-art shorts start from [`pixel_video_prompt.md`](pixel_video_prompt.md).
 
