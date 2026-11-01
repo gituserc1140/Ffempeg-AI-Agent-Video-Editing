@@ -206,12 +206,13 @@ def hook(c, plan, bi, t):
     brief, b = plan.brief, plan.beats[bi]
     ps, pb = _beat_state(b, t)
     split = brief["layout"] == "split"
-    _chrome(c, brief, pb, show_vs=ps >= 0, show_title=split)
+    _chrome(c, brief, pb, show_vs=True, show_title=split)
     slots = _slots(brief, "both")
     _platform(c, slots)
     names = [brief[k]["icon"] for k in ("subject_a", "subject_b")] if split else [b["icon"]]
     for slot, name in zip(slots, names):
-        cx, cy, half = _show(c, name, slot, ps, pb)
+        # Full colour from frame 0 (a silhouette reads as empty on TikTok); the pop still lands on the trigger word.
+        cx, cy, half = _draw(c, name, slot, ps, pb)
         _sparkles(c, ps, pb, cx, cy, seed=bi * 7 + cx)
         _ring(c, ps, cx, cy, half)
     _keyword(c, plan, b, ps, 106)
