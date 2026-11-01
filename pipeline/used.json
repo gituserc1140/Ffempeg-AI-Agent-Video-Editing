@@ -217,5 +217,15 @@
     "trend": "Automakers Embrace 3D Printing to Slash Costs and Boost Production Speed",
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T23:52+00:00",
+    "title": "Steel vs Plastic",
+    "slug": "steel-vs-plastic",
+    "topic": null,
+    "source": "llm",
+    "trend": "Mobarakeh Steel Group Becomes a Driving Force in Additive Manufacturing",
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
