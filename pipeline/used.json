@@ -207,5 +207,15 @@
     "trend": "Detroit automakers expand 3D printing to cut manufacturing costs",
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T23:36+00:00",
+    "title": "Auto 3D Printing Boom",
+    "slug": "auto-3d-printing-boom",
+    "topic": null,
+    "source": "llm",
+    "trend": "Automakers Embrace 3D Printing to Slash Costs and Boost Production Speed",
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
