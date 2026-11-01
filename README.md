@@ -96,3 +96,13 @@ The cron in `daily-videos.yml` runs three times a day and always makes battle vi
 
 - Cohere briefs for battles pass validation only some of the time; failures fall back to the topic bank (`pipeline/topics.json`), so add more battle topics there to avoid repeats.
 - Local key setup: put `COHERE_API_KEY=...` in `.env` (gitignored, no spaces or quotes), then `set -a; . ./.env; set +a`.
+
+## Tool-changer explainer (`toolchanger/`)
+
+Standalone 26 s explainer ("Nine tools? What a tool changer actually does"): 19-colour pixel art, edge-tts voice, code-made chiptune + SFX.
+
+- Local: `python3 -m toolchanger.render --out out` (needs ffmpeg; add `--rate "+25%"` if the voice runs past the end card).
+- Actions: run **tool-changer-video** (workflow_dispatch) and download the artifact. It does not publish to Buffer.
+- Outputs: `tool-changer.mp4`, `tool-changer-contact.png`, `tool-changer-qc.json`, `tool-changer-textboxes.jsonl` (every text box per frame).
+- The render exits non-zero on any safe-zone, loudness, peak, format or voice failure.
+- Script and beats live in `toolchanger/timeline.py` and `toolchanger/scenes.py`.
