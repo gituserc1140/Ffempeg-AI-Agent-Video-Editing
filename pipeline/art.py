@@ -33,6 +33,20 @@ def _valid_rows(rows):
                 for row in rows))
 
 
+def _clear_background(rows):
+    """Models often fill the backdrop with outline/slate pixels; make the ones connected to
+    the border transparent so the sprite keeps its own silhouette, not a rectangular frame."""
+    grid = [list(r) for r in rows]
+    edge = [(x, y) for y in range(SIZE) for x in range(SIZE)
+            if x in (0, SIZE - 1) or y in (0, SIZE - 1)]
+    while edge:
+        x, y = edge.pop()
+        if 0 <= x < SIZE and 0 <= y < SIZE and grid[y][x] in "kb":
+            grid[y][x] = "."
+            edge += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+    return ["".join(r) for r in grid]
+
+
 def _response_rows(response):
     if not isinstance(response, dict):
         raise ValueError("response was not a JSON object")
@@ -50,8 +64,8 @@ def _response_rows(response):
     payload = json.loads(text)
     rows = payload.get("rows") if isinstance(payload, dict) else None
     if not _valid_rows(rows):
-        raise ValueError(f"sprite must be a {SIZE}x{SIZE} grid using the pipeline palette")
-    return rows
+        raise ValueError(f"sprite must be exactly {SIZE} rows of {SIZE} palette characters")
+    return _clear_background(rows)
 
 
 def _prompt(description):
@@ -89,26 +103,33 @@ def draw(name, description):
         else:
             if _valid_rows(cached):
                 print(f"[art] reused cached sprite '{name}'")
-                return cached
+                return _clear_background(cached)
             print(f"[art] ignoring invalid sprite cache for '{name}'")
 
-    try:
-        response = requests.post(
-            URL,
-            headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
-            timeout=120,
-            json={
-                "model": MODEL,
-                "input": _prompt(desc),
-                "text": {"format": _FORMAT},
-                "reasoning": {"effort": "low"},
-                "max_output_tokens": 12000,
-            },
-        )
-        response.raise_for_status()
-        rows = _response_rows(response.json())
-    except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
-        print(f"[art] could not generate '{name}' with {MODEL}: {exc}")
+    prompt, rows = _prompt(desc), None
+    for attempt in range(2):
+        try:
+            response = requests.post(
+                URL,
+                headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
+                timeout=120,
+                json={
+                    "model": MODEL,
+                    "input": prompt,
+                    "text": {"format": _FORMAT},
+                    "reasoning": {"effort": "low"},
+                    "max_output_tokens": 12000,
+                },
+            )
+            response.raise_for_status()
+            rows = _response_rows(response.json())
+            break
+        except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
+            print(f"[art] attempt {attempt + 1} for '{name}' with {MODEL} failed: {exc}")
+            if isinstance(exc, requests.RequestException):
+                return None
+            prompt = _prompt(desc) + f"\n\nYour previous answer was rejected: {exc}. Fix that and answer again."
+    if rows is None:
         return None
 
     try:

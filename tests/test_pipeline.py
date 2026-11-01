@@ -255,6 +255,35 @@ class CustomSprites(unittest.TestCase):
         self.assertEqual(payload["text"]["format"]["type"], "json_schema")
         self.assertEqual(post.call_args.kwargs["headers"]["Authorization"], "Bearer " + "test-key")
 
+    def test_black_backdrop_is_made_transparent(self):
+        from pipeline import art
+
+        rows = [["k"] * 24 for _ in range(24)]
+        for y in range(6, 18):
+            for x in range(6, 18):
+                rows[y][x] = "w" if y % 2 else "g"
+        cleaned = art._clear_background(["".join(r) for r in rows])
+        self.assertEqual(cleaned[0], "." * 24)
+        self.assertEqual(cleaned[12][12], "w" if 12 % 2 else "g")
+
+    def test_malformed_sprite_is_retried_once(self):
+        import os
+        from pipeline import art
+
+        rows = self._rows()
+        bad, good = mock.Mock(), mock.Mock()
+        bad.json.return_value = {"output": [{"content": [{
+            "type": "output_text", "text": json.dumps({"rows": rows[:-1]})}]}]}
+        good.json.return_value = {"output": [{"content": [{
+            "type": "output_text", "text": json.dumps({"rows": rows})}]}]}
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}), \
+                mock.patch.object(art, "CACHE", Path(tmp)), \
+                mock.patch.object(art.requests, "post", side_effect=[bad, good]) as post:
+            self.assertEqual(art.draw("thermo", "retry sprite"), art._clear_background(rows))
+        self.assertEqual(post.call_count, 2)
+        self.assertIn("rejected", post.call_args.kwargs["json"]["input"])
+
     def test_missing_openai_key_skips_sprite_generation(self):
         import os
         from pipeline import art
