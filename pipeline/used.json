@@ -177,5 +177,15 @@
     "trend": "This simple 3D-printing process turned my flat photos into illusory lenticular portraits",
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T22:27+00:00",
+    "title": "Flexible filament spotlight",
+    "slug": "tpu-spotlight",
+    "topic": "tpu-spotlight",
+    "source": "topic bank",
+    "trend": null,
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
