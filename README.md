@@ -6,10 +6,10 @@
 - Cursor is set up the same way, through `.cursor/mcp.json`. Need premium for cloud agent - free tier cannot do 
 - ChatGPT does not. RunwayML and Canva are the alternatives for poster videos.
 - VS Code has `.vscode/mcp.json`.
-- GitHub Code spaces Codex can but low quality struggles with high quality
-- Github agent can but low quality struggles with high quality
+- GitHub Code spaces Codex can but low quality might struggle with high quality sometimes
+- Github agent can but low quality might struggle with high quality sometimes
 - **Could possibly automate with a cron job**
-- cron job helps automate but videos lower quality struggles with high quality
+- cron job helps automate but videos lower quality might struggle with high quality sometimes
 - Social posting goes through Buffer.
 - New pixel-art shorts start from [`pixel_video_prompt.md`](pixel_video_prompt.md).
 
