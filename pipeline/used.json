@@ -88,5 +88,14 @@
     "source": "llm",
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T18:22+00:00",
+    "title": "Flexible filament spotlight",
+    "slug": "tpu-spotlight",
+    "topic": "tpu-spotlight",
+    "source": "topic bank",
+    "voice": "edge-tts",
+    "buffer_post": "6ae783afcfdcf9feb7197d12"
   }
 ]
