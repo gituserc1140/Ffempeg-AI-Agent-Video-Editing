@@ -110,13 +110,15 @@ def _chrome(c, brief, p, show_vs, show_title=False):
     c.text_center(brief["subject_b"]["label"], 81, 27, 3, kind="label")
     if show_title:
         title = f'{brief["subject_a"]["label"]} VS {brief["subject_b"]["label"]}'
+        if text_width(title, 1) > 86:  # long labels would spill out of the box
+            title = "BATTLE"
         c.rect(8, 42, 99, 58, 0)
         c.rect(8, 42, 99, 43, 12)
         c.rect(8, 57, 99, 58, 14)
         c.rect(8, 44, 10, 56, 13)
         c.rect(97, 44, 99, 56, 6)
         scale = 2 if text_width(title, 2) <= 84 else 1
-        c.text_center(title, 54, 46, 12, scale, kind="label")
+        c.text_center(title, 54, 46 if scale == 2 else 47, 12, scale, kind="label")
     if show_vs:
         c.rect(43, 53, 64, 75, 0)
         c.rect(44, 54, 63, 74, 12)
