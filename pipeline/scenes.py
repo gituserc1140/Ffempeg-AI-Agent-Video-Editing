@@ -202,6 +202,41 @@ def _idle(c, brief, slots, pb):
         _draw(c, brief["subject_" + s["who"]]["icon"], s, -1, pb)
 
 
+FLASH_END = 0.8  # seconds the opening title card stays up
+
+
+def _wrap(words, scale, max_w=88):
+    lines, cur = [], ""
+    for w in words:
+        trial = (cur + " " + w).strip()
+        if cur and text_width(trial, scale) > max_w:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = trial
+    return lines + [cur]
+
+
+def _title_flash(c, brief, t):
+    """Big title card over the first moments, so the opening has text instead of a quiet scene."""
+    if t >= FLASH_END or (t > 0.55 and int(t * 24) % 2):  # blinks out over the last stretch
+        return
+    words = (brief.get("title") or brief["subject_a"]["label"]).upper().split()
+    scale = 2 if max(text_width(w, 2) for w in words) <= 88 else 1
+    lines = _wrap(words, scale)
+    if scale == 2 and len(lines) > 2:
+        scale, lines = 1, _wrap(words, 1)
+    lines = lines[:3]
+    line_h = 7 * scale + 3
+    total = len(lines) * line_h - 3 + scale
+    y0 = 60 - total // 2
+    c.rect(6, y0 - 6, 101, y0 + total + 5, 0)
+    c.rect(6, y0 - 6, 101, y0 - 5, 12)
+    c.rect(6, y0 + total + 4, 101, y0 + total + 5, 14)
+    for i, line in enumerate(lines):
+        c.text_center(line, 54, y0 + i * line_h, 12, scale, kind="label")
+
+
 def hook(c, plan, bi, t):
     brief, b = plan.brief, plan.beats[bi]
     ps, pb = _beat_state(b, t)
@@ -216,6 +251,7 @@ def hook(c, plan, bi, t):
         _sparkles(c, ps, pb, cx, cy, seed=bi * 7 + cx)
         _ring(c, ps, cx, cy, half)
     _keyword(c, plan, b, ps, 106)
+    _title_flash(c, brief, t)
     return _shake(ps)
 
 
