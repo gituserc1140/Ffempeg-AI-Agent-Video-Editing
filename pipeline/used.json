@@ -137,5 +137,15 @@
     "trend": null,
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T22:09+00:00",
+    "title": "PLA vs ABS",
+    "slug": "pla-vs-abs-rounds",
+    "topic": "pla-vs-abs-rounds",
+    "source": "topic bank",
+    "trend": null,
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
