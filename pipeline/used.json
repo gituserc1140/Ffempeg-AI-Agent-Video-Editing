@@ -187,5 +187,15 @@
     "trend": null,
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T23:18+00:00",
+    "title": "Afterburner vs Nozzle",
+    "slug": "afterburner-vs-nozzle",
+    "topic": null,
+    "source": "llm",
+    "trend": "Aerospace Engineer Builds a Working 3D-Printed EDF Afterburner",
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
