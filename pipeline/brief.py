@@ -34,11 +34,13 @@ Schema (follow the example exactly):
 - BATTLE (split) videos: use "round" beats for the middle beats, each with module, fx_a, fx_b and win ("a","b","tie").
   Modules and allowed fx: bend (bend|snap|hold), heat (sag|hold), speed (fast|slow), drop (crack|bounce|hold),
   detail (chunky|sharp). fx_a is how subject A behaves, fx_b subject B. The trigger is the topic word, spoken in the line.
+  Round videos must be SHORT: total 46-56 words, hook at most 9 words, each round line at most 9 words,
+  last line at most 14 words (the video must stay under 26 seconds).
   The last beat may carry "verdict": 1-2 rows {{"trait": word spoken in that line, "pick": "a" or "b"}}.
 - "card" beats slide in a label such as "ROUND 1" or "TIP 1" (max 8 characters).
 
 Script rules:
-- Total 60-70 words across all lines, one line per beat, each line 6-14 words, no word over 14 letters.
+- Total 60-70 words across all lines (46-56 for round videos), one line per beat, each line 6-14 words, no word over 14 letters.
 - Plain ASCII only: letters, spaces and . , ! ? ' - characters. No digits (write numbers as words, "3D" is allowed), no emoji.
 - General terms only: no temperatures, measurements or brand names.
 - trigger is ONE word that appears in that beat's line; the icon pops when it is spoken. Say the key term once clearly.

@@ -9,11 +9,11 @@ on:
   workflow_dispatch:
     inputs:
       format:
-        description: "Force a format (leave empty to rotate)"
+        description: "Format (scheduled runs always use battle)"
         required: false
         type: choice
-        default: ""
-        options: ["", battle, troubleshooting, tip, spotlight, before-after]
+        default: battle
+        options: [battle, troubleshooting, tip, spotlight, before-after]
       publish:
         description: "Upload and create the Buffer draft"
         required: false
@@ -59,7 +59,7 @@ jobs:
           S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           PUBLIC_BASE_URL: ${{ secrets.PUBLIC_BASE_URL }}
-          FORMAT_INPUT: ${{ inputs.format }}
+          FORMAT_INPUT: ${{ inputs.format || 'battle' }}
           PUBLISH_INPUT: ${{ inputs.publish }}
         run: |
           args=(--out out)

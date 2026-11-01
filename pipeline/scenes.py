@@ -278,7 +278,7 @@ RESULT_POSE = 14
 PIP_Y = 38
 
 
-def _pips(c, plan, bi, ps):
+def _pips(c, plan, bi, ps, pb):
     rounds = [i for i, b in enumerate(plan.beats) if b["scene"] == "round"]
     ta, tb = tints(plan.brief)
     x = 54 - (len(rounds) * 8 - 3) // 2
@@ -288,7 +288,7 @@ def _pips(c, plan, bi, ps):
         col = 5
         if done and win:
             col = {"a": ta[0], "b": tb[0]}.get(win, 4)
-        c.rect(x, PIP_Y, x + 4, PIP_Y + 4, 3 if i == bi else 4)
+        c.rect(x, PIP_Y, x + 4, PIP_Y + 4, (3 if (pb // 2) % 2 else 12) if i == bi else 4)
         c.rect(x + 1, PIP_Y + 1, x + 3, PIP_Y + 3, col)
         x += 8
 
@@ -297,7 +297,7 @@ def round_(c, plan, bi, t):
     brief, b = plan.brief, plan.beats[bi]
     ps, pb = _beat_state(b, t)
     _chrome(c, brief, pb, show_vs=False)
-    _pips(c, plan, bi, ps)
+    _pips(c, plan, bi, ps, pb)
     _keyword(c, plan, b, ps, 48)
     ta, tb = tints(brief)
     draw = ROUND_DRAW[b["module"]]
@@ -305,7 +305,7 @@ def round_(c, plan, bi, t):
     draw(c, 81, b["fx_b"], ps, tb, pb)
     if ps >= RESULT_POSE and b.get("win") in ("a", "b"):
         for who, cx in (("a", 27), ("b", 81)):
-            c.sprite("check" if b["win"] == who else "cross", cx, 114,
+            c.sprite("check" if b["win"] == who else "cross", cx, 114 + _bob(pb),
                      _pop(1, ps - RESULT_POSE), tint=ta)
     return _shake(ps)
 

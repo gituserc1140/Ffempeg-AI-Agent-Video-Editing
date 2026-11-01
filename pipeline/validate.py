@@ -34,6 +34,15 @@ def normalize(brief):
                                            for r in b["verdict"]]}
                               if isinstance(b.get("verdict"), list) else {}))
                       for b in brief.get("beats", [])]
+    last = brief["beats"][-1] if brief["beats"] else None
+    if last and isinstance(last.get("verdict"), list):
+        spoken = {normalize_token(w) for w in last["line"].split()}
+        rows = [r for r in last["verdict"] if isinstance(r, dict) and r.get("pick") in ("a", "b")
+                and normalize_token(r.get("trait", "")) in spoken]
+        if rows:
+            last["verdict"] = rows
+        else:
+            del last["verdict"]
     return brief
 
 
@@ -129,6 +138,8 @@ def validate(brief, allow_numbers=False):
         low = {normalize_token(w) for w in line.split()}
         if low & BRANDS:
             errs.append(f"{tag}: brand names are not allowed")
-    if not 56 <= words <= 74:
-        errs.append(f"script has {words} words, need about 60-70")
+    rounds = any(b.get("scene") == "round" for b in beats)
+    lo, hi = (44, 58) if rounds else (56, 74)
+    if not lo <= words <= hi:
+        errs.append(f"script has {words} words, need {lo}-{hi}")
     return errs

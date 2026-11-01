@@ -24,7 +24,7 @@
        "line": "Round four, drop. TPU bounces back, ABS cracks."},
       {"scene": "end", "side": "both", "icon": "star", "trigger": "depends",
        "verdict": [{"trait": "GRIP", "pick": "a"}, {"trait": "BRACKETS", "pick": "b"}],
-       "line": "It depends. Need grip? TPU. Need brackets? ABS. Follow for more filament battles!"}
+       "line": "It depends. Grip? TPU. Brackets? ABS. Follow for more filament battles!"}
     ]
   },
   {

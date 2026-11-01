@@ -90,11 +90,9 @@ Scheduled workflows only run from the default branch, and GitHub pauses them aft
 
 Battle briefs can use `round` beats (module `bend`, `heat`, `speed`, `drop` or `detail`, plus `fx_a`, `fx_b` and `win`) and a `verdict` plaque on the last beat. The split layout has a textured background, score pips and a check or cross per round. See `tpu-vs-abs` in `pipeline/topics.json` and `pipeline/rounds.py`. edge-tts now retries with a backoff because the service throttles bursts.
 
-## Status: parked
+## Status
 
-The pipeline renders and passes QC with a Cohere-written brief (tested locally). It is parked until the voice is sorted:
+The cron in `daily-videos.yml` runs three times a day and always makes battle videos. If edge-tts fails and only the robotic espeak-ng voice is available, the video is still rendered and uploaded as an artifact but is not sent to Buffer. Check the "Brief source" and "Voice" lines in the run summary.
 
-- edge-tts returns "No audio was received" from both the Codespace and GitHub Actions, so renders fall back to the robotic espeak-ng voice.
-- Options when resuming: retry edge-tts later, swap in another TTS (for example AssemblyAI, as in `pixel_video_prompt (2).md`), or accept the fallback voice.
-- The scheduled cron in `daily-videos.yml` should stay disabled (Actions tab, Disable workflow) until then, so it does not publish fallback-voice drafts.
+- Cohere briefs for battles pass validation only some of the time; failures fall back to the topic bank (`pipeline/topics.json`), so add more battle topics there to avoid repeats.
 - Local key setup: put `COHERE_API_KEY=...` in `.env` (gitignored, no spaces or quotes), then `set -a; . ./.env; set +a`.

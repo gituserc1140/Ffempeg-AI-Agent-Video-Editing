@@ -83,6 +83,9 @@ def main():
         if not report:
             continue
         print(f"[run] {source} brief '{brief['title']}' QC ok={report['ok']}")
+        for name, r in report["checks"].items():
+            if not r["ok"]:
+                print(f"[run] QC fail {name}: {r['detail']}")
         if report["ok"]:
             chosen = (source, brief)
             break
@@ -94,7 +97,10 @@ def main():
     stamp = now.strftime("%Y%m%d-%H%M")
     key = f"shorts/{stamp}-{brief['slug']}.mp4"
     result = {"url": None, "post_id": None, "error": "publishing skipped"}
-    if not args.no_publish:
+    robotic = "fallback" in meta["voice_engine"] and not args.fallback_voice
+    if robotic:
+        print("::warning::edge-tts failed, so the robotic fallback voice is not published")
+    if not args.no_publish and not robotic:
         result = publish.publish(out / "video.mp4", key, brief["caption"])
         if result["error"]:
             print(f"::warning::{result['error']}")
