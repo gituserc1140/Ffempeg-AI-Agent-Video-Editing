@@ -127,5 +127,15 @@
     "trend": null,
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T22:05+00:00",
+    "title": "PLA vs PETG",
+    "slug": "pla-vs-petg-rounds",
+    "topic": "pla-vs-petg-rounds",
+    "source": "topic bank",
+    "trend": null,
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
