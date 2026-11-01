@@ -1,0 +1,37 @@
+name: tool-changer-video
+
+on:
+  workflow_dispatch:
+    inputs:
+      rate:
+        description: "TTS speaking rate"
+        default: "+20%"
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - run: pip install -r pipeline/requirements.txt
+      - name: Render (fails on any safe-zone, loudness or format violation)
+        run: python -m toolchanger.render --out out --rate "${{ inputs.rate }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tool-changer-video
+          path: |
+            out/tool-changer.mp4
+            out/tool-changer-contact.png
+            out/tool-changer-qc.json
+            out/tool-changer-textboxes.jsonl
