@@ -167,5 +167,15 @@
     "trend": "3D-Printed Multi-Material Facade Combines Daylight Control with Plant Growth",
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T22:20+00:00",
+    "title": "Lenticular Printing",
+    "slug": "lenticular-printing",
+    "topic": null,
+    "source": "llm",
+    "trend": "This simple 3D-printing process turned my flat photos into illusory lenticular portraits",
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
