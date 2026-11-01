@@ -22,6 +22,7 @@ on:
 
 permissions:
   contents: write   # commit pipeline/used.json
+  issues: write     # per-run alert issue
   models: read      # GitHub Models fallback for brief generation
 
 concurrency:
@@ -104,3 +105,19 @@ jobs:
           fi
           curl -fsS -m 20 -H "Title: $title" -H "Tags: $tags" -H "Click: $RUN_URL" \
             --data-binary @"$body_file" "https://ntfy.sh/$NTFY_TOPIC" || echo "::warning::ntfy alert failed"
+
+      - name: Alert issue (emails you)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS: ${{ job.status }}
+          OWNER: ${{ github.repository_owner }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          {
+            if [ "$STATUS" = "success" ] && [ -f out/notify.txt ]; then cat out/notify.txt; else echo "Run $STATUS."; fi
+            echo; echo "[Run and video artifact]($RUN_URL)"; echo; echo "cc @$OWNER"
+          } > issue.md
+          url=$(gh issue create --title "Video run $STATUS" --body-file issue.md --assignee "$OWNER") \
+            && gh issue close "$url" --reason completed \
+            || echo "::warning::alert issue failed"
