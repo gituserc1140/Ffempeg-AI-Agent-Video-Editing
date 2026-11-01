@@ -114,7 +114,7 @@ def generate(fmt, recent_titles, attempts=3, trend=None):
                               + "; ".join(errs)}]
             except Exception as exc:
                 print(f"[brief] {name} attempt {attempt + 1} failed: {exc}")
-                if not isinstance(exc, (requests.Timeout, requests.ConnectionError, ValueError)):
+                if isinstance(exc, requests.HTTPError):
                     break
-                messages = messages[:2]  # unparseable or timed out: ask again from scratch
+                messages = messages[:2]  # unparseable, malformed or timed out: ask again from scratch
     return None

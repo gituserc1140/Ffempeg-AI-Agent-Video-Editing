@@ -18,6 +18,7 @@ SMART = {"\u2019": "'", "\u2018": "'", "\u201c": "", "\u201d": "", "\u2014": "-"
 
 
 def clean_text(s):
+    s = s or ""
     for a, b in SMART.items():
         s = s.replace(a, b)
     return re.sub(r"\s+", " ", s).strip()

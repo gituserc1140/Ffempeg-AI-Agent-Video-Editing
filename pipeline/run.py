@@ -68,7 +68,9 @@ def main():
         generated = brief_mod.generate(fmt, [u["title"] for u in used], trend=trend)
         if generated:
             candidates.append(("llm", generated))
-    candidates += [("topic bank", dict(t)) for t in ranked_topics(used)]
+    bank = ranked_topics(used)
+    bank.sort(key=lambda t: t["format"] != fmt)  # stable: prefer the chosen format
+    candidates += [("topic bank", dict(t)) for t in bank]
 
     out = Path(args.out)
     chosen = report = meta = None
