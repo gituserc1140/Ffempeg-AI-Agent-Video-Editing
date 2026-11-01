@@ -157,5 +157,15 @@
     "trend": null,
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T22:17+00:00",
+    "title": "3D Printed Facades",
+    "slug": "daylight-plant-facade",
+    "topic": null,
+    "source": "llm",
+    "trend": "3D-Printed Multi-Material Facade Combines Daylight Control with Plant Growth",
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
