@@ -74,6 +74,7 @@ Repository secrets:
 
 - `COHERE_API_KEY`: primary brief writer.
 - `BUFFER_API_KEY` and `BUFFER_CHANNEL_ID`: draft creation.
+- Optional `NTFY_TOPIC`: sends a phone alert (via the free ntfy.sh app) after every run, with the video title, topic and Buffer status. Pick a long random topic name, subscribe to it in the ntfy app, and keep it secret.
 - Optional instead of Releases (e.g. for a private repo): `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, plus `PUBLIC_BASE_URL` (otherwise 7-day presigned URLs).
 
 Run locally:

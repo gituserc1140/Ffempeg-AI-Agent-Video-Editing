@@ -58,6 +58,7 @@ Settings -> Secrets and variables -> Actions -> **Repository secrets**:
 | `GITHUB_TOKEN` | automatic | GitHub Models fallback, release upload |
 | `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `PUBLIC_BASE_URL` | optional | host videos on S3-style storage instead of Releases (needed for a private repo) |
 | `OPENAI_API_KEY` | not used | stored but no code reads it |
+| `NTFY_TOPIC` | optional | phone alert via ntfy.sh after every run (a hard-to-guess topic name; anyone who knows it can read the alerts) |
 
 The Google News / Trends RSS lookup needs no key.
 

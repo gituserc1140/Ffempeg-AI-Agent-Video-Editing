@@ -32,6 +32,8 @@ jobs:
   render:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
     steps:
       - uses: actions/checkout@v4
 
@@ -88,3 +90,17 @@ jobs:
             git pull --rebase
             git push
           fi
+
+      - name: Phone alert (ntfy)
+        if: always() && env.NTFY_TOPIC != ''
+        env:
+          STATUS: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ "$STATUS" = "success" ] && [ -f out/notify.txt ]; then
+            title="Video ready"; tags="movie_camera"; body_file=out/notify.txt
+          else
+            title="Video run $STATUS"; tags="warning"; echo "See the run log." > out/notify.txt; body_file=out/notify.txt
+          fi
+          curl -fsS -m 20 -H "Title: $title" -H "Tags: $tags" -H "Click: $RUN_URL" \
+            --data-binary @"$body_file" "https://ntfy.sh/$NTFY_TOPIC" || echo "::warning::ntfy alert failed"

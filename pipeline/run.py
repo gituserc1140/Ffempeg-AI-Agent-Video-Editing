@@ -124,6 +124,11 @@ def main():
               f"- Buffer draft: {result['post_id'] or 'not created'}",
               f"- Publish status: {result['error'] or 'ok'}", "",
               *[f"- {'PASS' if r['ok'] else 'FAIL'} {n}: {r['detail']}" for n, r in report["checks"].items()]])
+    (out / "notify.txt").write_text(
+        f"{brief['title']} ({brief['format']}, {meta['duration']:.0f}s)\n"
+        f"Topic: {trend if source == 'llm' and trend else 'topic bank'}\n"
+        f"Buffer draft: {'created' if result['post_id'] else 'not created'}"
+        + (f" ({result['error']})" if result["error"] else "") + "\n")
     return 0
 
 
