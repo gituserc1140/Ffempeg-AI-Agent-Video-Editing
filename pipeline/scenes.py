@@ -6,6 +6,7 @@ import random
 
 from . import config as C
 from .font import text_width
+from . import stages
 from .sprites import ICONS
 
 POSE = C.POSE_FPS
@@ -171,23 +172,31 @@ def _shake(ps):
     return SHAKE[ps] if 0 <= ps < len(SHAKE) else (0, 0)
 
 
-def _show(c, name, slot, ps, pb, recolor=None):
-    """Draw one icon on its platform; returns (cx, cy, half) for effects."""
+def _stage_w(slot):
+    return min(76, slot["span"][1] - slot["span"][0] - 2)
+
+
+def _draw(c, name, slot, ps, pb, tint=None, ghost=False, fixed=False):
+    """Draw one icon (animated stage when one exists) standing on its platform.
+    Returns (cx, cy, half) for effects."""
+    tint = tint or slot["tint"]
+    if name in stages.STAGES:
+        sheet = stages.render(name, _stage_w(slot), pb, tint[0], tint[1], fixed=fixed, ghost=ghost)
+        stages.blit(c, sheet, slot["cx"], slot["base"])
+        return slot["cx"], slot["base"] - stages.HEIGHT // 2, stages.HEIGHT // 2 - 2
     scale = _scale(name, slot, ps)
     cy = _cy(name, slot, scale, pb)
-    half = len(ICONS[name]) * scale // 2
-    if ps < 0:
-        c.sprite(name, slot["cx"], cy, scale, ghost=True)
-    else:
-        c.sprite(name, slot["cx"], cy, scale, tint=slot["tint"], recolor=recolor)
-    return slot["cx"], cy, half
+    c.sprite(name, slot["cx"], cy, scale, tint=tint, ghost=ghost)
+    return slot["cx"], cy, len(ICONS[name]) * scale // 2
+
+
+def _show(c, name, slot, ps, pb, recolor=None):
+    return _draw(c, name, slot, ps, pb, tint=recolor, ghost=ps < 0)
 
 
 def _idle(c, brief, slots, pb):
     for s in _idle_slots(brief, slots):
-        name = brief["subject_" + s["who"]]["icon"]
-        scale = _scale(name, s, -1)
-        c.sprite(name, s["cx"], _cy(name, s, scale, pb), scale, tint=s["tint"])
+        _draw(c, brief["subject_" + s["who"]]["icon"], s, -1, pb)
 
 
 def hook(c, plan, bi, t):
@@ -253,16 +262,13 @@ def fix(c, plan, bi, t):
     _platform(c, _slots(brief, "both"))
     _idle(c, brief, slots, pb)
     for s in slots:
-        scale = _scale(b["icon"], s)
-        cy = _cy(b["icon"], s, scale, pb)
-        half = len(ICONS[b["icon"]]) * scale // 2
         if ps < 0:
-            c.sprite(b["icon"], s["cx"], cy, scale, tint=s["tint"], recolor=(11, 7))
-            c.sprite("cross", s["cx"] + half, cy - half + (pb % 2), 2)
+            cx, cy, half = _draw(c, b["icon"], s, ps, pb, tint=(11, 7))
+            c.sprite("cross", cx + half, cy - half + (pb % 2), 2)
         else:
-            c.sprite(b["icon"], s["cx"], cy, scale, recolor=(10, 15))
-            c.sprite("check", s["cx"] + half, cy - half, _pop(2, ps))
-            _sparkles(c, ps, pb, s["cx"], cy, seed=bi * 17 + s["cx"])
+            cx, cy, half = _draw(c, b["icon"], s, ps, pb, tint=(10, 15), fixed=True)
+            c.sprite("check", cx + half, cy - half, _pop(2, ps))
+            _sparkles(c, ps, pb, cx, cy, seed=bi * 17 + s["cx"])
     _keyword(c, plan, b, ps, 106)
     return _shake(ps)
 

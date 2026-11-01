@@ -9,7 +9,7 @@ from unittest import mock
 import numpy as np
 
 from pipeline import config as C
-from pipeline import publish, run
+from pipeline import publish, run, stages
 from pipeline.font import CHARSET, GLYPHS, text_width
 from pipeline.pixel import Canvas
 from pipeline.sprites import ICONS
@@ -45,6 +45,23 @@ class FontAndSprites(unittest.TestCase):
         c = Canvas()
         c.text("WIDE WORD HERE", 80, 100, 3, scale=1)
         self.assertLess(c.boxes[0]["x1"], C.STRIP_X)
+
+
+class Stages(unittest.TestCase):
+    def test_every_stage_animates_inside_palette(self):
+        allowed = {tuple(c) + (255,) for c in C.PALETTE}
+        for name in stages.STAGES:
+            self.assertIn(name, ICONS)
+            for w in (46, 76):
+                frames = []
+                for pb in (0, 3, 7):
+                    sheet = stages.render(name, w, pb, 6, 7)
+                    self.assertEqual(sheet.img.size, (w, stages.HEIGHT))
+                    opaque = {tuple(p) for p in np.array(sheet.img).reshape(-1, 4) if p[3]}
+                    self.assertTrue(opaque, name)
+                    self.assertLessEqual(opaque, allowed, name)
+                    frames.append(sheet.img.tobytes())
+                self.assertGreater(len(set(frames)), 1, f"{name} is static")
 
 
 class Validation(unittest.TestCase):
