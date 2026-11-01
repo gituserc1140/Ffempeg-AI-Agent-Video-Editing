@@ -118,7 +118,8 @@ def main():
     USED.write_text(json.dumps(_load_used() + [entry], indent=2) + "\n")
 
     _summary([f"### {brief['title']}", f"- Brief source: **{source}**",
-              f"- Trend headline: {trend if source == 'llm' and trend else 'none'}",
+              f"- Trend headline: {trend or 'none'}"
+              + ("" if source == "llm" or not trend else " (not used: the LLM brief failed, topic bank used)") + "",
               f"- Voice: **{meta['voice_engine']}**", f"- Duration: {meta['duration']:.2f}s",
               f"- Buffer draft: {result['post_id'] or 'not created'}",
               f"- Publish status: {result['error'] or 'ok'}", "",

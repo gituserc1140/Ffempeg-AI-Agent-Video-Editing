@@ -39,7 +39,9 @@ BLOCKED = re.compile(
 
 
 def _clean(title):
-    title = re.sub(r"\s+-\s+[^-]{2,40}$", "", title)  # drop the " - Publisher" suffix
+    head, sep, tail = title.rpartition(" - ")
+    if sep and len(tail) <= 50:  # drop the " - Publisher" suffix
+        title = head
     title = re.sub(r"\s+", " ", title).strip()
     return title[:MAX_TITLE]
 

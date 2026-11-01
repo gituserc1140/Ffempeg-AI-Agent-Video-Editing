@@ -56,7 +56,7 @@ def _headers_bearer(token):
 
 
 def _cohere(messages, key):
-    r = requests.post(COHERE_URL, headers=_headers_bearer(key), timeout=90, json={
+    r = requests.post(COHERE_URL, headers=_headers_bearer(key), timeout=150, json={
         "model": COHERE_MODEL, "messages": messages, "temperature": 0.9,
         "response_format": {"type": "json_object"}})
     r.raise_for_status()
@@ -114,5 +114,7 @@ def generate(fmt, recent_titles, attempts=3, trend=None):
                               + "; ".join(errs)}]
             except Exception as exc:
                 print(f"[brief] {name} attempt {attempt + 1} failed: {exc}")
-                break
+                if not isinstance(exc, (requests.Timeout, requests.ConnectionError, ValueError)):
+                    break
+                messages = messages[:2]  # unparseable or timed out: ask again from scratch
     return None
