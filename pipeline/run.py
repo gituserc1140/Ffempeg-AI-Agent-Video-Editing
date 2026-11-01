@@ -3,6 +3,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import random
 import sys
 from pathlib import Path
 
@@ -54,8 +55,8 @@ def main():
     args = ap.parse_args()
 
     now = dt.datetime.now(dt.timezone.utc)
-    slot = now.hour // 8
-    fmt = args.format or brief_mod.FORMATS[(now.timetuple().tm_yday * 3 + slot) % len(brief_mod.FORMATS)]
+    fmt = args.format or random.choice(brief_mod.FORMATS)
+    print(f"[run] format: {fmt}{'' if args.format else ' (random)'}")
     used = _load_used()
 
     candidates = []

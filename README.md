@@ -92,7 +92,7 @@ Battle briefs can use `round` beats (module `bend`, `heat`, `speed`, `drop` or `
 
 ## Status
 
-The cron in `daily-videos.yml` runs three times a day and always makes battle videos. If edge-tts fails and only the robotic espeak-ng voice is available, the video is still rendered and uploaded as an artifact but is not sent to Buffer. Check the "Brief source" and "Voice" lines in the run summary.
+The cron in `daily-videos.yml` runs three times a day and picks a random format (battle, troubleshooting, tip, spotlight or before-after); manual runs can choose a format or leave it on `random`. If edge-tts fails and only the robotic espeak-ng voice is available, the video is still rendered and uploaded as an artifact but is not sent to Buffer. Check the "Brief source" and "Voice" lines in the run summary.
 
 - Cohere briefs for battles pass validation only some of the time; failures fall back to the topic bank (`pipeline/topics.json`), so add more battle topics there to avoid repeats.
 - Local key setup: put `COHERE_API_KEY=...` in `.env` (gitignored, no spaces or quotes), then `set -a; . ./.env; set +a`.

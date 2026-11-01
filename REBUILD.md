@@ -73,7 +73,7 @@ Settings -> Actions -> General:
 
 ### Daily videos - `.github/workflows/daily-videos.yml`
 
-- Triggers: cron `17 6`, `17 12`, `17 18` (UTC, so UK time except during BST) plus manual `workflow_dispatch` (inputs: `format`, `publish`).
+- Triggers: cron `17 6`, `17 12`, `17 18` (UTC, so UK time except during BST) plus manual `workflow_dispatch` (inputs: `format`, default `random`, and `publish`). A random format is chosen when none is passed.
 - Permissions: `contents: write`, `models: read`. Concurrency group `daily-videos` (no overlapping runs).
 - Steps: checkout -> setup-python 3.12 (pip cache) -> apt install `ffmpeg espeak-ng` -> `pip install -r pipeline/requirements.txt` -> `python -m pipeline.run --out out --format <format>` (adds `--no-publish` when the input is false) -> upload artifact `video-<run_id>` (mp4, contact sheet, qc.json, 14 days) -> commit `pipeline/used.json` as `github-actions[bot]` (`git pull --rebase` then push).
 - Env passed to the run step: all secrets in section 3, plus `FORMAT_INPUT` and `PUBLISH_INPUT`.
