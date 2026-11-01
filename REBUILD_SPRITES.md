@@ -45,8 +45,21 @@ To exercise the GPT-5 sprites locally, run `export OPENAI_API_KEY=<your key>` an
 - Other secrets: `COHERE_API_KEY`, `BUFFER_API_KEY`, `BUFFER_CHANNEL_ID`, optional `NTFY_TOPIC`.
 - Run **Actions > Daily videos > Run workflow**. Videos appear in the `videos` release, and the run summary shows the "Topic-specific sprites" line.
 
-## Known gaps and next steps
+## Status at end of session 1 (2026-11-01 night)
 
-- The real GPT-5 call is untested because the tests mock the response. Check the first live run's log for `[art] generated ...`.
-- Sprites are 24x24 and may need prompt tuning to match the quality of the hand-drawn stage art.
-- Untracked local files that are not part of this work: the `.mp4` files and the two `pixel_video_prompt*.md` files.
+- Live Actions runs confirmed GPT-5 sprites work: `[art] generated 'tooling' with gpt-5`, and the run summary shows "Topic-specific sprites: tooling".
+- First live attempt returned empty replies because the 1800-token cap was used up by reasoning. Fixed with a 12000-token cap and `reasoning: low` (`4aa92e1`).
+- In the rendered video the sprite had a dotted rectangular box around it, because GPT-5 filled the backdrop with black pixels. `_clear_background` in `pipeline/art.py` now makes border-connected black/slate pixels transparent.
+- Roughly one of the two sprites per video was rejected with "must be a 24x24 grid using the pipeline palette". A malformed grid now gets one retry with the exact error in the prompt (`011b027`).
+- Those last two fixes were pushed but not yet confirmed by a live run.
+
+## Next steps
+
+1. Run Actions > Daily videos and check the log for `[art] attempt 1 ... failed` followed by `generated` (retry working) and that both sprites appear.
+2. Download the video and check whether the dotted box is gone.
+3. Sprite quality is still basic next to the hand-drawn stage art. Options: tune the prompt, allow 32x32, or give GPT-5 an example sprite.
+4. Cohere briefs often fail validation (bad round modules and triggers), which is separate from sprites.
+
+## Resume prompt
+
+> Continue the GPT-5 sprite work in this repo. Read REBUILD_SPRITES.md, then check the latest Daily videos run log with `gh run view --log` for the `[art]` lines.
