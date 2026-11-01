@@ -45,7 +45,8 @@ def _response_rows(response):
         and isinstance(part.get("text"), str)
     )
     if not text:
-        raise ValueError("response contained no sprite grid")
+        detail = (response.get("incomplete_details") or {}).get("reason") or response.get("status")
+        raise ValueError(f"response contained no sprite grid ({detail})")
     payload = json.loads(text)
     rows = payload.get("rows") if isinstance(payload, dict) else None
     if not _valid_rows(rows):
@@ -100,7 +101,8 @@ def draw(name, description):
                 "model": MODEL,
                 "input": _prompt(desc),
                 "text": {"format": _FORMAT},
-                "max_output_tokens": 1800,
+                "reasoning": {"effort": "low"},
+                "max_output_tokens": 12000,
             },
         )
         response.raise_for_status()
