@@ -6,7 +6,7 @@ import os
 import sys
 from pathlib import Path
 
-from . import brief as brief_mod, publish, qc
+from . import brief as brief_mod, publish, qc, trends
 from . import config as C
 from .render import render
 
@@ -47,6 +47,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="out")
     ap.add_argument("--no-llm", action="store_true")
+    ap.add_argument("--no-trends", action="store_true", help="skip the news/trends topic lookup")
     ap.add_argument("--no-publish", action="store_true")
     ap.add_argument("--fallback-voice", action="store_true")
     ap.add_argument("--format", choices=brief_mod.FORMATS)
@@ -58,8 +59,12 @@ def main():
     used = _load_used()
 
     candidates = []
+    trend = None
     if not args.no_llm:
-        generated = brief_mod.generate(fmt, [u["title"] for u in used])
+        if not args.no_trends:
+            trend = trends.pick([u.get("trend") for u in used])
+            print(f"[run] trend: {trend or 'none found, letting the LLM choose'}")
+        generated = brief_mod.generate(fmt, [u["title"] for u in used], trend=trend)
         if generated:
             candidates.append(("llm", generated))
     candidates += [("topic bank", dict(t)) for t in ranked_topics(used)]
@@ -107,10 +112,12 @@ def main():
 
     entry = dict(date=now.isoformat(timespec="minutes"), title=brief["title"], slug=brief["slug"],
                  topic=brief["slug"] if source == "topic bank" else None, source=source,
+                 trend=trend if source == "llm" else None,
                  voice=meta["voice_engine"], buffer_post=result["post_id"])
     USED.write_text(json.dumps(_load_used() + [entry], indent=2) + "\n")
 
     _summary([f"### {brief['title']}", f"- Brief source: **{source}**",
+              f"- Trend headline: {trend if source == 'llm' and trend else 'none'}",
               f"- Voice: **{meta['voice_engine']}**", f"- Duration: {meta['duration']:.2f}s",
               f"- Buffer draft: {result['post_id'] or 'not created'}",
               f"- Publish status: {result['error'] or 'ok'}", "",

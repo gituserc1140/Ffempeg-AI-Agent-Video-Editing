@@ -66,7 +66,7 @@ python3 -m unittest discover -s tests -v
 
 `.github/workflows/daily-videos.yml` renders about 3 pixel-art shorts a day (rules in `pixel_video_prompt.md`), runs deterministic QC, and saves them as Buffer drafts.
 
-Brief source order: Cohere, then GitHub Models, then `pipeline/topics.json`.
+Brief source order: a current 3D-printing headline picked at random from free Google News / Google Trends RSS feeds (no API key; headlines already in `used.json` are skipped) is given to Cohere, then GitHub Models; if no headline or no valid brief is available, `pipeline/topics.json` is the fallback. Google Trends' "trending now" feed covers all subjects, so only entries mentioning 3D printing are used from it; Google News search is the main source. Skip the lookup with `--no-trends`.
 
 Hosting: Buffer needs a public URL, so the repo must be **public**. Each video is attached to a rolling `videos` GitHub Release (assets older than 14 days are pruned) using the built-in token, so no storage account is needed.
 

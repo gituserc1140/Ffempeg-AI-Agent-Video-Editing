@@ -9,7 +9,7 @@ from unittest import mock
 import numpy as np
 
 from pipeline import config as C
-from pipeline import publish, run, stages
+from pipeline import publish, run, stages, trends
 from pipeline.font import CHARSET, GLYPHS, text_width
 from pipeline.pixel import Canvas
 from pipeline.sprites import ICONS
@@ -132,6 +132,38 @@ class Fallback(unittest.TestCase):
     def test_least_used_topic_is_picked(self):
         used = [{"topic": t["slug"]} for t in TOPICS[:-1]]
         self.assertEqual(run.fallback_topic(used)["slug"], TOPICS[-1]["slug"])
+
+
+class Trends(unittest.TestCase):
+    NEWS = (b"<rss><channel><item><title>Nine head nozzle 3D printer debuts - Tom's Hardware</title></item>"
+            b"<item><title>Local football result</title></item>"
+            b"<item><title>Police seize 3D-printed firearm parts</title></item>"
+            b"<item><title>Best 3D printer deals: prices as low as $199</title></item>"
+            b"<item><title>Elegoo 3D printer review</title></item></channel></rss>")
+    TRENDING = (b"<rss xmlns:ht='x'><channel><item><title>vikings game</title></item>"
+                b"<item><title>bambu lab</title></item></channel></rss>")
+
+    def _get(self, url, **kw):
+        resp = mock.Mock()
+        resp.content = self.TRENDING if "trending" in url else self.NEWS
+        return resp
+
+    def test_only_3d_printing_headlines_survive_and_suffix_is_dropped(self):
+        with mock.patch.object(trends.requests, "get", side_effect=self._get):
+            found = trends.candidates()
+        self.assertIn("Nine head nozzle 3D printer debuts", found)
+        self.assertNotIn("bambu lab", found)
+        self.assertNotIn("vikings game", found)
+        self.assertNotIn("Local football result", found)
+        for bad in ("firearm", "deals", "review"):
+            self.assertFalse(any(bad in t for t in found), bad)
+
+    def test_used_headlines_are_skipped_and_failure_returns_none(self):
+        with mock.patch.object(trends.requests, "get", side_effect=self._get):
+            self.assertEqual(trends.pick(["nine head nozzle 3D printer debuts", "bambu lab"]), None)
+        with mock.patch.object(trends.requests, "get", side_effect=OSError("down")):
+            self.assertEqual(trends.candidates(), [])
+            self.assertIsNone(trends.pick([]))
 
 
 class Publish(unittest.TestCase):
