@@ -32,18 +32,17 @@ def _captions(c, plan, t):
     hit = _active_chunk(plan, t)
     if not hit:
         return
-    c.rect(5, 134, 102, 154, 5)
-    c.rect(5, 134, 102, 136, 12)
-    c.rect(5, 152, 102, 154, 14)
-    c.rect(5, 137, 8, 151, 13)
-    c.rect(99, 137, 102, 151, 6)
+    c.rect(1, 133, 89, 156, 0)
+    c.rect(2, 134, 88, 155, 5)
+    c.rect(2, 134, 88, 135, 12)
+    c.rect(2, 154, 88, 155, 14)
     chunk, cur = hit
     n = len(chunk)
     y0 = 145 - (7 * n + 2 * (n - 1)) // 2
     for li, line in enumerate(chunk):
         y = y0 + li * 9
         total = sum(len(w["text"]) for w in line) + len(line) - 1
-        x = 46 - (total * 6 - 1) // 2
+        x = 45 - (total * 6 - 1) // 2
         for w in line:
             col = 12 if w is plan.words[cur] else 3
             c.text(w["text"], x, y, col, 1, kind="voice", clamp=False)

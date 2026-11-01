@@ -63,9 +63,9 @@ ICONS = {
         "..aaaaaaaa..", "..AAAAAAAA..", "............", "............",
     ],
     "strand": [
-        "aaaa....aaaa", "aaaa....aaaa", "aaaawwwwaaaa", "aaaa....aaaa",
-        "aaaawwwwaaaa", "aaaa....aaaa", "aaaa.ww.aaaa", "aaaa....aaaa",
-        "aaaa....aaaa", "AAAA....AAAA", "............", "............",
+        "............", ".aaaa..aaaa.", ".aaaa..aaaa.", ".aaaaaaaaaa.",
+        "..aaaw.aaa..", "..a.w..a.a..", "..a..w.a.a..", ".a..w...a.a.",
+        ".a.w..w..a..", "..a...w.a...", ".AAA.AAAAAA.", "............",
     ],
     "warp": [
         "............", "............", "a..........a", "aa........aa",
@@ -129,7 +129,6 @@ def _detailed_spool():
 
 
 ICONS["spool"] = _detailed_spool()
-SCALES = {"spool": 1}
 
 for _name, _rows in ICONS.items():
     assert _rows and len({len(r) for r in _rows}) == 1, _name
