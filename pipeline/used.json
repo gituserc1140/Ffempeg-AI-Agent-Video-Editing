@@ -107,5 +107,15 @@
     "trend": null,
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T21:34+00:00",
+    "title": "Recycled vs Virgin Filament",
+    "slug": "recycle-vs-virgin",
+    "topic": null,
+    "source": "llm",
+    "trend": "Tees, pads and paddles: Schoolboys turn plastic waste into 3D printed sports equipment",
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
