@@ -19,7 +19,29 @@ GH_MODEL = os.environ.get("GH_MODEL", "openai/gpt-4.1-mini")
 LAYOUT = {"battle": "split"}
 FORMATS = ["battle", "troubleshooting", "tip", "spotlight", "before-after"]
 
+_THERMO = [
+    {"shape": "rect", "x": 6, "y": 1, "w": 4, "h": 10, "c": "w"},
+    {"shape": "circle", "x": 8, "y": 12, "r": 3, "c": "w"},
+    {"shape": "rect", "x": 7, "y": 4, "w": 2, "h": 8, "c": "r"},
+    {"shape": "circle", "x": 8, "y": 12, "r": 2, "c": "r"},
+    {"shape": "line", "x1": 11, "y1": 3, "x2": 13, "y2": 3, "c": "g"},
+    {"shape": "line", "x1": 11, "y1": 6, "x2": 13, "y2": 6, "c": "g"},
+]
+
 _EXAMPLE = json.loads((Path(__file__).parent / "topics.json").read_text())[0]
+
+SPRITE_RULES = f"""- sprites (optional, 1-3 entries): design custom pixel icons so this video looks unique. Object: name -> list of 6-16 shapes
+  drawn in order on a 16x16 grid (x right, y down, 0-15), later shapes paint over earlier ones:
+  {{{{"shape":"rect","x":N,"y":N,"w":N,"h":N,"c":L}}}}  {{{{"shape":"circle","x":N,"y":N,"r":N,"c":L}}}}  {{{{"shape":"line","x1":N,"y1":N,"x2":N,"y2":N,"c":L}}}}
+  N is a whole number, L is one colour letter: a = the subject's main colour, A = its dark shade, w white, g grey, d dark-grey, o orange,
+  O dark-orange, c cyan, C dark-cyan, n green, r red, y yellow, p pink, u purple, N dark-green, k black.
+  Draw ONE recognisable object centred on the grid, 10-15 cells tall, at least three colours, with the largest shapes first
+  and small details (highlights, eyes, screws) last. Names are new lowercase words (letters/digits only, 3-16 chars) that are
+  not built-in icons. Use a sprite name as an icon wherever it fits the topic; use built-in icons for the rest.
+  Example (a thermometer): {json.dumps({"thermo": _THERMO})}
+"""
+if not os.environ.get("CUSTOM_SPRITES"):  # experimental: Cohere's drawings are currently crude
+    SPRITE_RULES = ""
 
 SYSTEM = f"""You write briefs for 25 second pixel-art 3D printing shorts. Reply with ONE JSON object only.
 
@@ -29,7 +51,7 @@ Schema (follow the example exactly):
 - subject_a (always) and subject_b (split layout only): {{label (max 8 letters), color, icon}}
 - beats: 5 or 6 objects. Beat 1 scene "hook", last beat scene "end", middle beats "icon", "card" or "fix".
   Each beat: scene, side ("a","b" or "both"; use "a" for single layout), icon, trigger, line, and label for card beats.
-- color must be one of {sorted(C.FAMILIES)}. icon must be one of {sorted(ICONS)}.
+{SPRITE_RULES}- color must be one of {sorted(C.FAMILIES)}. icon must be one of {sorted(ICONS)}.
 - "fix" beats show a red problem icon that turns green at the trigger word: use them for troubleshooting.
 - BATTLE (split) videos: use "round" beats for the middle beats, each with module, fx_a, fx_b and win ("a","b","tie").
   Modules and allowed fx: bend (bend|snap|hold), heat (sag|hold), speed (fast|slow), drop (crack|bounce|hold),

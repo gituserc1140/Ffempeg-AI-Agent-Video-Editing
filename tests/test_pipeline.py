@@ -215,3 +215,18 @@ class EndToEnd(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CustomSprites(unittest.TestCase):
+    def test_shapes_register_and_bad_ones_fall_back(self):
+        from pipeline import sprites, validate
+        shapes = [{"shape": "rect", "x": 4, "y": 2, "w": 8, "h": 12, "c": "a"},
+                  {"shape": "circle", "x": 8, "y": 8, "r": 3, "c": "y"},
+                  {"shape": "line", "x1": 0, "y1": 15, "x2": 15, "y2": 15, "c": "k"}]
+        brief = {"sprites": {"widget": shapes, "flat": [{"shape": "rect", "x": 0, "y": 0, "w": 1, "h": 1, "c": "a"}]},
+                 "subject_a": {"icon": "widget"}, "beats": [{"line": "x", "icon": "flat"}]}
+        out = validate.normalize(brief)
+        self.assertIn("widget", sprites.ICONS)
+        self.assertEqual(out["subject_a"]["icon"], "widget")
+        self.assertEqual(out["beats"][0]["icon"], "gear")
+        sprites.ICONS.pop("widget")

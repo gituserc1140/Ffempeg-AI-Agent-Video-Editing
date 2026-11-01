@@ -4,7 +4,7 @@ import re
 from . import config as C
 from .font import CHARSET, text_width
 from .rounds import MODULES
-from .sprites import ICONS
+from .sprites import ICONS, register_custom
 from .tts import normalize_token
 
 SCENES_MID = {"icon", "card", "fix", "round"}
@@ -28,6 +28,14 @@ def normalize(brief):
     """Tidy typographic characters and fill defaults before validating."""
     brief = dict(brief)
     brief["handle"] = C.HANDLE
+    raw = brief.pop("sprites", None)
+    dropped = set(register_custom(dict(list(raw.items())[:4]) if isinstance(raw, dict) else {}))
+    if isinstance(raw, dict):
+        dropped |= set(list(raw)[4:])
+    if dropped:  # a badly drawn sprite falls back to a built-in icon rather than failing the video
+        for holder in [brief.get("subject_a"), brief.get("subject_b"), *brief.get("beats", [])]:
+            if isinstance(holder, dict) and holder.get("icon") in dropped:
+                holder["icon"] = "gear"
     brief["beats"] = [dict(b, line=clean_text(b.get("line", "")),
                            trigger=clean_text(b.get("trigger", "")),
                            label=clean_text(b.get("label", "")).upper(),
