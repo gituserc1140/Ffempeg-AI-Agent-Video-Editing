@@ -147,5 +147,15 @@
     "trend": null,
     "voice": "edge-tts",
     "buffer_post": null
+  },
+  {
+    "date": "2026-11-01T22:12+00:00",
+    "title": "Nylon vs PETG",
+    "slug": "nylon-vs-petg-rounds",
+    "topic": "nylon-vs-petg-rounds",
+    "source": "topic bank",
+    "trend": null,
+    "voice": "edge-tts",
+    "buffer_post": null
   }
 ]
