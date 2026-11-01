@@ -1,4 +1,5 @@
-"""12x12 pixel icons. 'a'/'A' = subject colour (main/dark); other letters are fixed colours."""
+"""Pixel-art icons. 'a'/'A' = subject colour (main/dark); other letters are fixed colours."""
+import math
 
 CHARS = {
     "w": 3, "g": 4, "d": 5, "o": 6, "O": 7, "c": 8, "C": 9, "n": 10,
@@ -98,6 +99,37 @@ ICONS = {
     ],
 }
 
+
+def _detailed_spool():
+    rows = []
+    for y in range(28):
+        row = []
+        for x in range(28):
+            dx, dy = x - 13.5, y - 13.5
+            radius = math.hypot(dx, dy)
+            if radius > 13.5:
+                ch = "."
+            elif radius > 12:
+                ch = "k"
+            elif radius > 10:
+                ch = "w" if y < 5 and x % 4 in (1, 2) else "a"
+            elif radius > 8.5:
+                ch = "A"
+            elif radius > 6:
+                ch = "y" if (x + y) % 7 == 0 else "a"
+            elif radius > 4.5:
+                ch = "k"
+            else:
+                ch = "b" if x < 13 else "k"
+            if 10 < radius <= 12 and y > 19 and (x + y) % 5 == 0:
+                ch = "A"
+            row.append(ch)
+        rows.append("".join(row))
+    return rows
+
+
+ICONS["spool"] = _detailed_spool()
+SCALES = {"spool": 1}
+
 for _name, _rows in ICONS.items():
-    assert len(_rows) == 12, _name
-    assert all(len(r) == 12 for r in _rows), _name
+    assert _rows and len({len(r) for r in _rows}) == 1, _name

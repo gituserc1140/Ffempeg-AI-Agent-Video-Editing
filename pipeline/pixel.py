@@ -23,8 +23,8 @@ class Canvas:
 
     def sprite(self, name, cx, cy, scale, tint=(6, 7), ghost=False, recolor=None):
         art = ICONS[name]
-        x0 = cx - 6 * scale
-        y0 = cy - 6 * scale
+        x0 = cx - len(art[0]) * scale // 2
+        y0 = cy - len(art) * scale // 2
         for j, row in enumerate(art):
             for i, ch in enumerate(row):
                 if ch == ".":

@@ -32,6 +32,11 @@ def _captions(c, plan, t):
     hit = _active_chunk(plan, t)
     if not hit:
         return
+    c.rect(5, 134, 102, 154, 5)
+    c.rect(5, 134, 102, 136, 12)
+    c.rect(5, 152, 102, 154, 14)
+    c.rect(5, 137, 8, 151, 13)
+    c.rect(99, 137, 102, 151, 6)
     chunk, cur = hit
     n = len(chunk)
     y0 = 145 - (7 * n + 2 * (n - 1)) // 2
@@ -48,7 +53,7 @@ def _captions(c, plan, t):
 def render_pose(plan, p):
     t = p / POSE
     c = Canvas()
-    background.draw(c, p)
+    background.draw(c, p, plan.brief)
     bi = _beat_index(plan, t)
     beat = plan.beats[bi]
     dx, dy = SCENES[beat["scene"]](c, plan, bi, max(0.0, t - beat["start"]))
